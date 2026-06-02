@@ -1,0 +1,605 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+
+    ViewData["Title"] = "Assets";
+}
+@{
+    ViewData["ActiveMenu"] = "AssetManagement";
+}
+
+
+
+    <title>Assets – Asset Management</title>
+    <style>
+            * {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+
+            body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                background: #fdfdfd;
+                color: #222;
+                font-size: 13.5px;
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+            }
+
+            /* ── Breadcrumb ── */
+            .topbar {
+                background: #f8fafc;
+                color: #6b7585;
+                font-size: 12px;
+                padding: 10px 24px;
+                border-bottom: 1px solid #e4e7ec;
+            }
+
+                .topbar strong {
+                    color: #1a2332;
+                    font-weight: 600;
+                }
+
+            /* ── Page header ── */
+            .page-header {
+                padding: 20px 24px 16px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+                .page-header h1 {
+                    font-size: 24px;
+                    font-weight: 700;
+                    color: #1a2332;
+                    letter-spacing: -0.5px;
+                }
+
+                .page-header .sub {
+                    font-size: 13px;
+                    color: #7a8494;
+                    margin-top: 2px;
+                }
+
+            .header-actions {
+                display: flex;
+                gap: 8px;
+                align-items: center;
+            }
+
+            .btn-new {
+                background: #1a2332;
+                color: #fff;
+                border: none;
+                padding: 9px 16px;
+                border-radius: 7px;
+                font-size: 13px;
+                font-weight: 600;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                gap: 5px;
+            }
+
+                .btn-new:hover {
+                    background: #243246;
+                }
+
+            .btn-icon {
+                border: 1px solid #ced2db;
+                background: #fff;
+                width: 36px;
+                height: 36px;
+                border-radius: 7px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                color: #3a4252;
+            }
+
+                .btn-icon:hover {
+                    background: #f4f5f7;
+                }
+
+            /* ── KPI Grid Section ── */
+            .kpi-container {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 16px;
+                padding: 0 24px 24px;
+            }
+
+            .kpi-card {
+                background: #fff;
+                border: 1px solid #e2e8f0;
+                border-radius: 20px;
+                padding: 20px;
+                display: flex;
+                flex-direction: column;
+                gap: 4px;
+                box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+            }
+
+            .kpi-header {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+
+            .kpi-icon {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 32px;
+                height: 32px;
+                border-radius: 6px;
+            }
+
+            .kpi-card:nth-child(1) .kpi-icon {
+                background: #e8f5e9;
+                color: #2e7d32;
+            }
+
+            .kpi-card:nth-child(2) .kpi-icon {
+                background: #fff3e0;
+                color: #ef6c00;
+            }
+
+            .kpi-card:nth-child(3) .kpi-icon {
+                background: #ffebee;
+                color: #c62828;
+            }
+
+            .kpi-card:nth-child(4) .kpi-icon {
+                background: #e3f2fd;
+                color: #1565c0;
+            }
+
+            .kpi-card:nth-child(5) .kpi-icon {
+                background: #eceff1;
+                color: #37474f;
+            }
+
+            .kpi-label {
+                font-size: 11px;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                color: #718096;
+            }
+
+            .kpi-value {
+                font-size: 28px;
+                font-weight: 700;
+                color: #1a202c;
+                line-height: 1;
+            }
+
+            /* ── Toolbar ── */
+            .toolbar {
+                padding: 16px 24px;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                border-top: 1px solid #e4e7ec;
+                border-bottom: 1px solid #e4e7ec;
+                background: #ffffff;
+            }
+
+            .search-wrap {
+                position: relative;
+                flex: 1;
+                max-width: 420px;
+            }
+
+            .search-icon {
+                position: absolute;
+                left: 11px;
+                top: 50%;
+                transform: translateY(-50%);
+                color: #aab0bc;
+            }
+
+            .search-input {
+                width: 100%;
+                border: 1px solid #ced2db;
+                border-radius: 7px;
+                padding: 8px 12px 8px 34px;
+                font-size: 13px;
+                color: #1a2332;
+                background: #fafbfc;
+                outline: none;
+            }
+
+                .search-input::placeholder {
+                    color: #aab0bc;
+                }
+
+                .search-input:focus {
+                    border-color: #3b82f6;
+                    background: #fff;
+                }
+
+            .spacer {
+                flex: 1;
+            }
+
+            .filter-select {
+                border: 1px solid #ced2db;
+                border-radius: 7px;
+                padding: 7px 28px 7px 11px;
+                font-size: 13px;
+                color: #1a2332;
+                background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24'%3E%3Cpath fill='%236b7585' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E") no-repeat right 9px center;
+                appearance: none;
+                -webkit-appearance: none;
+                cursor: pointer;
+                outline: none;
+            }
+
+                .filter-select:focus {
+                    border-color: #3b82f6;
+                }
+
+            /* ── Table ── */
+            .table-wrap {
+                flex: 1;
+                overflow-x: auto;
+                background: #ffffff;
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+
+            thead tr {
+                border-bottom: 1px solid #e4e7ec;
+            }
+
+            th {
+                padding: 12px 14px;
+                font-size: 11px;
+                font-weight: 700;
+                color: #6b7585;
+                text-transform: uppercase;
+                letter-spacing: .5px;
+                text-align: left;
+                white-space: nowrap;
+                background: #fff;
+            }
+
+                th:first-child, td:first-child {
+                    width: 40px;
+                    padding-left: 24px;
+                }
+
+            tbody tr {
+                border-bottom: 1px solid #f0f2f5;
+                transition: background .12s;
+            }
+
+                tbody tr:hover {
+                    background: #f8f9fb;
+                }
+
+            td {
+                padding: 13px 14px;
+                font-size: 13.5px;
+                color: #2d3748;
+                vertical-align: middle;
+            }
+
+            input[type="checkbox"] {
+                width: 15px;
+                height: 15px;
+                border: 1.5px solid #c0c7d4;
+                border-radius: 3px;
+                accent-color: #1a2332;
+                cursor: pointer;
+            }
+
+            .asset-id {
+                color: #2563eb;
+                font-weight: 500;
+                text-decoration: none;
+                font-size: 13px;
+            }
+
+                .asset-id:hover {
+                    text-decoration: underline;
+                }
+
+            .description {
+                font-weight: 600;
+                color: #1a2332;
+            }
+
+            /* Badges */
+            .badge {
+                display: inline-flex;
+                align-items: center;
+                padding: 3px 11px;
+                border-radius: 5px;
+                font-size: 12px;
+                font-weight: 500;
+                white-space: nowrap;
+            }
+
+            .badge-cb {
+                background: #eff6ff;
+                color: #2563eb;
+                border: 1px solid #bfdbfe;
+            }
+
+            .badge-tr {
+                background: #f0fdf4;
+                color: #16a34a;
+                border: 1px solid #bbf7d0;
+            }
+
+            .status-badge {
+                display: inline-flex;
+                align-items: center;
+                padding: 3px 12px;
+                border-radius: 5px;
+                font-size: 12px;
+                font-weight: 500;
+                white-space: nowrap;
+            }
+
+            .s-operating {
+                background: #f0fdf4;
+                color: #16a34a;
+                border: 1px solid #bbf7d0;
+            }
+
+            .s-wappr {
+                background: #fffbeb;
+                color: #b45309;
+                border: 1px solid #fde68a;
+            }
+
+            .cond-badge {
+                display: inline-flex;
+                align-items: center;
+                padding: 3px 14px;
+                border-radius: 5px;
+                font-size: 12px;
+                font-weight: 600;
+                white-space: nowrap;
+            }
+
+            .c-good {
+                background: #f0fdf4;
+                color: #16a34a;
+                border: 1px solid #bbf7d0;
+            }
+
+            .c-fair {
+                background: #fffbeb;
+                color: #b45309;
+                border: 1px solid #fde68a;
+            }
+
+            /* ── Footer ── */
+            .footer {
+                padding: 13px 24px;
+                border-top: 1px solid #e4e7ec;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                background: #fff;
+            }
+
+            .showing {
+                font-size: 12.5px;
+                color: #6b7585;
+            }
+
+            .pagination {
+                display: flex;
+                gap: 8px;
+            }
+
+            .btn-page {
+                border: 1px solid #ced2db;
+                background: #fff;
+                padding: 7px 18px;
+                border-radius: 7px;
+                font-size: 13px;
+                color: #1a2332;
+                font-weight: 500;
+                cursor: pointer;
+            }
+
+                .btn-page:hover {
+                    background: #f4f5f7;
+                }
+
+                .btn-page:disabled {
+                    color: #aab0bc;
+                    cursor: default;
+                }
+    </style>
+
+
+    <div class="topbar">Asset Management &gt; <strong>Assets</strong></div>
+
+    <div class="page-header">
+        <div>
+            <h1>Assets</h1>
+            <div class="sub">Asset Management</div>
+        </div>
+        <div class="header-actions">
+            <button class="btn-new">+ New Site</button>
+            <div class="btn-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" /></svg>
+            </div>
+            <div class="btn-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>
+            </div>
+        </div>
+    </div>
+
+    <div class="kpi-container">
+        <div class="kpi-card">
+            <div class="kpi-header">
+                <div class="kpi-icon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="2" ry="2" /></svg>
+                </div>
+                <div class="kpi-label">Total Assets</div>
+            </div>
+            <div class="kpi-value">12,458</div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-header">
+                <div class="kpi-icon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" /><polyline points="22 4 12 14.01 9 11.01" /></svg>
+                </div>
+                <div class="kpi-label">Active Assets</div>
+            </div>
+            <div class="kpi-value">11,265</div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-header">
+                <div class="kpi-icon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" /></svg>
+                </div>
+                <div class="kpi-label">User Maintenance</div>
+            </div>
+            <div class="kpi-value">452</div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-header">
+                <div class="kpi-icon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>
+                </div>
+                <div class="kpi-label">Warrenty Expiring</div>
+            </div>
+            <div class="kpi-value">213</div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-header">
+                <div class="kpi-icon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18.36 6.64a9 9 0 1 1-12.73 0" /><line x1="12" y1="2" x2="12" y2="12" /></svg>
+                </div>
+                <div class="kpi-label">Decommissioned Assets</div>
+            </div>
+            <div class="kpi-value">528</div>
+        </div>
+    </div>
+
+    <div class="toolbar">
+        <div class="search-wrap">
+            <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /></svg>
+            <input class="search-input" type="text" placeholder="Search by Asset ID, Description..." id="searchInput" oninput="filterRows()" />
+        </div>
+        <div class="spacer"></div>
+        <select class="filter-select" id="classFilter" onchange="filterRows()">
+            <option value="">All Classes</option>
+            <option value="Circuit Breaker">Circuit Breaker</option>
+            <option value="Transformer">Transformer</option>
+        </select>
+        <select class="filter-select" id="statusFilter" onchange="filterRows()">
+            <option value="">All Status</option>
+            <option value="Operating">Operating</option>
+            <option value="Wappr">Wappr</option>
+        </select>
+    </div>
+
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th><input type="checkbox" id="chkAll" onchange="toggleAll(this)" /></th>
+                    <th>Asset ID</th>
+                    <th>Description</th>
+                    <th>Class</th>
+                    <th>Status</th>
+                    <th>Site</th>
+                    <th>Location</th>
+                    <th>Health Status</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+            </tbody>
+        </table>
+    </div>
+
+    <div class="footer">
+        <div class="showing" id="showingText">Showing 0 of 0 sites</div>
+        <div class="pagination">
+            <button class="btn-page" disabled>Previous</button>
+            <button class="btn-page">Next</button>
+        </div>
+    </div>
+
+    <script>
+            // Complete Dataset Managed Globally
+            const assetData = [
+              { id: "TR-TVM-2341", desc: "250KVA Padmount Transformer",  classType: "Circuit Breaker", status: "Operating", site: "Statue Substation",          location: "Statue Substation",    health: "Good" },
+              { id: "VC-TVM-0234", desc: "500KVA Dry-Type Transformer",   classType: "Transformer",     status: "Operating", site: "Pettah Substation",          location: "Pettah SS Bay 2",      health: "Good" },
+              { id: "TR-TVM-2389", desc: "1MVA Three-Phase Transformer",   classType: "Circuit Breaker", status: "Wappr",     site: "Medical College Substation",  location: "Medical College SS",   health: "Fair" },
+              { id: "CB-TVM-0567", desc: "75KVA Oil-Immersed Transformer", classType: "Transformer",     status: "Operating", site: "Kakkanad Zone",               location: "Kakkanad",             health: "Good" },
+              { id: "TR-TVM-2456", desc: "150KVA Cast Resin Transformer",  classType: "Circuit Breaker", status: "Wappr",     site: "Karamana Substation",         location: "Karamana SS",          health: "Fair" },
+              { id: "TE-TVM-2465", desc: "300KVA Substation Transformer",  classType: "Transformer",     status: "Operating", site: "Vazhuthacaud Section",        location: "Vazhuthacaud Area",    health: "Good" }
+            ];
+
+            function renderTable(dataArray) {
+              const tbody = document.getElementById("tableBody");
+              tbody.innerHTML = dataArray.map(item => {
+                const classBadge = item.classType === "Circuit Breaker" ? "badge-cb" : "badge-tr";
+                const statusBadge = item.status === "Operating" ? "s-operating" : "s-wappr";
+                const healthBadge = item.health === "Good" ? "c-good" : "c-fair";
+
+                return `
+                  <tr>
+                    <td><input type="checkbox"/></td>
+                    <td><a class="asset-id" href="#">${item.id}</a></td>
+                    <td class="description">${item.desc}</td>
+                    <td><span class="badge ${classBadge}">${item.classType}</span></td>
+                    <td><span class="status-badge ${statusBadge}">${item.status}</span></td>
+                    <td>${item.site}</td>
+                    <td>${item.location}</td>
+                    <td><span class="cond-badge ${healthBadge}">${item.health}</span></td>
+                  </tr>
+                `;
+              }).join("");
+
+              document.getElementById('showingText').textContent = `Showing ${dataArray.length} of ${assetData.length} sites`;
+            }
+
+            function filterRows() {
+              const searchVal = document.getElementById('searchInput').value.toLowerCase();
+              const classVal  = document.getElementById('classFilter').value;
+              const statusVal = document.getElementById('statusFilter').value;
+
+              const filtered = assetData.filter(item => {
+                const matchesSearch = !searchVal ||
+                                      item.id.toLowerCase().includes(searchVal) ||
+                                      item.desc.toLowerCase().includes(searchVal) ||
+                                      item.site.toLowerCase().includes(searchVal) ||
+                                      item.location.toLowerCase().includes(searchVal);
+
+                const matchesClass  = !classVal || item.classType === classVal;
+                const matchesStatus = !statusVal || item.status === statusVal;
+
+                return matchesSearch && matchesClass && matchesStatus;
+              });
+
+              renderTable(filtered);
+            }
+
+            function toggleAll(master) {
+              document.querySelectorAll('#tableBody input[type="checkbox"]')
+                .forEach(cb => cb.checked = master.checked);
+            }
+
+            // Initial Runtime Mount
+            renderTable(assetData);
+    </script>

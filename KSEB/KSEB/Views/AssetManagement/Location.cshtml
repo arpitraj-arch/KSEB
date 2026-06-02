@@ -1,0 +1,660 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+
+    ViewData["Title"] = "Location Failure";
+}
+@{
+    ViewData["ActiveMenu"] = "AssetManagement";
+}
+
+
+    <style>
+            * {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+
+            body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                background: #fff;
+                color: #222;
+                font-size: 13.5px;
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .topbar {
+                background: #f5f6f8;
+                color: #6b7585;
+                font-size: 12px;
+                padding: 7px 22px;
+                border-bottom: 1px solid #e4e7ec;
+            }
+
+                .topbar strong {
+                    color: #1a2332;
+                    font-weight: 600;
+                }
+            /* ── KPI Grid Section ── */
+            .kpi-container {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 10px;
+                padding: 0 24px 16px;
+                margin-top: 4px;
+            }
+
+            .kpi-card {
+                background: #fff;
+                border: 1px solid #e2e8f0;
+                border-radius: 20px;
+                padding: 10px;
+                display: flex;
+                flex-direction: column;
+                gap: 4px;
+                box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+            }
+
+            .kpi-header {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+
+            .kpi-icon {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 32px;
+                height: 32px;
+                border-radius: 6px;
+            }
+
+            .kpi-card:nth-child(1) .kpi-icon {
+                background: #e8f5e9;
+                color: #2e7d32;
+            }
+
+            .kpi-card:nth-child(2) .kpi-icon {
+                background: #fff3e0;
+                color: #ef6c00;
+            }
+
+            .kpi-card:nth-child(3) .kpi-icon {
+                background: #ffebee;
+                color: #c62828;
+            }
+
+            .kpi-card:nth-child(4) .kpi-icon {
+                background: #e3f2fd;
+                color: #1565c0;
+            }
+
+            .kpi-card:nth-child(5) .kpi-icon {
+                background: #eceff1;
+                color: #37474f;
+            }
+
+            .kpi-label {
+                font-size: 11px;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                color: #718096;
+            }
+
+            .kpi-value {
+                font-size: 28px;
+                font-weight: 700;
+                color: #1a202c;
+                line-height: 1;
+            }
+
+            .page-header {
+                padding: 16px 22px 13px;
+                border-bottom: 1px solid #e4e7ec;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+                .page-header h1 {
+                    font-size: 22px;
+                    font-weight: 700;
+                    color: #1a2332;
+                }
+
+                .page-header .sub {
+                    font-size: 12px;
+                    color: #7a8494;
+                    margin-top: 3px;
+                }
+
+            .header-actions {
+                display: flex;
+                gap: 8px;
+                align-items: center;
+            }
+
+            .btn-new {
+                background: #1a2332;
+                color: #fff;
+                border: none;
+                padding: 9px 16px;
+                border-radius: 7px;
+                font-size: 13px;
+                font-weight: 600;
+                cursor: pointer;
+            }
+
+                .btn-new:hover {
+                    background: #243246;
+                }
+
+            .btn-icon {
+                border: 1px solid #ced2db;
+                background: #fff;
+                width: 36px;
+                height: 36px;
+                border-radius: 7px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                color: #3a4252;
+            }
+
+                .btn-icon:hover {
+                    background: #f4f5f7;
+                }
+
+            .toolbar {
+                padding: 11px 22px;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                border-bottom: 1px solid #e4e7ec;
+            }
+
+            .search-wrap {
+                position: relative;
+                flex: 1;
+                max-width: 420px;
+            }
+
+            .search-icon {
+                position: absolute;
+                left: 11px;
+                top: 50%;
+                transform: translateY(-50%);
+                color: #aab0bc;
+            }
+
+            .search-input {
+                width: 100%;
+                border: 1px solid #ced2db;
+                border-radius: 7px;
+                padding: 8px 12px 8px 34px;
+                font-size: 13px;
+                color: #1a2332;
+                background: #fafbfc;
+                outline: none;
+            }
+
+                .search-input::placeholder {
+                    color: #aab0bc;
+                }
+
+                .search-input:focus {
+                    border-color: #3b82f6;
+                    background: #fff;
+                }
+
+            .spacer {
+                flex: 1;
+            }
+
+            .filter-select {
+                border: 1px solid #ced2db;
+                border-radius: 7px;
+                padding: 7px 28px 7px 11px;
+                font-size: 13px;
+                color: #1a2332;
+                background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24'%3E%3Cpath fill='%236b7585' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E") no-repeat right 9px center;
+                appearance: none;
+                -webkit-appearance: none;
+                cursor: pointer;
+                outline: none;
+            }
+
+            .table-wrap {
+                flex: 1;
+                overflow-y: auto;
+                overflow-x: hidden;
+            }
+
+                .table-wrap::-webkit-scrollbar {
+                    width: 7px;
+                }
+
+                .table-wrap::-webkit-scrollbar-track {
+                    background: #f0f2f5;
+                }
+
+                .table-wrap::-webkit-scrollbar-thumb {
+                    background: #c8cdd6;
+                    border-radius: 4px;
+                }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+
+            thead tr {
+                border-bottom: 2px solid #e4e7ec;
+            }
+
+            th {
+                position: sticky;
+                top: 0;
+                z-index: 2;
+                padding: 10px 14px;
+                font-size: 11px;
+                font-weight: 700;
+                color: #6b7585;
+                text-transform: uppercase;
+                letter-spacing: .5px;
+                text-align: left;
+                white-space: nowrap;
+                background: #fff;
+            }
+
+                th:first-child {
+                    padding-left: 22px;
+                    width: 140px;
+                }
+
+            td:first-child {
+                padding-left: 22px;
+            }
+
+            tbody tr {
+                border-bottom: 1px solid #f0f2f5;
+                transition: background .1s;
+            }
+
+                tbody tr:hover {
+                    background: #f8f9fb;
+                }
+
+            td {
+                padding: 11px 14px;
+                font-size: 13.5px;
+                color: #2d3748;
+                vertical-align: middle;
+            }
+
+            /* Type badges */
+            .type-badge {
+                display: inline-flex;
+                align-items: center;
+                padding: 3px 10px;
+                border-radius: 5px;
+                font-size: 12px;
+                font-weight: 500;
+                white-space: nowrap;
+            }
+
+            .t-substation {
+                background: #eff6ff;
+                color: #2563eb;
+                border: 1px solid #bfdbfe;
+            }
+
+            .t-pole {
+                background: #fdf4ff;
+                color: #9333ea;
+                border: 1px solid #e9d5ff;
+            }
+
+            .t-feeder {
+                background: #f0fdf4;
+                color: #16a34a;
+                border: 1px solid #bbf7d0;
+            }
+
+            .t-linesegment {
+                background: #fffbeb;
+                color: #b45309;
+                border: 1px solid #fde68a;
+            }
+
+            .asset-id {
+                color: #2563eb;
+                font-weight: 500;
+                text-decoration: none;
+                font-size: 13px;
+            }
+
+                .asset-id:hover {
+                    text-decoration: underline;
+                }
+
+            .description {
+                font-weight: 600;
+                color: #1a2332;
+            }
+
+            /* Status badges */
+            .status-badge {
+                display: inline-flex;
+                align-items: center;
+                padding: 3px 11px;
+                border-radius: 5px;
+                font-size: 12px;
+                font-weight: 500;
+                white-space: nowrap;
+            }
+
+            .s-operating {
+                background: #f0fdf4;
+                color: #16a34a;
+                border: 1px solid #bbf7d0;
+            }
+
+            .s-planned {
+                background: #f5f3ff;
+                color: #7c3aed;
+                border: 1px solid #ddd6fe;
+            }
+
+            /* Footer */
+            .footer {
+                padding: 13px 22px;
+                border-top: 1px solid #e4e7ec;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                background: #fff;
+                flex-shrink: 0;
+            }
+
+            .showing {
+                font-size: 12.5px;
+                color: #6b7585;
+            }
+
+            .pagination {
+                display: flex;
+                gap: 8px;
+            }
+
+            .btn-page {
+                border: 1px solid #ced2db;
+                background: #fff;
+                padding: 7px 18px;
+                border-radius: 7px;
+                font-size: 13px;
+                color: #1a2332;
+                font-weight: 500;
+                cursor: pointer;
+            }
+
+                .btn-page:hover {
+                    background: #f4f5f7;
+                }
+
+                .btn-page:disabled {
+                    color: #aab0bc;
+                    cursor: default;
+                }
+    </style>
+
+
+    <div class="topbar">Asset Management &gt; <strong>Locations</strong></div>
+
+    <div class="page-header">
+        <div>
+            <h1>Locations</h1>
+            <div class="sub">Manage functions and GIS hierarchy</div>
+        </div>
+        <div class="header-actions">
+            <button class="btn-new">+ New Site</button>
+            <div class="btn-icon">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" /></svg>
+            </div>
+            <div class="btn-icon">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>
+            </div>
+        </div>
+    </div>
+    <div class="kpi-container">
+        <div class="kpi-card">
+            <div class="kpi-header">
+                <div class="kpi-icon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="2" ry="2" /></svg>
+                </div>
+                <div class="kpi-label">ACTIVE METER GROUP</div>
+            </div>
+            <div class="kpi-value">12,458</div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-header">
+                <div class="kpi-icon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" /><polyline points="22 4 12 14.01 9 11.01" /></svg>
+                </div>
+                <div class="kpi-label">CRITICAL READINGS</div>
+            </div>
+            <div class="kpi-value">11,265</div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-header">
+                <div class="kpi-icon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" /></svg>
+                </div>
+                <div class="kpi-label">User Maintenance</div>
+            </div>
+            <div class="kpi-value">452</div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-header">
+                <div class="kpi-icon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>
+                </div>
+                <div class="kpi-label">THRESOLD BREACHES</div>
+            </div>
+            <div class="kpi-value">452</div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-header">
+                <div class="kpi-icon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18.36 6.64a9 9 0 1 1-12.73 0" /><line x1="12" y1="2" x2="12" y2="12" /></svg>
+                </div>
+                <div class="kpi-label">CONNECTED ASSETS</div>
+            </div>
+            <div class="kpi-value">213</div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-header">
+                <div class="kpi-icon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18.36 6.64a9 9 0 1 1-12.73 0" /><line x1="12" y1="2" x2="12" y2="12" /></svg>
+                </div>
+                <div class="kpi-label">PENDING INSPECTIONS</div>
+            </div>
+            <div class="kpi-value">213</div>
+        </div>
+    </div>
+
+    <div class="toolbar">
+        <div class="search-wrap">
+            <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /></svg>
+            <input class="search-input" type="text" placeholder="Search by Asset ID, Description, Serial Number..." id="searchInput" oninput="filterRows()" />
+        </div>
+        <div class="spacer"></div>
+        <select class="filter-select" id="typeFilter" onchange="filterRows()">
+            <option value="">All Classes</option>
+            <option>Substation</option>
+            <option>Pole</option>
+            <option>Feeder</option>
+            <option>Line Segment</option>
+        </select>
+        <select class="filter-select" id="statusFilter" onchange="filterRows()">
+            <option value="">All Status</option>
+            <option>Operating</option>
+            <option>Planned</option>
+        </select>
+    </div>
+
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>Asset ID</th>
+                    <th>Description</th>
+                    <th>Parent Location</th>
+                    <th>Section</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                <tr data-type="Substation" data-status="Operating">
+                    <td><span class="type-badge t-substation">Substation</span></td>
+                    <td><a class="asset-id" href="#">SS-TVM-STATUE</a></td>
+                    <td class="description">Statue 110/11KV Substation</td>
+                    <td>Thiruvananthapuram Circle</td>
+                    <td>Statue Section</td>
+                    <td><span class="status-badge s-operating">Operating</span></td>
+                </tr>
+                <tr data-type="Pole" data-status="Operating">
+                    <td><span class="type-badge t-pole">Pole</span></td>
+                    <td><a class="asset-id" href="#">SEG-PETTAH-VJC-L1</a></td>
+                    <td class="description">Medical College Feeder 1</td>
+                    <td>SS-TVM-Statue</td>
+                    <td>Statue Section</td>
+                    <td><span class="status-badge s-operating">Operating</span></td>
+                </tr>
+                <tr data-type="Feeder" data-status="Planned">
+                    <td><span class="type-badge t-feeder">Feeder</span></td>
+                    <td><a class="asset-id" href="#">FDR-KZHKT-TPARK-01</a></td>
+                    <td class="description">Pole 34-Medical College Feeder 1</td>
+                    <td>FDR-PETTAH-VJC-01</td>
+                    <td>Pettah Section</td>
+                    <td><span class="status-badge s-planned">Planned</span></td>
+                </tr>
+                <tr data-type="Substation" data-status="Operating">
+                    <td><span class="type-badge t-substation">Substation</span></td>
+                    <td><a class="asset-id" href="#">POLE-MED-01-034</a></td>
+                    <td class="description">Pettah 100/11KV Substation</td>
+                    <td>SS-TVM-KAZHAKOOTAM</td>
+                    <td>Pettah Section</td>
+                    <td><span class="status-badge s-operating">Operating</span></td>
+                </tr>
+                <tr data-type="Line Segment" data-status="Operating">
+                    <td><span class="type-badge t-linesegment">Line Segment</span></td>
+                    <td><a class="asset-id" href="#">FDR-KZHKT-02</a></td>
+                    <td class="description">Kazhakottam 110/11kV Substation</td>
+                    <td>FDR-STATUE-MED-01</td>
+                    <td>Kazhakootam Section</td>
+                    <td><span class="status-badge s-operating">Operating</span></td>
+                </tr>
+                <tr data-type="Feeder" data-status="Planned">
+                    <td><span class="type-badge t-feeder">Feeder</span></td>
+                    <td><a class="asset-id" href="#">SS-TVM-VIKAS-BHAVAN</a></td>
+                    <td class="description">Technopark Feeder 1</td>
+                    <td>FDR-PETTAH-VJC-01</td>
+                    <td>Kazhakootam Section</td>
+                    <td><span class="status-badge s-planned">Planned</span></td>
+                </tr>
+                <tr data-type="Pole" data-status="Operating">
+                    <td><span class="type-badge t-pole">Pole</span></td>
+                    <td><a class="asset-id" href="#">SEG-PETTAH-VJC-L1</a></td>
+                    <td class="description">Medical College Feeder 1</td>
+                    <td>SS-TVM-Statue</td>
+                    <td>Statue Section</td>
+                    <td><span class="status-badge s-operating">Operating</span></td>
+                </tr>
+                <tr data-type="Substation" data-status="Operating">
+                    <td><span class="type-badge t-substation">Substation</span></td>
+                    <td><a class="asset-id" href="#">POLE-MED-01-034</a></td>
+                    <td class="description">Pettah 100/11KV Substation</td>
+                    <td>SS-TVM-KAZHAKOOTAM</td>
+                    <td>Pettah Section</td>
+                    <td><span class="status-badge s-operating">Operating</span></td>
+                </tr>
+                <tr data-type="Feeder" data-status="Planned">
+                    <td><span class="type-badge t-feeder">Feeder</span></td>
+                    <td><a class="asset-id" href="#">FDR-KZHKT-TPARK-01</a></td>
+                    <td class="description">Pole 34-Medical College Feeder 1</td>
+                    <td>FDR-PETTAH-VJC-01</td>
+                    <td>Pettah Section</td>
+                    <td><span class="status-badge s-planned">Planned</span></td>
+                </tr>
+                <tr data-type="Substation" data-status="Operating">
+                    <td><span class="type-badge t-substation">Substation</span></td>
+                    <td><a class="asset-id" href="#">SS-TVM-STATUE</a></td>
+                    <td class="description">Statue 110/11KV Substation</td>
+                    <td>Thiruvananthapuram Circle</td>
+                    <td>Statue Section</td>
+                    <td><span class="status-badge s-operating">Operating</span></td>
+                </tr>
+                <tr data-type="Line Segment" data-status="Operating">
+                    <td><span class="type-badge t-linesegment">Line Segment</span></td>
+                    <td><a class="asset-id" href="#">FDR-KZHKT-02</a></td>
+                    <td class="description">Kazhakottam 110/11kV Substation</td>
+                    <td>FDR-STATUE-MED-01</td>
+                    <td>Kazhakootam Section</td>
+                    <td><span class="status-badge s-operating">Operating</span></td>
+                </tr>
+                <tr data-type="Substation" data-status="Operating">
+                    <td><span class="type-badge t-substation">Substation</span></td>
+                    <td><a class="asset-id" href="#">POLE-MED-01-034</a></td>
+                    <td class="description">Pettah 100/11KV Substation</td>
+                    <td>SS-TVM-KAZHAKOOTAM</td>
+                    <td>Pettah Section</td>
+                    <td><span class="status-badge s-operating">Operating</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="footer">
+        <div class="showing" id="showingText">Showing 6 of 6 sites</div>
+        <div class="pagination">
+            <button class="btn-page" disabled>Previous</button>
+            <button class="btn-page">Next</button>
+        </div>
+    </div>
+
+    <script>
+            const allRows = document.querySelectorAll('#tableBody tr');
+
+            function filterRows() {
+              const search = document.getElementById('searchInput').value.toLowerCase();
+              const type   = document.getElementById('typeFilter').value;
+              const status = document.getElementById('statusFilter').value;
+              let visible  = 0;
+              allRows.forEach(row => {
+                const text   = row.textContent.toLowerCase();
+                const rowT   = row.dataset.type;
+                const rowS   = row.dataset.status;
+                const show   =
+                  (!search || text.includes(search)) &&
+                  (!type   || rowT === type) &&
+                  (!status || rowS === status);
+                row.style.display = show ? '' : 'none';
+                if (show) visible++;
+              });
+              document.getElementById('showingText').textContent =
+                `Showing ${visible} of ${allRows.length} sites`;
+            }
+
+            // init count
+            filterRows();
+    </script>
+

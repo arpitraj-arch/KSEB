@@ -1,0 +1,932 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - KSEB</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Inter for consistent typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <style>
+            /* ---------- GLOBAL RESET & BASE ---------- */
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                font-family: 'Inter', sans-serif;
+                background-color: #f0f2f5;
+                overflow-x: hidden;
+            }
+
+            /* ---- MAIN APP LAYOUT (Sidebar fixed left, content area with top navbar) ---- */
+            .app-wrapper {
+                display: flex;
+                min-height: 100vh;
+                width: 100%;
+            }
+
+            /* --- SIDEBAR STYLES (EXACTLY from your code, unchanged) --- */
+            :root {
+                --sidebar-width: 260px;
+                --sidebar-collapsed-width: 70px;
+                --active-gradient: linear-gradient(90deg, #3c70d3 0%, #039886 100%);
+                --text-main: #32403b;
+                --text-muted: #6e737d;
+                --bg-active-light: #f4f8f7;
+                --border-color: #eeeeee;
+            }
+
+            .sidebar {
+                width: var(--sidebar-width);
+                height: 100vh;
+                background: #ffffff;
+                border-right: 1px solid var(--border-color);
+                display: flex;
+                flex-direction: column;
+                position: fixed;
+                left: 0;
+                top: 0;
+                transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                overflow: hidden;
+                z-index: 1000;
+            }
+
+                .sidebar.collapsed {
+                    width: var(--sidebar-collapsed-width);
+                }
+
+            .sidebar-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 10px;
+                height: 60px;
+            }
+
+            .sidebar-brand img {
+                width: 110px;
+                transition: opacity 0.2s;
+                /* placeholder: group-10000029231.svg not provided — using KSEB text-based fallback */
+                content: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 40"><rect width="120" height="40" fill="%23ffffff"/><text x="8" y="26" font-family="Inter, sans-serif" font-weight="800" font-size="18" fill="%233c70d3">KSEB</text><text x="58" y="26" font-family="Inter" font-weight="500" font-size="12" fill="%23039886">⚡</text></svg>');
+            }
+
+            .sidebar.collapsed .sidebar-brand img {
+                opacity: 0;
+                width: 0;
+            }
+
+            .toggle-btn {
+                background: #f5f6fa;
+                border: 1px solid var(--border-color);
+                border-radius: 6px;
+                width: 30px;
+                height: 30px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                color: var(--text-main);
+                transition: 0.3s;
+            }
+
+            .sidebar.collapsed .toggle-btn {
+                transform: rotate(180deg);
+                margin: 0 auto;
+            }
+
+            .header-divider {
+                border: 0;
+                border-top: 1px solid var(--border-color);
+                margin: 5px 0 15px 0;
+            }
+
+            .search-container {
+                padding: 0px 10px 15px 10px;
+            }
+
+            .search-box {
+                display: flex;
+                align-items: center;
+                border: 1px solid var(--border-color);
+                border-radius: 4px;
+                padding: 8px;
+                background: #fafafa;
+            }
+
+            .sidebar.collapsed .search-box {
+                justify-content: center;
+                border: none;
+                background: transparent;
+            }
+
+            .search-box input {
+                border: none;
+                outline: none;
+                padding-left: 8px;
+                font-size: 13px;
+                width: 100%;
+                background: transparent;
+            }
+
+            .sidebar.collapsed .search-box input {
+                display: none;
+            }
+
+            .nav-list {
+                flex: 1;
+                overflow-y: auto;
+                overflow-x: hidden;
+                padding: 0;
+                list-style: none;
+            }
+
+            .nav-item {
+                margin-bottom: 4px;
+                padding: 0 10px;
+            }
+
+            .nav-link {
+                display: flex;
+                align-items: center;
+                padding: 8px;
+                color: var(--text-main);
+                font-size: 14px;
+                text-decoration: none;
+                cursor: pointer;
+                border-radius: 8px;
+                transition: 0.2s;
+                white-space: nowrap;
+            }
+
+            .sidebar.collapsed .nav-link span,
+            .sidebar.collapsed .chevron-start {
+                display: none;
+            }
+
+            .chevron-start {
+                width: 15px;
+                font-size: 10px;
+                margin-right: 5px;
+                transition: transform 0.3s;
+                color: var(--text-muted);
+            }
+
+            .menu-icon-box {
+                width: 32px;
+                height: 32px;
+                background: #f5f6fa;
+                border-radius: 6px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-right: 10px;
+                flex-shrink: 0;
+            }
+
+            .sidebar.collapsed .menu-icon-box {
+                margin-right: 0;
+            }
+
+            .nav-item.active > .nav-link {
+                background: var(--active-gradient);
+                color: #ffffff;
+            }
+
+                .nav-item.active > .nav-link .menu-icon-box {
+                    background: rgba(255, 255, 255, 0.2);
+                }
+
+                    .nav-item.active > .nav-link .menu-icon-box i,
+                    .nav-item.active > .nav-link .chevron-start {
+                        color: #ffffff;
+                    }
+
+            .submenu-container {
+                position: relative;
+                background-color: var(--bg-active-light);
+                display: none;
+            }
+
+            .sidebar.collapsed .submenu-container {
+                display: none !important;
+            }
+
+            .nav-item.open .submenu-container {
+                display: block;
+            }
+
+            .nav-item.open .chevron-start {
+                transform: rotate(90deg);
+            }
+
+            .vertical-line {
+                position: absolute;
+                left: 25px;
+                top: 5px;
+                bottom: 5px;
+                width: 1px;
+                background-color: #ced4da;
+            }
+
+            .submenu-list {
+                list-style: none;
+                padding: 5px 0 5px 40px;
+            }
+
+            .submenu-item {
+                padding: 7px 0;
+                font-size: 12.5px;
+                color: var(--text-main);
+                display: flex;
+                align-items: center;
+                cursor: pointer;
+            }
+
+                .submenu-item::before {
+                    content: "●";
+                    font-size: 8px;
+                    color: var(--text-muted);
+                    margin-right: 10px;
+                }
+
+                .submenu-item:hover {
+                    color: #039886;
+                }
+
+            .sidebar-footer {
+                padding: 15px;
+                border-top: 1px solid var(--border-color);
+                font-size: 10px;
+                color: var(--text-muted);
+            }
+
+            .sidebar.collapsed .sidebar-footer {
+                display: none;
+            }
+
+            /* custom scrollbar */
+            .nav-list::-webkit-scrollbar {
+                width: 4px;
+            }
+
+            .nav-list::-webkit-scrollbar-thumb {
+                background: transparent;
+                border-radius: 10px;
+            }
+
+            .nav-list:hover::-webkit-scrollbar-thumb {
+                background: rgba(0, 0, 0, 0.1);
+            }
+
+            /* ---------- TOP NAVBAR STYLES (EXACT, unchanged) ---------- */
+            :root {
+                --navbar-height: 70px;
+                --nav-bg-gradient: linear-gradient(90deg, #d1e9f0 0%, #4A52AD 100%);
+                --dropdown-bg: #ffffff;
+                --text-dark: #333333;
+            }
+
+            .top-navbar {
+                width: 100%;
+                height: var(--navbar-height);
+                background: var(--nav-bg-gradient);
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 0 30px;
+                font-family: 'Inter', sans-serif;
+                position: relative;
+                box-sizing: border-box;
+            }
+
+            .nav-left .greeting {
+                font-weight: 700;
+                font-size: 16px;
+                color: #1a1a1a;
+                margin: 0;
+            }
+
+            .nav-left .sub-text {
+                font-size: 12px;
+                color: #444;
+                margin: 0;
+                opacity: 0.8;
+            }
+
+            .nav-center {
+                flex: 1;
+                max-width: 600px;
+                margin: 0 40px;
+            }
+
+            .main-search {
+                background: white;
+                border-radius: 8px;
+                display: flex;
+                align-items: center;
+                padding: 10px 15px;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            }
+
+                .main-search i {
+                    color: #888;
+                    margin-right: 10px;
+                }
+
+                .main-search input {
+                    border: none;
+                    outline: none;
+                    width: 100%;
+                    font-size: 14px;
+                    color: #333;
+                }
+
+            .nav-right {
+                display: flex;
+                align-items: center;
+                gap: 15px;
+            }
+
+            .icon-actions {
+                display: flex;
+                gap: 18px;
+                color: white;
+                font-size: 18px;
+            }
+
+                .icon-actions i {
+                    cursor: pointer;
+                    transition: opacity 0.2s;
+                    position: relative;
+                }
+
+                    .icon-actions i:hover {
+                        opacity: 0.7;
+                    }
+
+            .user-profile-container {
+                position: relative;
+            }
+
+            .user-profile {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                padding: 5px 10px;
+                cursor: pointer;
+                border-radius: 8px;
+                transition: background 0.2s;
+            }
+
+                .user-profile:hover {
+                    background: rgba(255, 255, 255, 0.1);
+                }
+
+            .avatar-circle {
+                width: 42px;
+                height: 42px;
+                background: white;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: bold;
+                color: #3c70d3;
+                font-size: 14px;
+            }
+
+            .user-info {
+                color: white;
+                line-height: 1.2;
+            }
+
+            .user-name {
+                display: block;
+                font-weight: 600;
+                font-size: 14px;
+            }
+
+            .user-role {
+                font-size: 11px;
+                opacity: 0.8;
+            }
+
+            .profile-dropdown {
+                position: absolute;
+                top: calc(100% + 10px);
+                right: 0;
+                width: 180px;
+                background: var(--dropdown-bg);
+                border-radius: 8px;
+                box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+                border: 1px solid var(--border-color);
+                display: none;
+                flex-direction: column;
+                padding: 8px 0;
+                z-index: 1001;
+            }
+
+                .profile-dropdown.show {
+                    display: flex;
+                }
+
+            .dropdown-item {
+                padding: 10px 20px;
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                color: var(--text-dark);
+                text-decoration: none;
+                font-size: 14px;
+                transition: background 0.2s;
+            }
+
+                .dropdown-item:hover {
+                    background: #f5f8ff;
+                    color: #3c70d3;
+                }
+
+                .dropdown-item i {
+                    width: 16px;
+                    font-size: 14px;
+                }
+
+            .dropdown-divider {
+                height: 1px;
+                background: var(--border-color);
+                margin: 5px 0;
+            }
+
+            .logout-item {
+                color: #e74c3c;
+            }
+
+                .logout-item:hover {
+                    background: #fff5f5;
+                    color: #c0392b;
+                }
+
+            /* ---------- MAIN CONTENT AREA (dynamic margin to match sidebar) ---------- */
+            .main-content {
+                flex: 1;
+                transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                margin-left: var(--sidebar-width);
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+            }
+
+            /* When sidebar is collapsed, adjust main content margin */
+            body:has(.sidebar.collapsed) .main-content {
+                margin-left: var(--sidebar-collapsed-width);
+            }
+
+            /* Dashboard placeholder content to reflect integration */
+            /* .dashboard-preview {
+                  padding: 30px 35px;
+                } */
+
+            /* .welcome-card {
+                  background: white;
+                  border-radius: 20px;
+                  padding: 24px 28px;
+                  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.03);
+                  border: 1px solid #eef2f6;
+                }
+
+                .welcome-card h2 {
+                  font-size: 1.8rem;
+                  font-weight: 600;
+                  background: linear-gradient(135deg, #2b5f8a, #039886);
+                  -webkit-background-clip: text;
+                  background-clip: text;
+                  color: transparent;
+                  margin-bottom: 12px;
+                } */
+
+            .grid-stats {
+                display: flex;
+                gap: 24px;
+                margin-top: 30px;
+                flex-wrap: wrap;
+            }
+
+            .stat {
+                background: #f9fafc;
+                padding: 18px 22px;
+                border-radius: 20px;
+                flex: 1;
+                min-width: 160px;
+                border-left: 4px solid #3c70d3;
+            }
+
+                .stat i {
+                    font-size: 28px;
+                    color: #4A52AD;
+                }
+
+            /* responsive behavior for smaller screens */
+            @@media (max-width: 768px) {
+                .top-navbar {
+                    padding: 0 16px;
+                }
+
+                .nav-center {
+                    margin: 0 15px;
+                }
+
+                .user-info .user-role span {
+                    display: none;
+                }
+                /* .dashboard-preview {
+                    padding: 20px;
+                  } */
+            }
+    </style>
+</head>
+<body>
+    <div class="app-wrapper">
+        <!-- ================== SIDEBAR (exact original markup) ================== -->
+        <aside class="sidebar" id="sidebar">
+
+
+            <div class="sidebar-header">
+                <div class="sidebar-brand">
+                    <img src="~/images/group-10000029231.svg" alt="KSEB">
+                </div>
+                <div class="toggle-btn" onclick="toggleSidebar()">
+                    <i class="fa-solid fa-angle-left"></i>
+                </div>
+            </div>
+
+            <hr class="header-divider">
+
+            <div class="search-container">
+                <div class="search-box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="Find Application...">
+                </div>
+            </div>
+
+            <ul class="nav-list">
+                <!-- Main Dashboard -->
+                <li class="nav-item @(ViewData["ActiveMenu"]?.ToString() == "Dashboard" ? "active" : "")">
+                    <a asp-controller="Home"
+                       asp-action="Dashboard"
+                       class="nav-link">
+                        <div class="chevron-start"></div>
+                        <div class="menu-icon-box">
+                            <i class="fa-solid fa-house"></i>
+                        </div>
+                        <span>Main Dashboard</span>
+                    </a>
+                </li>
+
+                <!-- System Administration -->
+                <li class="nav-item @(ViewData["ActiveMenu"]?.ToString() == "SystemAdministration" ? "active open" : "")">
+                    <a class="nav-link" onclick="handleLinkClick(this, true)">
+                        <i class="fa-solid fa-chevron-right chevron-start"></i>
+                        <div class="menu-icon-box">
+                            <i class="fa-solid fa-gear"></i>
+                        </div>
+                        <span>System Administration</span>
+                    </a>
+                    <div class="submenu-container">
+                        <div class="vertical-line"></div>
+                        <ul class="submenu-list">
+                            @* <li class="submenu-item">Organization & Sites</li> *@
+                            <li class="submenu-item">
+                                <a asp-controller="SystemAdministrator"
+                                   asp-action="OrganisationSites">
+                                    Organization & Sites
+                                </a>
+                            </li>
+                            <li class="submenu-item">
+                                <a asp-controller="SystemAdministrator"
+                                   asp-action="People">
+                                    People
+                                </a>
+                            </li>
+                            <li class="submenu-item">
+                                <a asp-controller="SystemAdministrator"
+                                   asp-action="SecurityGroups">
+                                    Security Groups
+                                </a>
+                            </li>
+                            <li class="submenu-item">
+                                <a asp-controller="SystemAdministrator"
+                                   asp-action="WorkflowDesigner">
+                                    Workflow Designer
+                                </a>
+                            </li>
+                            <li class="submenu-item">
+                                <a asp-controller="SystemAdministrator"
+                                   asp-action="Escalations">
+                                    Escalations
+                                </a>
+                            </li>
+                            @* <li class="submenu-item">People</li> *@
+                            @* <li class="submenu-item">Security Groups</li> *@
+                            @* <li class="submenu-item">Workflow Designer</li> *@
+                            @* <li class="submenu-item">Escalations</li> *@
+                            <li class="submenu-item">
+                                <a asp-controller="SystemAdministrator"
+                                   asp-action="CommunicationTemplates">
+                                    Communication Templates
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <!-- Asset Management -->
+                @* <li class="nav-item"> *@
+                <li class="nav-item @(ViewData["ActiveMenu"]?.ToString() == "AssetManagement" ? "active open" : "")">
+                    <a class="nav-link" onclick="handleLinkClick(this, true)">
+                        <i class="fa-solid fa-chevron-right chevron-start"></i>
+                        <div class="menu-icon-box"><i class="fa-solid fa-layer-group"></i></div>
+                        <span>Asset Management</span>
+                    </a>
+                    <div class="submenu-container">
+                        <div class="vertical-line"></div>
+                        <ul class="submenu-list"> 
+                            <li class="submenu-item">
+                                <a asp-controller="AssetManagement"
+                                   asp-action="Assets">
+                                    Assets
+                                </a>
+                            </li>
+                            <li class="submenu-item">
+                                <a asp-controller="AssetManagement"
+                                   asp-action="Location">
+                                    Location
+                                </a>
+                            </li>
+                            
+                            <li class="submenu-item">
+                                <a asp-controller="AssetManagement"
+                                   asp-action="MeterGroups">
+                                    Meter Groups
+                                </a>
+                            </li>
+                            <li class="submenu-item">
+                                <a asp-controller="AssetManagement"
+                                   asp-action="ConditionMonitoring">
+                                    Condition Monitoring
+                                </a>
+                            </li>
+                            <li class="submenu-item">
+                                <a asp-controller="AssetManagement"
+                                   asp-action="FailureCodes">
+                                    Failure Codes
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <!-- Work Order Management -->
+                <li class="nav-item @(ViewData["ActiveMenu"]?.ToString() == "WorkOrderManagement" ? "active open" : "")">
+                    <a class="nav-link" onclick="handleLinkClick(this, true)">
+                        <i class="fa-solid fa-chevron-right chevron-start"></i>
+                        <div class="menu-icon-box"><i class="fa-solid fa-screwdriver-wrench"></i></div>
+                        <span>Work Order Management</span>
+                    </a>
+                    <div class="submenu-container">
+                        <div class="vertical-line"></div>
+                        <ul class="submenu-list">
+                            <li class="submenu-item">
+                                <a asp-controller="WorkOrderManagement"
+                                   asp-action="WorkOrderTracking">
+                                    Work Order Tracking
+                                </a>
+                            </li>
+                            <li class="submenu-item">Service Request</li>
+                            <li class="submenu-item">Labour Reporting</li>
+                            <li class="submenu-item">Quick Reporting</li>
+                        </ul>
+                    </div>
+                </li>
+
+                <!-- Planning & Scheduling -->
+                <li class="nav-item">
+                    <a class="nav-link" onclick="handleLinkClick(this, true)">
+                        <i class="fa-solid fa-chevron-right chevron-start"></i>
+                        <div class="menu-icon-box"><i class="fa-solid fa-calendar-check"></i></div>
+                        <span>Planning & Scheduling</span>
+                    </a>
+                    <div class="submenu-container">
+                        <div class="vertical-line"></div>
+                        <ul class="submenu-list">
+                            <li class="submenu-item">Job Plans</li>
+                            <li class="submenu-item">Safety Plans</li>
+                            <li class="submenu-item">Preventive Maintenance</li>
+                            <li class="submenu-item">Graphical Scheduling</li>
+                        </ul>
+                    </div>
+                </li>
+
+                <!-- Workforce Management -->
+                <li class="nav-item">
+                    <a class="nav-link" onclick="handleLinkClick(this, true)">
+                        <i class="fa-solid fa-chevron-right chevron-start"></i>
+                        <div class="menu-icon-box"><i class="fa-solid fa-users"></i></div>
+                        <span>Workforce Management</span>
+                    </a>
+                    <div class="submenu-container">
+                        <div class="vertical-line"></div>
+                        <ul class="submenu-list">
+                            <li class="submenu-item">Sunrise Meeting e-Register</li>
+                            <li class="submenu-item">Crews</li>
+                            <li class="submenu-item">Labour & Crafts</li>
+                            <li class="submenu-item">Shifts</li>
+                        </ul>
+                    </div>
+                </li>
+
+                <!-- Analytics -->
+                <li class="nav-item">
+                    <a class="nav-link" onclick="handleLinkClick(this, true)">
+                        <i class="fa-solid fa-chevron-right chevron-start"></i>
+                        <div class="menu-icon-box"><i class="fa-solid fa-chart-pie"></i></div>
+                        <span>Analytics</span>
+                    </a>
+                    <div class="submenu-container">
+                        <div class="vertical-line"></div>
+                        <ul class="submenu-list">
+                            <li class="submenu-item">KPI Manager</li>
+                            <li class="submenu-item">Report Administration</li>
+                            <li class="submenu-item">Ad-hoc Query Builder</li>
+                        </ul>
+                    </div>
+                </li>
+
+                <!-- Settings -->
+                <li class="nav-item">
+                    <a class="nav-link" onclick="handleLinkClick(this, false)">
+                        <i class="fa-solid fa-chevron-right chevron-start"></i>
+                        <div class="menu-icon-box">
+                            <i class="fa-solid fa-sliders"></i>
+                        </div>
+                        <span>Settings</span>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="sidebar-footer">
+                KSEB System v2.5.1<br>
+                KSEB IT Division © 2026
+            </div>
+        </aside>
+
+        <!-- ========== MAIN CONTENT AREA (Contains top navbar + page content) ========== -->
+        <div class="main-content">
+            <!-- Top Navbar (exact original markup, color/gradient unchanged) -->
+            <header class="top-navbar">
+                <div class="nav-left">
+                    <p class="greeting">Good Morning, Admin</p>
+                    <p class="sub-text">Here is what happening today.</p>
+                </div>
+
+                <div class="nav-center">
+                    <div class="main-search">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" placeholder="Search workers, routes, zones...">
+                    </div>
+                </div>
+
+                <div class="nav-right">
+                    <div class="icon-actions">
+                        <i class="fa-solid fa-arrows-rotate" title="Refresh Page"></i>
+                        <i class="fa-solid fa-paperclip" title="View Attachments"></i>
+                        <i class="fa-regular fa-bell" title="System Notifications"></i>
+                        <i class="fa-solid fa-gear" title="System Settings"></i>
+                        <i class="fa-regular fa-moon" title="Toggle Dark Mode"></i>
+                    </div>
+
+                    <div class="user-profile-container">
+                        <div class="user-profile" id="profileTrigger">
+                            <div class="avatar-circle">AM</div>
+                            <div class="user-info">
+                                <span class="user-name">Admin Manager</span>
+                                <span class="user-role">Administrator <i class="fa-solid fa-chevron-down" style="font-size: 10px; margin-left: 4px;"></i></span>
+                            </div>
+                        </div>
+
+                        <div class="profile-dropdown" id="profileMenu">
+                            <a href="#" class="dropdown-item">
+                                <i class="fa-solid fa-user-gear"></i>
+                                <span>My Profile</span>
+                            </a>
+                            <a href="#" class="dropdown-item">
+                                <i class="fa-solid fa-sliders"></i>
+                                <span>Account Settings</span>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="/Auth/login" class="dropdown-item logout-item">
+                                <i class="fa-solid fa-right-from-bracket"></i>
+                                <span>Logout</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="container">
+                <main role="main" class="pb-3">
+                    @RenderBody()
+                </main>
+            </div>
+        </div>
+    </div>
+
+    <script>
+            // ---------- SIDEBAR LOGIC (original, unaltered) ----------
+            const sidebar = document.getElementById('sidebar');
+
+            function toggleSidebar() {
+              sidebar.classList.toggle('collapsed');
+              if (sidebar.classList.contains('collapsed')) {
+                closeAllItems();
+              }
+            }
+
+            function handleLinkClick(el, hasSubmenu) {
+              const parent = el.closest('.nav-item');
+              if (sidebar.classList.contains('collapsed')) {
+                sidebar.classList.remove('collapsed');
+              }
+              const isOpen = parent.classList.contains('open');
+              closeAllItems();
+              if (hasSubmenu) {
+                if (!isOpen) {
+                  parent.classList.add('open');
+                  parent.classList.add('active');
+                } else {
+                  parent.classList.remove('open');
+                  parent.classList.remove('active');
+                }
+              } else {
+                parent.classList.add('active');
+              }
+            }
+
+            function closeAllItems() {
+              document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('open');
+                item.classList.remove('active');
+              });
+            }
+
+            // (optional) ensure active state on initial load: main dashboard is active already due to HTML 'active' class.
+            // Also handle submenu item clicks with alert to demonstrate interaction (no style change required)
+            // document.querySelectorAll('.submenu-item').forEach(item => {
+              // item.addEventListener('click', function(e) {
+                // e.stopPropagation();
+                // Just to show that menu selection works, you can replace with real routing later.
+                // alert(`Selected: ${this.innerText}`);
+              // });
+            // });
+
+            // ---------- TOP NAVBAR DROPDOWN LOGIC (unchanged, original) ----------
+            const profileTrigger = document.getElementById('profileTrigger');
+            const profileMenu = document.getElementById('profileMenu');
+
+            if (profileTrigger && profileMenu) {
+              profileTrigger.addEventListener('click', (e) => {
+                e.stopPropagation();
+                profileMenu.classList.toggle('show');
+              });
+
+              document.addEventListener('click', () => {
+                if (profileMenu.classList.contains('show')) {
+                  profileMenu.classList.remove('show');
+                }
+              });
+
+              profileMenu.addEventListener('click', (e) => {
+                e.stopPropagation();
+              });
+            }
+
+            // Additional small interactive behavior: refresh/notification placeholder just to keep lively, but no visual style changes
+            const actionIcons = document.querySelectorAll('.icon-actions i');
+            actionIcons.forEach(icon => {
+              icon.addEventListener('click', (e) => {
+                const title = icon.getAttribute('title') || 'action';
+                console.log(`${title} clicked`);
+                if(title === 'Refresh Page') {
+                  alert("Refresh simulated (page reload would happen here)");
+                } else if(title === 'System Notifications') {
+                  alert("🔔 You have 3 unread notifications");
+                }
+              });
+            });
+    </script>
+    @* <script src="~/js/site.js" asp-append-version="true"></script> *@
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

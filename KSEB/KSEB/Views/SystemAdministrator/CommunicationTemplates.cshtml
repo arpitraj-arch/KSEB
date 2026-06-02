@@ -1,0 +1,918 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+
+    ViewData["Title"] = "Communication Template";
+}
+@{
+    ViewData["ActiveMenu"] = "SystemAdministration";
+}
+
+
+    <title>Communication Templates – System Administration</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <style>
+            *, *::before, *::after {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+
+            :root {
+                --bg: #f5f6fa;
+                --surface: #ffffff;
+                --border: #e2e5ed;
+                --border-light: #eef0f5;
+                --text-primary: #1a1d27;
+                --text-secondary: #6b7280;
+                --text-muted: #9ca3af;
+                --accent: #111827;
+                --blue: #3b6ff1;
+                --blue-dark: #2c5ce0;
+                --blue-btn: #3b63e8;
+                --green: #22c55e;
+                --green-bg: #f0fdf4;
+                --green-border: #bbf7d0;
+                --sms-bg: #f3f0ff;
+                --sms-color: #7c3aed;
+                --sms-border: #ddd6fe;
+                --push-bg: #eff6ff;
+                --push-color: #2563eb;
+                --push-border: #bfdbfe;
+                --email-bg: #fdf4ff;
+                --email-color: #9333ea;
+                --email-border: #e9d5ff;
+                --preview-bg: #f8f9fc;
+                --preview-border: #e8eaf0;
+                --icon-bg: #eef2ff;
+                --icon-color: #6366f1;
+                --red: #ef4444;
+                --red-bg: #fef2f2;
+                --shadow-sm: 0 1px 4px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
+                --shadow-card: 0 2px 12px rgba(0,0,0,.07);
+                --shadow-hover: 0 6px 24px rgba(0,0,0,.11);
+                --radius: 14px;
+                --radius-sm: 8px;
+                --radius-xs: 6px;
+                --font: 'DM Sans', sans-serif;
+                --mono: 'DM Mono', monospace;
+            }
+
+            body {
+                font-family: var(--font);
+                background: var(--bg);
+                color: var(--text-primary);
+                min-height: 100vh;
+                font-size: 13.5px;
+                line-height: 1.5;
+            }
+
+            /* ── TOPBAR ── */
+            .topbar {
+                background: var(--surface);
+                border-bottom: 1.5px solid var(--border);
+                padding: 13px 28px 16px;
+                position: sticky;
+                top: 0;
+                z-index: 30;
+            }
+
+            .breadcrumb {
+                border-bottom: 1px solid var(--border);
+                font-size: 12.5px;
+                color: var(--text-primary);
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                flex-wrap: wrap;
+                margin-bottom: 12px;
+            }
+
+                .breadcrumb a {
+                    color: var(--text-muted);
+                    text-decoration: none;
+                }
+
+                    .breadcrumb a:hover {
+                        color: var(--text-secondary);
+                    }
+
+                .breadcrumb .sep {
+                    font-size: 10px;
+                }
+
+                .breadcrumb .current {
+                    color: var(--text-secondary);
+                    font-weight: 600;
+                }
+
+            .header {
+                display: flex;
+                align-items: flex-end;
+                justify-content: space-between;
+                gap: 12px;
+                flex-wrap: wrap;
+            }
+
+            .header-titles h1 {
+                font-size: 22px;
+                font-weight: 700;
+                letter-spacing: -.5px;
+                line-height: 1.2;
+            }
+
+            .header-titles p {
+                font-size: 12px;
+                color: var(--text-muted);
+                margin-top: 3px;
+            }
+
+            .new-btn {
+                display: flex;
+                align-items: center;
+                gap: 7px;
+                padding: 9px 18px;
+                background: var(--accent);
+                color: #fff;
+                border: none;
+                border-radius: var(--radius-sm);
+                font-family: var(--font);
+                font-size: 13px;
+                font-weight: 600;
+                cursor: pointer;
+                white-space: nowrap;
+                transition: opacity .15s, transform .12s;
+            }
+
+                .new-btn:hover {
+                    opacity: .85;
+                    transform: translateY(-1px);
+                }
+
+                .new-btn svg {
+                    width: 14px;
+                    height: 14px;
+                }
+
+            /* ── FILTER BAR ── */
+            .filter-bar {
+                background: var(--surface);
+                border-bottom: 1.5px solid var(--border);
+                padding: 10px 28px;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                flex-wrap: wrap;
+            }
+
+            .filter-label {
+                font-size: 13px;
+                font-weight: 600;
+                color: var(--text-secondary);
+                margin-right: 4px;
+                white-space: nowrap;
+            }
+
+            .filter-btn {
+                padding: 6px 16px;
+                border: 1.5px solid var(--border);
+                border-radius: 20px;
+                background: var(--surface);
+                font-family: var(--font);
+                font-size: 12.5px;
+                font-weight: 500;
+                color: var(--text-secondary);
+                cursor: pointer;
+                transition: all .15s;
+                white-space: nowrap;
+            }
+
+                .filter-btn:hover {
+                    border-color: var(--blue);
+                    color: var(--blue);
+                }
+
+                .filter-btn.active {
+                    background: var(--blue);
+                    color: #fff;
+                    border-color: var(--blue);
+                    font-weight: 600;
+                }
+
+            /* ── PAGE ── */
+            .page {
+                padding: 24px 28px 48px;
+            }
+
+            /* ── GRID ── */
+            .cards-grid {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+
+            /* ── TEMPLATE CARD ── */
+            .tpl-card {
+                background: var(--surface);
+                border: 1.5px solid var(--border);
+                border-radius: var(--radius);
+                box-shadow: var(--shadow-card);
+                display: flex;
+                flex-direction: column;
+                transition: box-shadow .2s, transform .2s, border-color .2s;
+                animation: fadeUp .35s ease both;
+                overflow: hidden;
+            }
+
+                .tpl-card:hover {
+                    box-shadow: var(--shadow-hover);
+                    transform: translateY(-3px);
+                    border-color: #d0d5e8;
+                }
+
+            @@keyframes fadeUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(10px);
+                }
+
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            .tpl-card:nth-child(1) {
+                animation-delay: .05s;
+            }
+
+            .tpl-card:nth-child(2) {
+                animation-delay: .10s;
+            }
+
+            .tpl-card:nth-child(3) {
+                animation-delay: .15s;
+            }
+
+            .tpl-card:nth-child(4) {
+                animation-delay: .20s;
+            }
+
+            .tpl-card:nth-child(5) {
+                animation-delay: .25s;
+            }
+
+            .tpl-card:nth-child(6) {
+                animation-delay: .30s;
+            }
+
+            /* Card top */
+            .card-top {
+                padding: 16px 18px 12px;
+                display: flex;
+                align-items: flex-start;
+                justify-content: space-between;
+                gap: 12px;
+            }
+
+            .card-top-left {
+                display: flex;
+                align-items: flex-start;
+                gap: 13px;
+                flex: 1;
+                min-width: 0;
+            }
+
+            .tpl-icon {
+                width: 40px;
+                height: 40px;
+                border-radius: 10px;
+                background: var(--icon-bg);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-shrink: 0;
+            }
+
+                .tpl-icon svg {
+                    width: 19px;
+                    height: 19px;
+                    color: var(--icon-color);
+                }
+
+            .tpl-info {
+                flex: 1;
+                min-width: 0;
+            }
+
+            .tpl-name {
+                font-size: 15px;
+                font-weight: 700;
+                color: var(--text-primary);
+                letter-spacing: -.3px;
+                line-height: 1.25;
+                margin-bottom: 3px;
+            }
+
+            .tpl-desc {
+                font-size: 12px;
+                color: var(--text-muted);
+                line-height: 1.4;
+            }
+
+            .status-badge {
+                display: inline-flex;
+                align-items: center;
+                gap: 5px;
+                padding: 3px 11px;
+                border-radius: 20px;
+                font-size: 12px;
+                font-weight: 600;
+                white-space: nowrap;
+                flex-shrink: 0;
+            }
+
+                .status-badge.active {
+                    background: var(--green-bg);
+                    color: #16a34a;
+                    border: 1.5px solid var(--green-border);
+                }
+
+            .status-dot {
+                width: 6px;
+                height: 6px;
+                border-radius: 50%;
+                background: currentColor;
+                animation: pulse 2s infinite;
+            }
+            @@keyframes pulse {
+                0%, 100% {
+                    opacity: 1
+                }
+
+                50% {
+                    opacity: .4
+                }
+            }
+
+            /* Meta row */
+            .card-meta {
+                padding: 0 18px 12px;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                flex-wrap: wrap;
+            }
+
+            .channel-tag {
+                display: inline-flex;
+                align-items: center;
+                padding: 3px 10px;
+                border-radius: 5px;
+                font-size: 11.5px;
+                font-weight: 700;
+                letter-spacing: .1px;
+            }
+
+                .channel-tag.sms {
+                    background: var(--sms-bg);
+                    color: var(--sms-color);
+                    border: 1px solid var(--sms-border);
+                }
+
+                .channel-tag.push {
+                    background: var(--push-bg);
+                    color: var(--push-color);
+                    border: 1px solid var(--push-border);
+                }
+
+                .channel-tag.email {
+                    background: var(--email-bg);
+                    color: var(--email-color);
+                    border: 1px solid var(--email-border);
+                }
+
+            .meta-sep {
+                width: 4px;
+                height: 4px;
+                border-radius: 50%;
+                background: var(--text-muted);
+                flex-shrink: 0;
+            }
+
+            .meta-text {
+                font-size: 12.5px;
+                color: var(--text-secondary);
+            }
+
+            /* Preview box */
+            .preview-box {
+                margin: 0 18px 14px;
+                background: var(--preview-bg);
+                border: 1.5px solid var(--preview-border);
+                border-radius: var(--radius-sm);
+                padding: 12px 14px;
+            }
+
+            .preview-label {
+                font-size: 11px;
+                font-weight: 600;
+                color: var(--text-muted);
+                text-transform: uppercase;
+                letter-spacing: .5px;
+                margin-bottom: 6px;
+            }
+
+            .preview-subject {
+                font-size: 13px;
+                font-weight: 700;
+                color: var(--text-primary);
+                margin-bottom: 6px;
+            }
+
+            .preview-body {
+                font-size: 12.5px;
+                color: var(--text-secondary);
+                line-height: 1.55;
+                display: -webkit-box;
+                -webkit-line-clamp: 3;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+            }
+
+            /* Card footer */
+            .card-footer {
+                padding: 12px 18px 16px;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                margin-top: auto;
+            }
+
+            .view-btn {
+                flex: 1;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                padding: 9px 0;
+                background: var(--blue-btn);
+                color: #fff;
+                border: none;
+                border-radius: var(--radius-sm);
+                font-family: var(--font);
+                font-size: 13px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: background .15s, transform .12s;
+            }
+
+                .view-btn:hover {
+                    background: var(--blue-dark);
+                    transform: translateY(-1px);
+                }
+
+                .view-btn svg {
+                    width: 14px;
+                    height: 14px;
+                }
+
+            .icon-btn {
+                width: 36px;
+                height: 36px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border: 1.5px solid var(--border);
+                border-radius: var(--radius-xs);
+                background: var(--surface);
+                cursor: pointer;
+                flex-shrink: 0;
+                transition: all .15s;
+            }
+
+                .icon-btn svg {
+                    width: 14px;
+                    height: 14px;
+                }
+
+                .icon-btn.copy {
+                    color: var(--text-secondary);
+                }
+
+                    .icon-btn.copy:hover {
+                        border-color: var(--blue);
+                        color: var(--blue);
+                    }
+
+                .icon-btn.del {
+                    color: var(--red);
+                    border-color: #fecaca;
+                    background: var(--red-bg);
+                }
+
+                    .icon-btn.del:hover {
+                        background: #fee2e2;
+                        border-color: var(--red);
+                    }
+
+            /* ── RESPONSIVE ── */
+            @@media (max-width: 860px) {
+                .cards-grid {
+                    grid-template-columns: 1fr;
+                }
+
+                .topbar, .filter-bar, .page {
+                    padding-left: 18px;
+                    padding-right: 18px;
+                }
+            }
+            @@media (max-width: 560px) {
+                .topbar, .filter-bar, .page {
+                    padding-left: 14px;
+                    padding-right: 14px;
+                }
+
+                .header-titles h1 {
+                    font-size: 18px;
+                }
+
+                .new-btn span {
+                    display: none;
+                }
+
+                .new-btn {
+                    padding: 9px 12px;
+                }
+
+                .filter-bar {
+                    gap: 6px;
+                }
+
+                .filter-btn {
+                    padding: 5px 12px;
+                    font-size: 12px;
+                }
+
+                .tpl-name {
+                    font-size: 14px;
+                }
+
+                .card-top, .card-meta, .card-footer {
+                    padding-left: 14px;
+                    padding-right: 14px;
+                }
+
+                .preview-box {
+                    margin-left: 14px;
+                    margin-right: 14px;
+                }
+            }
+    </style>
+
+
+    <!-- TOPBAR -->
+    <div class="topbar">
+        <div class="breadcrumb">
+            <a href="#">System Administration</a>
+            <span class="sep">›</span>
+            <span class="current">Communication Templates</span>
+        </div>
+        <div class="header">
+            <div class="header-titles">
+                <h1>Communication Templates</h1>
+                <p>System Administration</p>
+            </div>
+            <button class="new-btn">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.4">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                </svg>
+                <span> New Template</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- FILTER BAR -->
+    <div class="filter-bar">
+        <span class="filter-label">Filter by:</span>
+        <button class="filter-btn active">All</button>
+        <button class="filter-btn">Work Management</button>
+        <button class="filter-btn">Asset Management</button>
+        <button class="filter-btn">Preventive Maintenance</button>
+        <button class="filter-btn">Safety</button>
+        <button class="filter-btn">Customer Service</button>
+    </div>
+
+    <!-- CARDS GRID -->
+    <div class="page">
+        <div class="cards-grid">
+
+            <!-- CARD 1 -->
+            <div class="tpl-card">
+                <div class="card-top">
+                    <div class="card-top-left">
+                        <div class="tpl-icon">
+                            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                            </svg>
+                        </div>
+                        <div class="tpl-info">
+                            <div class="tpl-name">Maintenance Reminder Alert</div>
+                            <div class="tpl-desc">Alert sent before scheduled maintenance tasks</div>
+                        </div>
+                    </div>
+                    <span class="status-badge active"><span class="status-dot"></span>Active</span>
+                </div>
+                <div class="card-meta">
+                    <span class="channel-tag sms">SMS</span>
+                    <span class="meta-sep"></span>
+                    <span class="meta-text">Maintenance</span>
+                    <span class="meta-sep"></span>
+                    <span class="meta-text">512 sent</span>
+                </div>
+                <div class="preview-box">
+                    <div class="preview-label">Preview:</div>
+                    <div class="preview-subject">Upcoming Maintenance Reminder for &#123;&#123;EQUIPMENT_ID&#125;&#125;</div>
+                    <div class="preview-body">Hello Rajesh Kumar, this is a reminder that maintenance for equipment TRF-1102 is due on 15 May 2026. Please prepare the necessary tools and materials.</div>
+                </div>
+                <div class="card-footer">
+                    <button class="view-btn">
+                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
+                        View &amp; Edit
+                    </button>
+                    <button class="icon-btn copy" title="Duplicate">
+                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                        </svg>
+                    </button>
+                    <button class="icon-btn del" title="Delete">
+                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- CARD 2 -->
+            <div class="tpl-card">
+                <div class="card-top">
+                    <div class="card-top-left">
+                        <div class="tpl-icon">
+                            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                            </svg>
+                        </div>
+                        <div class="tpl-info">
+                            <div class="tpl-name">Work Order Completion Confirmation</div>
+                            <div class="tpl-desc">Notification sent when a work order is marked complete</div>
+                        </div>
+                    </div>
+                    <span class="status-badge active"><span class="status-dot"></span>Active</span>
+                </div>
+                <div class="card-meta">
+                    <span class="channel-tag push">Push Notification</span>
+                    <span class="meta-sep"></span>
+                    <span class="meta-text">Work Management</span>
+                    <span class="meta-sep"></span>
+                    <span class="meta-text">178 sent</span>
+                </div>
+                <div class="preview-box">
+                    <div class="preview-label">Preview:</div>
+                    <div class="preview-subject">Work Order &#123;&#123;WO_ID&#125;&#125; Successfully Completed</div>
+                    <div class="preview-body">Dear Anil Menon, Work order WO-45821 has been completed by Suresh Babu on 12 May 2026. Please review the completion report at your earliest convenience.</div>
+                </div>
+                <div class="card-footer">
+                    <button class="view-btn">
+                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
+                        View &amp; Edit
+                    </button>
+                    <button class="icon-btn copy" title="Duplicate">
+                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                        </svg>
+                    </button>
+                    <button class="icon-btn del" title="Delete">
+                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- CARD 3 -->
+            <div class="tpl-card">
+                <div class="card-top">
+                    <div class="card-top-left">
+                        <div class="tpl-icon">
+                            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                            </svg>
+                        </div>
+                        <div class="tpl-info">
+                            <div class="tpl-name">Parts Request Submission</div>
+                            <div class="tpl-desc">Notification sent when parts are requested for a job</div>
+                        </div>
+                    </div>
+                    <span class="status-badge active"><span class="status-dot"></span>Active</span>
+                </div>
+                <div class="card-meta">
+                    <span class="channel-tag email">Email</span>
+                    <span class="meta-sep"></span>
+                    <span class="meta-text">Inventory Management</span>
+                    <span class="meta-sep"></span>
+                    <span class="meta-text">89 sent</span>
+                </div>
+                <div class="preview-box">
+                    <div class="preview-label">Preview:</div>
+                    <div class="preview-subject">Parts Request for Work Order &#123;&#123;WO_ID&#125;&#125;</div>
+                    <div class="preview-body">Hi Prakash Nair, Parts have been requested for work order WO-67214. Requested parts: Insulator Kit, 11kV Fuse Unit, Safety Gloves. Please process the request promptly.</div>
+                </div>
+                <div class="card-footer">
+                    <button class="view-btn">
+                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
+                        View &amp; Edit
+                    </button>
+                    <button class="icon-btn copy" title="Duplicate">
+                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                        </svg>
+                    </button>
+                    <button class="icon-btn del" title="Delete">
+                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- CARD 4 -->
+            <div class="tpl-card">
+                <div class="card-top">
+                    <div class="card-top-left">
+                        <div class="tpl-icon">
+                            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                            </svg>
+                        </div>
+                        <div class="tpl-info">
+                            <div class="tpl-name">Overdue Work Order Alert</div>
+                            <div class="tpl-desc">Sent when a work order passes its target completion date</div>
+                        </div>
+                    </div>
+                    <span class="status-badge active"><span class="status-dot"></span>Active</span>
+                </div>
+                <div class="card-meta">
+                    <span class="channel-tag email">Email</span>
+                    <span class="meta-sep"></span>
+                    <span class="meta-text">Work Management</span>
+                    <span class="meta-sep"></span>
+                    <span class="meta-text">46 sent</span>
+                </div>
+                <div class="preview-box">
+                    <div class="preview-label">Preview:</div>
+                    <div class="preview-subject">Alert: Work Order &#123;&#123;WO_ID&#125;&#125; is Overdue</div>
+                    <div class="preview-body">Dear Ramesh Pillai, Work order WO-39018 has not been completed by the target date 10 May 2026. Immediate attention is required to avoid delays.</div>
+                </div>
+                <div class="card-footer">
+                    <button class="view-btn">
+                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
+                        View &amp; Edit
+                    </button>
+                    <button class="icon-btn copy" title="Duplicate">
+                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                        </svg>
+                    </button>
+                    <button class="icon-btn del" title="Delete">
+                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- CARD 5 (partial visible in screenshot) -->
+            <div class="tpl-card">
+                <div class="card-top">
+                    <div class="card-top-left">
+                        <div class="tpl-icon">
+                            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                            </svg>
+                        </div>
+                        <div class="tpl-info">
+                            <div class="tpl-name">Maintenance Reminder Alert</div>
+                            <div class="tpl-desc">Alert sent before scheduled maintenance tasks</div>
+                        </div>
+                    </div>
+                    <span class="status-badge active"><span class="status-dot"></span>Active</span>
+                </div>
+                <div class="card-meta">
+                    <span class="channel-tag sms">SMS</span>
+                    <span class="meta-sep"></span>
+                    <span class="meta-text">Safety</span>
+                    <span class="meta-sep"></span>
+                    <span class="meta-text">203 sent</span>
+                </div>
+                <div class="preview-box">
+                    <div class="preview-label">Preview:</div>
+                    <div class="preview-subject">Safety Inspection Due for &#123;&#123;ASSET_ID&#125;&#125;</div>
+                    <div class="preview-body">Hello team, a mandatory safety inspection is due for asset HV-2204 on 20 May 2026. Ensure all safety checklists are completed before the inspection date.</div>
+                </div>
+                <div class="card-footer">
+                    <button class="view-btn">
+                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
+                        View &amp; Edit
+                    </button>
+                    <button class="icon-btn copy" title="Duplicate">
+                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                        </svg>
+                    </button>
+                    <button class="icon-btn del" title="Delete">
+                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- CARD 6 -->
+            <div class="tpl-card">
+                <div class="card-top">
+                    <div class="card-top-left">
+                        <div class="tpl-icon">
+                            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                            </svg>
+                        </div>
+                        <div class="tpl-info">
+                            <div class="tpl-name">Work Order Completion Confirmation</div>
+                            <div class="tpl-desc">Notification sent when a work order is marked complete</div>
+                        </div>
+                    </div>
+                    <span class="status-badge active"><span class="status-dot"></span>Active</span>
+                </div>
+                <div class="card-meta">
+                    <span class="channel-tag push">Push Notification</span>
+                    <span class="meta-sep"></span>
+                    <span class="meta-text">Customer Service</span>
+                    <span class="meta-sep"></span>
+                    <span class="meta-text">321 sent</span>
+                </div>
+                <div class="preview-box">
+                    <div class="preview-label">Preview:</div>
+                    <div class="preview-subject">Your Service Request &#123;&#123;SR_ID&#125;&#125; is Resolved</div>
+                    <div class="preview-body">Dear Customer, your service request SR-78432 has been resolved. Our technician completed the work on 13 May 2026. Thank you for your patience.</div>
+                </div>
+                <div class="card-footer">
+                    <button class="view-btn">
+                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
+                        View &amp; Edit
+                    </button>
+                    <button class="icon-btn copy" title="Duplicate">
+                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                        </svg>
+                    </button>
+                    <button class="icon-btn del" title="Delete">
+                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+        </div><!-- /cards-grid -->
+    </div><!-- /page -->
+
+    <script>
+            // Filter tabs interaction
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+              btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+              });
+            });
+    </script>
+
+

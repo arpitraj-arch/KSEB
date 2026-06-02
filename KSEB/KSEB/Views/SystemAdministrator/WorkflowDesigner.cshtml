@@ -1,0 +1,913 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+
+    ViewData["Title"] = "WorkFlow Designer";
+}
+@{
+    ViewData["ActiveMenu"] = "SystemAdministration";
+}
+
+    <title>Workflow Designer – System Administration</title>
+    <style>
+            @@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400;500&display=swap');
+
+            *, *::before, *::after {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+
+            :root {
+                --bg: #f5f6fa;
+                --surface: #ffffff;
+                --border: #e4e7ef;
+                --text-primary: #1a1d2e;
+                --text-secondary: #6b7280;
+                --text-muted: #9ca3af;
+                --accent: #2d3a8c;
+                --accent-light: #eef0fb;
+                --green: #16a34a;
+                --green-bg: #dcfce7;
+                --orange: #ea580c;
+                --teal: #0d9488;
+                --blue-btn: #1e3a8a;
+            }
+
+            body {
+                font-family: 'DM Sans', sans-serif;
+                background: var(--bg);
+                color: var(--text-primary);
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+            }
+
+            /* ── Topbar ── */
+            .topbar {
+                background: var(--bg);
+                border-bottom: 1px solid var(--border);
+                height: 44px;
+                display: flex;
+                align-items: center;
+                padding: 0 24px;
+                font-size: 12.5px;
+                color: var(--text-secondary);
+                gap: 5px;
+                flex-shrink: 0;
+                margin-bottom: 4px;
+            }
+
+                .topbar span {
+                    color: var(--text-secondary);
+                }
+
+                .topbar .sep {
+                    color: var(--text-muted);
+                }
+
+                .topbar strong {
+                    color: var(--text-primary);
+                    font-weight: 600;
+                }
+
+            /* ── Page header row ── */
+            .page-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 0 24px 16px;
+                flex-wrap: wrap;
+                gap: 12px;
+            }
+
+            .page-header-left h1 {
+                font-size: 22px;
+                font-weight: 700;
+                letter-spacing: -0.3px;
+                color: var(--text-primary);
+                line-height: 1.2;
+            }
+
+            .page-header-left p {
+                font-size: 12px;
+                color: var(--text-secondary);
+                margin-top: 2px;
+            }
+
+            .page-header-right {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+
+            .new-btn {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                padding: 9px 18px;
+                background: var(--text-primary);
+                color: #fff;
+                border: none;
+                border-radius: 8px;
+                font-family: 'DM Sans', sans-serif;
+                font-size: 13px;
+                font-weight: 500;
+                cursor: pointer;
+                white-space: nowrap;
+                transition: opacity .15s;
+            }
+
+                .new-btn:hover {
+                    opacity: .85;
+                }
+
+            .icon-btn {
+                width: 36px;
+                height: 36px;
+                border: 1px solid var(--border);
+                border-radius: 8px;
+                background: var(--surface);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                color: var(--text-secondary);
+                transition: background .15s;
+            }
+
+                .icon-btn:hover {
+                    background: var(--accent-light);
+                }
+
+            /* ── Toolbar ── */
+            .toolbar {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 0 24px 16px;
+                flex-wrap: wrap;
+            }
+
+            .search-wrap {
+                position: relative;
+                flex: 1;
+                min-width: 200px;
+                max-width: 520px;
+            }
+
+                .search-wrap svg {
+                    position: absolute;
+                    left: 11px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    color: var(--text-muted);
+                    pointer-events: none;
+                }
+
+                .search-wrap input {
+                    width: 100%;
+                    padding: 8px 12px 8px 34px;
+                    border: 1px solid var(--border);
+                    border-radius: 8px;
+                    font-family: 'DM Sans', sans-serif;
+                    font-size: 13px;
+                    background: var(--surface);
+                    color: var(--text-primary);
+                    outline: none;
+                    transition: border-color .15s;
+                }
+
+                    .search-wrap input:focus {
+                        border-color: var(--accent);
+                    }
+
+                    .search-wrap input::placeholder {
+                        color: var(--text-muted);
+                    }
+
+            .toolbar-right {
+                margin-left: auto;
+                display: flex;
+                gap: 8px;
+                flex-wrap: wrap;
+            }
+
+            .dropdown-wrap {
+                position: relative;
+            }
+
+            .dropdown-btn {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                padding: 7px 12px;
+                border: 1px solid var(--border);
+                border-radius: 8px;
+                background: var(--surface);
+                font-family: 'DM Sans', sans-serif;
+                font-size: 13px;
+                color: var(--text-primary);
+                cursor: pointer;
+                min-width: 110px;
+                justify-content: space-between;
+                transition: border-color .15s;
+                white-space: nowrap;
+            }
+
+                .dropdown-btn svg {
+                    color: var(--text-muted);
+                    flex-shrink: 0;
+                }
+
+            .dropdown-menu {
+                position: absolute;
+                top: calc(100% + 4px);
+                left: 0;
+                min-width: 140px;
+                background: #fff;
+                border: 1px solid var(--border);
+                border-radius: 10px;
+                box-shadow: 0 8px 24px rgba(0,0,0,.10);
+                z-index: 200;
+                overflow: hidden;
+                display: none;
+            }
+
+                .dropdown-menu.open {
+                    display: block;
+                }
+
+                .dropdown-menu li {
+                    list-style: none;
+                    padding: 9px 14px;
+                    font-size: 13px;
+                    cursor: pointer;
+                    color: var(--text-primary);
+                    transition: background .12s;
+                }
+
+                    .dropdown-menu li:hover {
+                        background: var(--accent-light);
+                    }
+
+                    .dropdown-menu li.selected {
+                        background: var(--accent);
+                        color: #fff;
+                    }
+
+            /* ── Cards grid ── */
+            .cards-grid {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 16px;
+                padding: 0 24px;
+                flex: 1;
+            }
+
+            /* ── Workflow card ── */
+            .card {
+                background: var(--surface);
+                border: 1px solid var(--border);
+                border-radius: 14px;
+                padding: 18px 20px 16px;
+                display: flex;
+                flex-direction: column;
+                gap: 0;
+                box-shadow: 0 1px 4px rgba(0,0,0,.04);
+            }
+
+            /* card top row */
+            .card-top {
+                display: flex;
+                align-items: flex-start;
+                gap: 12px;
+                margin-bottom: 16px;
+            }
+
+            .avatar {
+                width: 44px;
+                height: 44px;
+                border-radius: 50%;
+                background: #10b981;
+                color: #fff;
+                font-size: 13px;
+                font-weight: 700;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-shrink: 0;
+                letter-spacing: .5px;
+            }
+
+            .card-title-block {
+                flex: 1;
+                min-width: 0;
+            }
+
+            .card-title-row {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 8px;
+            }
+
+            .card-title {
+                font-size: 15px;
+                font-weight: 700;
+                color: var(--text-primary);
+                line-height: 1.25;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .card-subtitle {
+                font-size: 12px;
+                color: var(--text-secondary);
+                margin-top: 3px;
+            }
+
+            .badge-active {
+                display: inline-flex;
+                align-items: center;
+                padding: 3px 11px;
+                background: var(--green-bg);
+                color: var(--green);
+                border-radius: 20px;
+                font-size: 12px;
+                font-weight: 500;
+                white-space: nowrap;
+                flex-shrink: 0;
+            }
+
+            /* stats row */
+            .stats-row {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 0;
+                border-top: 1px solid var(--border);
+                border-bottom: 1px solid var(--border);
+                margin-bottom: 14px;
+            }
+
+            .stat-cell {
+                padding: 12px 10px;
+                display: flex;
+                flex-direction: column;
+                gap: 4px;
+                border-right: 1px solid var(--border);
+            }
+
+                .stat-cell:last-child {
+                    border-right: none;
+                }
+
+            .stat-label {
+                font-size: 11px;
+                color: var(--text-secondary);
+                font-weight: 500;
+                white-space: nowrap;
+            }
+
+            .stat-value {
+                font-size: 20px;
+                font-weight: 700;
+                color: var(--text-primary);
+                line-height: 1.1;
+            }
+
+                .stat-value.orange {
+                    color: var(--orange);
+                }
+
+                .stat-value.teal {
+                    color: var(--teal);
+                }
+
+                .stat-value.blue {
+                    color: #1e40af;
+                }
+
+            /* progress row */
+            .progress-row {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 12px;
+                margin-bottom: 6px;
+            }
+
+            .progress-label {
+                font-size: 12px;
+                color: var(--text-secondary);
+                white-space: nowrap;
+            }
+
+            .progress-pct {
+                font-size: 13px;
+                font-weight: 600;
+                color: var(--text-primary);
+                white-space: nowrap;
+            }
+
+            .progress-bar-wrap {
+                width: 100%;
+                height: 6px;
+                background: #e9ecef;
+                border-radius: 99px;
+                margin-bottom: 14px;
+                overflow: hidden;
+            }
+
+            .progress-bar-fill {
+                height: 100%;
+                border-radius: 99px;
+                background: linear-gradient(90deg, #16a34a 0%, #22c55e 100%);
+                transition: width .4s ease;
+            }
+
+            /* card actions */
+            .card-actions {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-top: 2px;
+            }
+
+            .view-details-btn {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                padding: 7px 14px;
+                border: 1px solid var(--border);
+                border-radius: 8px;
+                background: var(--surface);
+                font-family: 'DM Sans', sans-serif;
+                font-size: 13px;
+                color: var(--text-secondary);
+                cursor: pointer;
+                transition: background .12s, border-color .12s;
+            }
+
+                .view-details-btn:hover {
+                    background: var(--accent-light);
+                    border-color: var(--accent);
+                    color: var(--accent);
+                }
+
+            .open-workflow-btn {
+                display: inline-flex;
+                align-items: center;
+                gap: 7px;
+                padding: 8px 18px;
+                background: var(--blue-btn);
+                color: #fff;
+                border: none;
+                border-radius: 8px;
+                font-family: 'DM Sans', sans-serif;
+                font-size: 13px;
+                font-weight: 500;
+                cursor: pointer;
+                transition: opacity .15s;
+            }
+
+                .open-workflow-btn:hover {
+                    opacity: .88;
+                }
+
+            .more-btn {
+                width: 32px;
+                height: 32px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border: none;
+                background: transparent;
+                color: var(--text-secondary);
+                cursor: pointer;
+                border-radius: 6px;
+                transition: background .12s;
+            }
+
+                .more-btn:hover {
+                    background: var(--bg);
+                }
+
+            .actions-right {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+            }
+
+            /* ── Footer ── */
+            .page-footer {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 14px 24px;
+                font-size: 12px;
+                color: var(--text-secondary);
+                margin-top: 16px;
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+
+            .footer-left {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+            }
+
+            .footer-right {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+            }
+
+            /* ── Responsive ── */
+            @@media (max-width: 820px) {
+                .cards-grid {
+                    grid-template-columns: 1fr;
+                }
+
+                .page-header {
+                    flex-direction: column;
+                    align-items: flex-start;
+                }
+
+                .toolbar-right {
+                    margin-left: 0;
+                }
+            }
+
+            @@media (max-width: 520px) {
+                .page-header, .toolbar, .cards-grid, .page-footer {
+                    padding-left: 14px;
+                    padding-right: 14px;
+                }
+
+                .card {
+                    padding: 14px 14px 12px;
+                }
+
+                .stat-value {
+                    font-size: 16px;
+                }
+
+                .card-title {
+                    font-size: 13.5px;
+                }
+
+                .stats-row {
+                    grid-template-columns: repeat(2, 1fr);
+                }
+
+                .stat-cell:nth-child(2) {
+                    border-right: none;
+                }
+
+                .stat-cell:nth-child(3) {
+                    border-right: 1px solid var(--border);
+                    border-top: 1px solid var(--border);
+                }
+
+                .stat-cell:nth-child(4) {
+                    border-top: 1px solid var(--border);
+                }
+            }
+    </style>
+
+
+    <!-- Topbar -->
+    <div class="topbar">
+        <span>System Administration</span>
+        <span class="sep">&gt;</span>
+        <strong>Workflow Designer</strong>
+    </div>
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="page-header-left">
+            <h1>Workflow Designer</h1>
+            <p>System Administartion</p>
+        </div>
+        <div class="page-header-right">
+            <button class="new-btn">
+                <svg width="13" height="13" viewBox="0 0 20 20" fill="none"><path d="M10 4v12M4 10h12" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" /></svg>
+                New Security Group
+            </button>
+            <div class="icon-btn" title="Filter">
+                <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M3 5h14M6 10h8M9 15h2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" /></svg>
+            </div>
+            <div class="icon-btn" title="Export">
+                <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M10 3v10m0 0l-3-3m3 3l3-3M4 16h12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toolbar -->
+    <div class="toolbar">
+        <div class="search-wrap">
+            <svg width="15" height="15" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.8" /><path d="M15 15l2.5 2.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" /></svg>
+            <input type="text" placeholder="Search by Group ID, Name, or Type...">
+        </div>
+        <div class="toolbar-right">
+            <div class="dropdown-wrap">
+                <button class="dropdown-btn" onclick="toggleDropdown('type-dd')">
+                    <span id="type-label">All Types</span>
+                    <svg width="14" height="14" viewBox="0 0 20 20" fill="none"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                </button>
+                <ul class="dropdown-menu" id="type-dd">
+                    <li class="selected" onclick="selectOption('type-dd','type-label','All Types')">All Types</li>
+                    <li onclick="selectOption('type-dd','type-label','Approval')">Approval</li>
+                    <li onclick="selectOption('type-dd','type-label','Onboarding')">Onboarding</li>
+                </ul>
+            </div>
+            <div class="dropdown-wrap">
+                <button class="dropdown-btn" onclick="toggleDropdown('status-dd')">
+                    <span id="status-label">All Status</span>
+                    <svg width="14" height="14" viewBox="0 0 20 20" fill="none"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                </button>
+                <ul class="dropdown-menu" id="status-dd">
+                    <li class="selected" onclick="selectOption('status-dd','status-label','All Status')">All Status</li>
+                    <li onclick="selectOption('status-dd','status-label','Active')">Active</li>
+                    <li onclick="selectOption('status-dd','status-label','Inactive')">Inactive</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cards Grid -->
+    <div class="cards-grid">
+
+        <!-- Card 1: Invoice Approval -->
+        <div class="card">
+            <div class="card-top">
+                <div class="avatar">RK</div>
+                <div class="card-title-block">
+                    <div class="card-title-row">
+                        <span class="card-title">Invoice Approval Workflow</span>
+                        <span class="badge-active">Active</span>
+                    </div>
+                    <div class="card-subtitle">Approval based on job complexity</div>
+                </div>
+            </div>
+
+            <div class="stats-row">
+                <div class="stat-cell">
+                    <span class="stat-label">Steps</span>
+                    <span class="stat-value">3</span>
+                </div>
+                <div class="stat-cell">
+                    <span class="stat-label">Pending</span>
+                    <span class="stat-value orange">80</span>
+                </div>
+                <div class="stat-cell">
+                    <span class="stat-label">Completed (30d)</span>
+                    <span class="stat-value teal">210</span>
+                </div>
+                <div class="stat-cell">
+                    <span class="stat-label">Avg. Time</span>
+                    <span class="stat-value blue">1.8 hrs</span>
+                </div>
+            </div>
+
+            <div style="margin-top:14px;">
+                <div class="progress-row">
+                    <span class="progress-label">Completion Rate (30d)</span>
+                    <span class="progress-pct">78%</span>
+                </div>
+                <div class="progress-bar-wrap">
+                    <div class="progress-bar-fill" style="width:78%"></div>
+                </div>
+            </div>
+
+            <div class="card-actions">
+                <button class="view-details-btn">
+                    <svg width="14" height="14" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.7" /><circle cx="10" cy="10" r="2.5" fill="currentColor" /></svg>
+                    View Details
+                </button>
+                <div class="actions-right">
+                    <button class="open-workflow-btn">
+                        <svg width="14" height="14" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.7" /><circle cx="10" cy="10" r="2.5" fill="currentColor" /></svg>
+                        Open Workflow
+                    </button>
+                    <button class="more-btn" title="More">
+                        <svg width="18" height="18" viewBox="0 0 20 20" fill="currentColor"><circle cx="10" cy="4.5" r="1.4" /><circle cx="10" cy="10" r="1.4" /><circle cx="10" cy="15.5" r="1.4" /></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 2: Expense Report Approval -->
+        <div class="card">
+            <div class="card-top">
+                <div class="avatar">RK</div>
+                <div class="card-title-block">
+                    <div class="card-title-row">
+                        <span class="card-title">Expense Report Approval Workflow</span>
+                        <span class="badge-active">Active</span>
+                    </div>
+                    <div class="card-subtitle">Approval based on labor hours</div>
+                </div>
+            </div>
+
+            <div class="stats-row">
+                <div class="stat-cell">
+                    <span class="stat-label">Steps</span>
+                    <span class="stat-value">6</span>
+                </div>
+                <div class="stat-cell">
+                    <span class="stat-label">In Progress</span>
+                    <span class="stat-value orange">170</span>
+                </div>
+                <div class="stat-cell">
+                    <span class="stat-label">Completed (30d)</span>
+                    <span class="stat-value teal">390</span>
+                </div>
+                <div class="stat-cell">
+                    <span class="stat-label">Avg. Time</span>
+                    <span class="stat-value blue">2.7 hrs</span>
+                </div>
+            </div>
+
+            <div style="margin-top:14px;">
+                <div class="progress-row">
+                    <span class="progress-label">Completion Rate (30d)</span>
+                    <span class="progress-pct">64%</span>
+                </div>
+                <div class="progress-bar-wrap">
+                    <div class="progress-bar-fill" style="width:64%"></div>
+                </div>
+            </div>
+
+            <div class="card-actions">
+                <button class="view-details-btn">
+                    <svg width="14" height="14" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.7" /><circle cx="10" cy="10" r="2.5" fill="currentColor" /></svg>
+                    View Details
+                </button>
+                <div class="actions-right">
+                    <button class="open-workflow-btn">
+                        <svg width="14" height="14" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.7" /><circle cx="10" cy="10" r="2.5" fill="currentColor" /></svg>
+                        Open Workflow
+                    </button>
+                    <button class="more-btn" title="More">
+                        <svg width="18" height="18" viewBox="0 0 20 20" fill="currentColor"><circle cx="10" cy="4.5" r="1.4" /><circle cx="10" cy="10" r="1.4" /><circle cx="10" cy="15.5" r="1.4" /></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 3: Purchase Order Approval -->
+        <div class="card">
+            <div class="card-top">
+                <div class="avatar">RK</div>
+                <div class="card-title-block">
+                    <div class="card-title-row">
+                        <span class="card-title">Purchase Order Approval Workflow</span>
+                        <span class="badge-active">Active</span>
+                    </div>
+                    <div class="card-subtitle">Approval based on safety risk</div>
+                </div>
+            </div>
+
+            <div class="stats-row">
+                <div class="stat-cell">
+                    <span class="stat-label">Steps</span>
+                    <span class="stat-value">7</span>
+                </div>
+                <div class="stat-cell">
+                    <span class="stat-label">Completed</span>
+                    <span class="stat-value orange">200</span>
+                </div>
+                <div class="stat-cell">
+                    <span class="stat-label">Completed (30d)</span>
+                    <span class="stat-value teal">450</span>
+                </div>
+                <div class="stat-cell">
+                    <span class="stat-label">Avg. Time</span>
+                    <span class="stat-value blue">3.1 hrs</span>
+                </div>
+            </div>
+
+            <div style="margin-top:14px;">
+                <div class="progress-row">
+                    <span class="progress-label">Completion Rate (30d)</span>
+                    <span class="progress-pct">85%</span>
+                </div>
+                <div class="progress-bar-wrap">
+                    <div class="progress-bar-fill" style="width:85%"></div>
+                </div>
+            </div>
+
+            <div class="card-actions">
+                <button class="view-details-btn">
+                    <svg width="14" height="14" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.7" /><circle cx="10" cy="10" r="2.5" fill="currentColor" /></svg>
+                    View Details
+                </button>
+                <div class="actions-right">
+                    <button class="open-workflow-btn">
+                        <svg width="14" height="14" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.7" /><circle cx="10" cy="10" r="2.5" fill="currentColor" /></svg>
+                        Open Workflow
+                    </button>
+                    <button class="more-btn" title="More">
+                        <svg width="18" height="18" viewBox="0 0 20 20" fill="currentColor"><circle cx="10" cy="4.5" r="1.4" /><circle cx="10" cy="10" r="1.4" /><circle cx="10" cy="15.5" r="1.4" /></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 4: Vendor Onboarding -->
+        <div class="card">
+            <div class="card-top">
+                <div class="avatar">RK</div>
+                <div class="card-title-block">
+                    <div class="card-title-row">
+                        <span class="card-title">Vendor Onboarding Workflow</span>
+                        <span class="badge-active">Active</span>
+                    </div>
+                    <div class="card-subtitle">Approval based on location</div>
+                </div>
+            </div>
+
+            <div class="stats-row">
+                <div class="stat-cell">
+                    <span class="stat-label">Steps</span>
+                    <span class="stat-value">4</span>
+                </div>
+                <div class="stat-cell">
+                    <span class="stat-label">Delayed</span>
+                    <span class="stat-value orange">130</span>
+                </div>
+                <div class="stat-cell">
+                    <span class="stat-label">Completed (30d)</span>
+                    <span class="stat-value teal">300</span>
+                </div>
+                <div class="stat-cell">
+                    <span class="stat-label">Avg. Time</span>
+                    <span class="stat-value blue">2.9 hrs</span>
+                </div>
+            </div>
+
+            <div style="margin-top:14px;">
+                <div class="progress-row">
+                    <span class="progress-label">Completion Rate (30d)</span>
+                    <span class="progress-pct">58%</span>
+                </div>
+                <div class="progress-bar-wrap">
+                    <div class="progress-bar-fill" style="width:58%"></div>
+                </div>
+            </div>
+
+            <div class="card-actions">
+                <button class="view-details-btn">
+                    <svg width="14" height="14" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.7" /><circle cx="10" cy="10" r="2.5" fill="currentColor" /></svg>
+                    View Details
+                </button>
+                <div class="actions-right">
+                    <button class="open-workflow-btn">
+                        <svg width="14" height="14" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.7" /><circle cx="10" cy="10" r="2.5" fill="currentColor" /></svg>
+                        Open Workflow
+                    </button>
+                    <button class="more-btn" title="More">
+                        <svg width="18" height="18" viewBox="0 0 20 20" fill="currentColor"><circle cx="10" cy="4.5" r="1.4" /><circle cx="10" cy="10" r="1.4" /><circle cx="10" cy="15.5" r="1.4" /></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div><!-- /cards-grid -->
+    <!-- Footer -->
+    <div class="page-footer">
+        <div class="footer-left">
+            <svg width="15" height="15" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7.5" stroke="currentColor" stroke-width="1.6" /><path d="M10 9v5M10 7v.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" /></svg>
+            <span>All times are displayed in IST . Last updated: 27 May 2026, 10:30 AM</span>
+        </div>
+        <div class="footer-right">
+            <span>Data refreshes every 5 minutes</span>
+            <svg width="15" height="15" viewBox="0 0 20 20" fill="none"><path d="M4 10a6 6 0 1 1 1.2 3.6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" /><path d="M4 14v-4h4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" /></svg>
+        </div>
+    </div>
+
+    <script>
+            function toggleDropdown(id) {
+              document.querySelectorAll('.dropdown-menu').forEach(m => {
+                if (m.id !== id) m.classList.remove('open');
+              });
+              document.getElementById(id).classList.toggle('open');
+            }
+            function selectOption(ddId, labelId, value) {
+              document.getElementById(labelId).textContent = value;
+              document.getElementById(ddId).querySelectorAll('li').forEach(li => {
+                li.classList.toggle('selected', li.textContent.trim() === value);
+              });
+              document.getElementById(ddId).classList.remove('open');
+            }
+            document.addEventListener('click', e => {
+              if (!e.target.closest('.dropdown-wrap'))
+                document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('open'));
+            });
+    </script>
+

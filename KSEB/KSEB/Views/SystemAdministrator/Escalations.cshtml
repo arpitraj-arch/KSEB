@@ -1,0 +1,842 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+
+    ViewData["Title"] = "Escalations";
+}
+@{
+    ViewData["ActiveMenu"] = "SystemAdministration";
+}
+
+
+
+<title>Escalations – System Administration</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #f5f6fa;
+    --surface: #ffffff;
+    --border: #e8eaf0;
+    --border-light: #f0f2f7;
+    --text-primary: #1a1d27;
+    --text-secondary: #6b7280;
+    --text-muted: #9ca3af;
+    --accent: #111827;
+    --green: #22c55e;
+    --green-bg: #f0fdf4;
+    --green-border: #bbf7d0;
+    --orange: #f97316;
+    --orange-bg: #fff7ed;
+    --red: #ef4444;
+    --red-bg: #fef2f2;
+    --blue: #6366f1;
+    --blue-bg: #eef2ff;
+    --tag-blue: #3b82f6;
+    --tag-blue-bg: #eff6ff;
+    --row-hover: #f8f9fc;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
+    --shadow-md: 0 4px 16px rgba(0,0,0,.07);
+    --radius: 12px;
+    --radius-sm: 8px;
+    --radius-xs: 6px;
+    --font: 'DM Sans', sans-serif;
+    --mono: 'DM Mono', monospace;
+  }
+
+  body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text-primary);
+    min-height: 100vh;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  /* ─── BREADCRUMB ─── */
+  .breadcrumb {
+    padding: 14px 28px 0;
+        border-bottom: 1px solid var(--border);
+    font-size: 12.5px;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .breadcrumb a { color: var(--text-muted); text-decoration: none; }
+  .breadcrumb a:hover { color: var(--text-secondary); }
+  .breadcrumb span.sep { font-size: 10px; }
+  .breadcrumb span.current { color: var(--text-secondary); font-weight: 500; }
+
+  /* ─── MAIN WRAPPER ─── */
+  .page {
+    max-width: 100vw;
+    margin: 0 auto;
+    padding: 0 24px 48px;
+  }
+
+  /* ─── HEADER ─── */
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 0 24px;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .back-btn {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    border: 1.5px solid var(--border);
+    background: var(--surface);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    color: var(--text-secondary);
+    transition: all .18s;
+    flex-shrink: 0;
+  }
+  .back-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .back-btn svg { width: 15px; height: 15px; }
+  .header-titles h1 {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -.4px;
+    color: var(--text-primary);
+    line-height: 1.2;
+  }
+  .header-titles p {
+    font-size: 12.5px;
+    color: var(--text-muted);
+    font-weight: 400;
+    margin-top: 2px;
+  }
+  .new-btn {
+    display: flex; align-items: center; gap: 7px;
+    padding: 9px 18px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-family: var(--font);
+    font-size: 13.5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity .15s, transform .12s;
+    white-space: nowrap;
+    letter-spacing: -.1px;
+  }
+  .new-btn:hover { opacity: .85; transform: translateY(-1px); }
+  .new-btn svg { width: 15px; height: 15px; }
+
+  /* ─── STAT CARDS ─── */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .stat-card {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 20px 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow .2s, transform .2s;
+  }
+  .stat-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+  .stat-icon {
+    width: 42px; height: 42px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .stat-icon svg { width: 21px; height: 21px; }
+  .stat-icon.green { background: var(--green-bg); color: var(--green); border: 1.5px solid var(--green-border); }
+  .stat-icon.orange { background: var(--orange-bg); color: var(--orange); }
+  .stat-icon.red { background: var(--red-bg); color: var(--red); }
+  .stat-icon.blue { background: var(--blue-bg); color: var(--blue); }
+  .stat-info { flex: 1; min-width: 0; }
+  .stat-label {
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: .6px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+  .stat-value {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .stat-value strong {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -1px;
+    color: var(--text-primary);
+    line-height: 1;
+  }
+  .stat-value span {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  /* ─── TABLE CARD ─── */
+  .table-card {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+  }
+
+  /* ─── TOOLBAR ─── */
+  .toolbar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 20px;
+    border-bottom: 1.5px solid var(--border-light);
+    flex-wrap: wrap;
+  }
+  .search-wrap {
+    flex: 1;
+    min-width: 200px;
+    position: relative;
+  }
+  .search-wrap svg {
+    position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+    width: 15px; height: 15px; color: var(--text-muted);
+    pointer-events: none;
+  }
+  .search-input {
+    width: 100%;
+    padding: 9px 14px 9px 36px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-family: var(--font);
+    font-size: 13.5px;
+    color: var(--text-primary);
+    background: var(--bg);
+    outline: none;
+    transition: border-color .15s, box-shadow .15s;
+  }
+  .search-input::placeholder { color: var(--text-muted); }
+  .search-input:focus { border-color: #94a3b8; box-shadow: 0 0 0 3px rgba(100,116,139,.1); }
+
+  .filter-select {
+    appearance: none;
+    padding: 9px 32px 9px 12px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-family: var(--font);
+    font-size: 13px;
+    color: var(--text-secondary);
+    background: var(--bg);
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%239ca3af' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 9px center;
+    background-size: 14px;
+    outline: none;
+    transition: border-color .15s;
+    white-space: nowrap;
+  }
+  .filter-select:focus { border-color: #94a3b8; }
+
+  /* ─── TABLE HEAD ─── */
+  .table-head {
+    display: grid;
+    grid-template-columns: 1fr 160px 160px 120px;
+    padding: 10px 20px;
+    border-bottom: 1.5px solid var(--border-light);
+    background: #fafbfd;
+  }
+  .th {
+    font-size: 11.5px;
+    font-weight: 600;
+    letter-spacing: .4px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .th:not(:first-child) { text-align: center; }
+
+  /* ─── TABLE ROWS ─── */
+  .table-body { }
+  .esc-row {
+    display: grid;
+    grid-template-columns: 1fr 160px 160px 120px;
+    padding: 16px 20px;
+    border-bottom: 1.5px solid var(--border-light);
+    align-items: start;
+    gap: 12px;
+    transition: background .15s;
+    animation: fadeIn .35s ease both;
+  }
+  .esc-row:last-child { border-bottom: none; }
+  .esc-row:hover { background: var(--row-hover); }
+
+  @@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .esc-row:nth-child(1) { animation-delay: .05s; }
+  .esc-row:nth-child(2) { animation-delay: .10s; }
+  .esc-row:nth-child(3) { animation-delay: .15s; }
+
+  /* ─── ESC MAIN CELL ─── */
+  .esc-main { display: flex; align-items: flex-start; gap: 12px; min-width: 0; }
+  .esc-bell {
+    width: 36px; height: 36px;
+    border-radius: 9px;
+    background: var(--orange-bg);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .esc-bell svg { width: 17px; height: 17px; color: var(--orange); }
+  .esc-details { flex: 1; min-width: 0; }
+  .esc-title-row {
+    display: flex; align-items: center; gap: 9px;
+    flex-wrap: wrap;
+    margin-bottom: 7px;
+  }
+  .esc-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: -.2px;
+  }
+  .tag {
+    display: inline-flex; align-items: center;
+    padding: 2px 9px;
+    border-radius: 20px;
+    font-size: 11.5px;
+    font-weight: 600;
+    letter-spacing: .1px;
+    white-space: nowrap;
+  }
+  .tag-blue { background: var(--tag-blue-bg); color: var(--tag-blue); border: 1px solid #bfdbfe; }
+
+  .esc-meta { display: flex; flex-direction: column; gap: 5px; }
+  .meta-row {
+    display: flex; align-items: center; gap: 7px;
+    font-size: 12.5px; color: var(--text-secondary);
+    flex-wrap: wrap;
+  }
+  .meta-row svg { width: 13px; height: 13px; color: var(--text-muted); flex-shrink: 0; }
+  .meta-chip {
+    display: inline-flex; align-items: center;
+    padding: 2px 9px;
+    background: var(--border-light);
+    border-radius: 5px;
+    font-size: 11.5px;
+    font-family: var(--mono);
+    color: var(--text-secondary);
+    border: 1px solid var(--border);
+  }
+  .meta-action strong { color: var(--text-primary); }
+
+  /* ─── TRIGGERED CELL ─── */
+  .esc-triggered { text-align: center; padding-top: 2px; }
+  .status-badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 4px 11px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .status-badge.active {
+    background: var(--green-bg);
+    color: #16a34a;
+    border: 1.5px solid var(--green-border);
+  }
+  .status-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    animation: pulse 2s infinite;
+  }
+  @@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: .4; }
+  }
+  .trigger-count {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+  .trigger-label {
+    font-size: 11.5px;
+    color: var(--text-muted);
+  }
+
+  /* ─── STATUS CELL ─── */
+  .esc-status { text-align: center; padding-top: 2px; }
+  .last-time {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+  }
+  .last-date {
+    font-size: 11.5px;
+    color: var(--text-muted);
+    font-family: var(--mono);
+  }
+
+  /* ─── ACTIONS CELL ─── */
+  .esc-actions {
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+    padding-top: 4px;
+  }
+  .action-btn {
+    width: 30px; height: 30px;
+    display: flex; align-items: center; justify-content: center;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-xs);
+    background: var(--surface);
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all .15s;
+  }
+  .action-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--bg); }
+  .action-btn svg { width: 13px; height: 13px; }
+
+  /* ─── FOOTER / PAGINATION ─── */
+  .table-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 13px 20px;
+    border-top: 1.5px solid var(--border-light);
+    gap: 12px;
+    flex-wrap: wrap;
+    background: #fafbfd;
+  }
+  .page-size {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 13px; color: var(--text-secondary);
+  }
+  .page-size select {
+    padding: 5px 24px 5px 10px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-xs);
+    font-family: var(--font);
+    font-size: 13px;
+    color: var(--text-secondary);
+    background: var(--surface);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%239ca3af' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 6px center;
+    background-size: 12px;
+    appearance: none;
+    cursor: pointer;
+    outline: none;
+  }
+  .page-info {
+    font-size: 13px;
+    color: var(--text-muted);
+    text-align: center;
+  }
+  .pagination {
+    display: flex; align-items: center; gap: 4px;
+  }
+  .pag-label { font-size: 12.5px; color: var(--text-muted); margin-right: 4px; }
+  .pag-btn {
+    min-width: 30px; height: 30px;
+    display: flex; align-items: center; justify-content: center;
+    padding: 0 6px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-xs);
+    background: var(--surface);
+    color: var(--text-secondary);
+    font-size: 12.5px;
+    font-family: var(--font);
+    cursor: pointer;
+    transition: all .15s;
+    font-weight: 500;
+  }
+  .pag-btn:hover:not(.disabled):not(.active) { border-color: var(--accent); color: var(--accent); }
+  .pag-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .pag-btn.disabled { opacity: .4; cursor: default; }
+  .pag-btn svg { width: 12px; height: 12px; }
+  .pag-dots { font-size: 12px; color: var(--text-muted); padding: 0 2px; }
+
+  /* ─── RESPONSIVE ─── */
+  @@media (max-width: 900px) {
+    .stats { grid-template-columns: repeat(2, 1fr); }
+    .table-head { display: none; }
+    .esc-row {
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+    .esc-triggered, .esc-status, .esc-actions { text-align: left; }
+    .esc-actions { justify-content: flex-start; }
+    .esc-triggered-inner, .esc-status-inner {
+      display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+    }
+    .mobile-label {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      color: var(--text-muted);
+      min-width: 80px;
+    }
+  }
+  @@media (max-width: 600px) {
+    .page { padding: 0 14px 36px; }
+    .breadcrumb { padding: 12px 14px 0; }
+    .stats { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .stat-value strong { font-size: 22px; }
+    .header { padding: 16px 0 18px; }
+    .header-titles h1 { font-size: 18px; }
+    .new-btn span { display: none; }
+    .new-btn { padding: 9px 12px; }
+    .toolbar { padding: 12px 14px; }
+    .table-head { display: none; }
+    .esc-row { padding: 14px; }
+    .table-footer { padding: 12px 14px; }
+    .page-info { display: none; }
+  }
+  @@media (max-width: 420px) {
+    .stats { grid-template-columns: 1fr; }
+  }
+
+  /* desktop hidden mobile label */
+  .mobile-label { display: none; }
+  @@media (max-width: 900px) { .mobile-label { display: inline-block; } }
+</style>
+
+
+<div class="breadcrumb">
+  <a href="#">System Administration</a>
+  <span class="sep">›</span>
+    <strong>Escalations  </strong>
+</div>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-left">
+      <button class="back-btn" aria-label="Back">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+        </svg>
+      </button>
+      <div class="header-titles">
+        <h1>Escalations</h1>
+        <p>System Administration</p>
+      </div>
+    </div>
+    <button class="new-btn">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.4">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+      </svg>
+      <span>New Escalations</span>
+    </button>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat-card">
+      <div class="stat-icon green">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+      </div>
+      <div class="stat-info">
+        <div class="stat-label">Active Escalations</div>
+        <div class="stat-value"><strong>5</strong><span>today</span></div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon orange">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="9"/><path stroke-linecap="round" d="M12 7v5l3 3"/>
+        </svg>
+      </div>
+      <div class="stat-info">
+        <div class="stat-label">Triggered Today</div>
+        <div class="stat-value"><strong>63</strong><span>today</span></div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon red">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+        </svg>
+      </div>
+      <div class="stat-info">
+        <div class="stat-label">Pending Actions</div>
+        <div class="stat-value"><strong>12</strong><span>today</span></div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon blue">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6 6 0 10-12 0v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+        </svg>
+      </div>
+      <div class="stat-info">
+        <div class="stat-label">Notifications Sent</div>
+        <div class="stat-value"><strong>245</strong><span>today</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TABLE CARD -->
+  <div class="table-card">
+
+    <!-- TOOLBAR -->
+    <div class="toolbar">
+      <div class="search-wrap">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="7"/><path stroke-linecap="round" d="M21 21l-4.35-4.35"/>
+        </svg>
+        <input class="search-input" type="text" placeholder="Search Escalations, Status, Type, Severity"/>
+      </div>
+      <select class="filter-select">
+        <option>All Types</option>
+        <option>Time-Based</option>
+        <option>Event-Based</option>
+      </select>
+      <select class="filter-select">
+        <option>All Status</option>
+        <option>Active</option>
+        <option>Inactive</option>
+        <option>Pending</option>
+      </select>
+    </div>
+
+    <!-- TABLE HEAD -->
+    <div class="table-head">
+      <div class="th">Escalations</div>
+      <div class="th">Triggered</div>
+      <div class="th">Status</div>
+      <div class="th">Actions</div>
+    </div>
+
+    <!-- TABLE BODY -->
+    <div class="table-body">
+
+      <!-- ROW 1 -->
+      <div class="esc-row">
+        <div class="esc-main">
+          <div class="esc-bell">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6 6 0 10-12 0v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+            </svg>
+          </div>
+          <div class="esc-details">
+            <div class="esc-title-row">
+              <span class="esc-name">Overdue Work Orders</span>
+              <span class="tag tag-blue">Time-Based</span>
+            </div>
+            <div class="esc-meta">
+              <div class="meta-row">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414A1 1 0 0120 9.414V19a2 2 0 01-2 2z"/></svg>
+                Remarks: Alert when work orders exceed target completion date
+              </div>
+              <div class="meta-row">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" d="M12 7v5l3 3"/></svg>
+                Every 2 hours
+                <span class="meta-chip">Target Finish Date &lt; Current Date AND Status != COMP</span>
+              </div>
+              <div class="meta-row meta-action">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path stroke-linecap="round" d="M16 2v4M8 2v4M3 10h18"/></svg>
+                Action: <strong>Email to Supervisor</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="esc-triggered">
+          <span class="mobile-label">Triggered</span>
+          <div class="esc-triggered-inner">
+            <span class="status-badge active"><span class="status-dot"></span>Active</span>
+            <div><div class="trigger-count">23 times</div><div class="trigger-label">Triggered</div></div>
+          </div>
+        </div>
+        <div class="esc-status">
+          <span class="mobile-label">Last Triggered</span>
+          <div class="esc-status-inner">
+            <div class="last-time">2 hours ago</div>
+            <div class="last-date">Aug 4, 2025 10:30 AM</div>
+          </div>
+        </div>
+        <div class="esc-actions">
+          <button class="action-btn" title="Edit">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+          </button>
+          <button class="action-btn" title="Run">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </button>
+          <button class="action-btn" title="History">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- ROW 2 -->
+      <div class="esc-row">
+        <div class="esc-main">
+          <div class="esc-bell">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6 6 0 10-12 0v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+            </svg>
+          </div>
+          <div class="esc-details">
+            <div class="esc-title-row">
+              <span class="esc-name">Overdue Work Orders</span>
+              <span class="tag tag-blue">Time-Based</span>
+            </div>
+            <div class="esc-meta">
+              <div class="meta-row">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414A1 1 0 0120 9.414V19a2 2 0 01-2 2z"/></svg>
+                Remarks: Alert when work orders exceed target completion date
+              </div>
+              <div class="meta-row">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" d="M12 7v5l3 3"/></svg>
+                Every 2 hours
+                <span class="meta-chip">Target Finish Date &lt; Current Date AND Status != COMP</span>
+              </div>
+              <div class="meta-row meta-action">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path stroke-linecap="round" d="M16 2v4M8 2v4M3 10h18"/></svg>
+                Action: <strong>Email to Supervisor</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="esc-triggered">
+          <span class="mobile-label">Triggered</span>
+          <div class="esc-triggered-inner">
+            <span class="status-badge active"><span class="status-dot"></span>Active</span>
+            <div><div class="trigger-count">23 times</div><div class="trigger-label">Triggered</div></div>
+          </div>
+        </div>
+        <div class="esc-status">
+          <span class="mobile-label">Last Triggered</span>
+          <div class="esc-status-inner">
+            <div class="last-time">2 hours ago</div>
+            <div class="last-date">Aug 4, 2025 10:30 AM</div>
+          </div>
+        </div>
+        <div class="esc-actions">
+          <button class="action-btn" title="Edit">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+          </button>
+          <button class="action-btn" title="Run">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </button>
+          <button class="action-btn" title="History">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- ROW 3 -->
+      <div class="esc-row">
+        <div class="esc-main">
+          <div class="esc-bell">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6 6 0 10-12 0v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+            </svg>
+          </div>
+          <div class="esc-details">
+            <div class="esc-title-row">
+              <span class="esc-name">Overdue Work Orders</span>
+              <span class="tag tag-blue">Time-Based</span>
+            </div>
+            <div class="esc-meta">
+              <div class="meta-row">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414A1 1 0 0120 9.414V19a2 2 0 01-2 2z"/></svg>
+                Remarks: Alert when work orders exceed target completion date
+              </div>
+              <div class="meta-row">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" d="M12 7v5l3 3"/></svg>
+                Every 2 hours
+                <span class="meta-chip">Target Finish Date &lt; Current Date AND Status != COMP</span>
+              </div>
+              <div class="meta-row meta-action">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path stroke-linecap="round" d="M16 2v4M8 2v4M3 10h18"/></svg>
+                Action: <strong>Email to Supervisor</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="esc-triggered">
+          <span class="mobile-label">Triggered</span>
+          <div class="esc-triggered-inner">
+            <span class="status-badge active"><span class="status-dot"></span>Active</span>
+            <div><div class="trigger-count">23 times</div><div class="trigger-label">Triggered</div></div>
+          </div>
+        </div>
+        <div class="esc-status">
+          <span class="mobile-label">Last Triggered</span>
+          <div class="esc-status-inner">
+            <div class="last-time">2 hours ago</div>
+            <div class="last-date">Aug 4, 2025 10:30 AM</div>
+          </div>
+        </div>
+        <div class="esc-actions">
+          <button class="action-btn" title="Edit">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+          </button>
+          <button class="action-btn" title="Run">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </button>
+          <button class="action-btn" title="History">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </button>
+        </div>
+      </div>
+
+    </div><!-- /table-body -->
+
+    <!-- FOOTER -->
+    <div class="table-footer">
+      <div class="page-size">
+        <select>
+          <option>5</option>
+          <option>10</option>
+          <option>25</option>
+          <option>50</option>
+        </select>
+      </div>
+      <div class="page-info">Showing 1 to 5 of 53 entries</div>
+      <div class="pagination">
+        <span class="pag-label">Page</span>
+        <button class="pag-btn disabled">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+        </button>
+        <button class="pag-btn active">1</button>
+        <span class="pag-dots">…</span>
+        <button class="pag-btn">6</button>
+        <span class="pag-dots">…</span>
+        <button class="pag-btn">10</button>
+        <button class="pag-btn">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+
+  </div><!-- /table-card -->
+
+</div><!-- /page -->
+
+

@@ -1,0 +1,69 @@
+C:\Users\User\Desktop\Work\KSEB\KSEB\obj\Debug\net8.0\rpswa.dswa.cache.json
+C:\Users\User\Desktop\Work\KSEB\KSEB\obj\Debug\net8.0\KSEB.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\User\Desktop\Work\KSEB\KSEB\obj\Debug\net8.0\KSEB.AssemblyInfoInputs.cache
+C:\Users\User\Desktop\Work\KSEB\KSEB\obj\Debug\net8.0\KSEB.AssemblyInfo.cs
+C:\Users\User\Desktop\Work\KSEB\KSEB\obj\Debug\net8.0\KSEB.csproj.CoreCompileInputs.cache
+C:\Users\User\Desktop\Work\KSEB\KSEB\obj\Debug\net8.0\KSEB.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\User\Desktop\Work\KSEB\KSEB\obj\Debug\net8.0\KSEB.RazorAssemblyInfo.cache
+C:\Users\User\Desktop\Work\KSEB\KSEB\obj\Debug\net8.0\KSEB.RazorAssemblyInfo.cs
+C:\Users\User\Desktop\Work\KSEB\KSEB\bin\Debug\net8.0\appsettings.Development.json
+C:\Users\User\Desktop\Work\KSEB\KSEB\bin\Debug\net8.0\appsettings.json
+C:\Users\User\Desktop\Work\KSEB\KSEB\bin\Debug\net8.0\KSEB.staticwebassets.runtime.json
+C:\Users\User\Desktop\Work\KSEB\KSEB\bin\Debug\net8.0\KSEB.staticwebassets.endpoints.json
+C:\Users\User\Desktop\Work\KSEB\KSEB\bin\Debug\net8.0\KSEB.exe
+C:\Users\User\Desktop\Work\KSEB\KSEB\bin\Debug\net8.0\KSEB.deps.json
+C:\Users\User\Desktop\Work\KSEB\KSEB\bin\Debug\net8.0\KSEB.runtimeconfig.json
+C:\Users\User\Desktop\Work\KSEB\KSEB\bin\Debug\net8.0\KSEB.dll
+C:\Users\User\Desktop\Work\KSEB\KSEB\bin\Debug\net8.0\KSEB.pdb
+C:\Users\User\Desktop\Work\KSEB\KSEB\obj\Debug\net8.0\rjimswa.dswa.cache.json
+C:\Users\User\Desktop\Work\KSEB\KSEB\obj\Debug\net8.0\rjsmrazor.dswa.cache.json
+C:\Users\User\Desktop\Work\KSEB\KSEB\obj\Debug\net8.0\rjsmcshtml.dswa.cache.json
+C:\Users\User\Desktop\Work\KSEB\KSEB\obj\Debug\net8.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
+C:\Users\User\Desktop\Work\KSEB\KSEB\obj\Debug\net8.0\scopedcss\bundle\KSEB.styles.css
+C:\Users\User\Desktop\Work\KSEB\KSEB\obj\Debug\net8.0\scopedcss\projectbundle\KSEB.bundle.scp.css
+C:\Users\User\Desktop\Work\KSEB\KSEB\obj\Debug\net8.0\staticwebassets.build.json
+C:\Users\User\Desktop\Work\KSEB\KSEB\obj\Debug\net8.0\staticwebassets.build.json.cache
+C:\Users\User\Desktop\Work\KSEB\KSEB\obj\Debug\net8.0\staticwebassets.development.json
+C:\Users\User\Desktop\Work\KSEB\KSEB\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+C:\Users\User\Desktop\Work\KSEB\KSEB\obj\Debug\net8.0\swae.build.ex.cache
+C:\Users\User\Desktop\Work\KSEB\KSEB\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+C:\Users\User\Desktop\Work\KSEB\KSEB\obj\Debug\net8.0\KSEB.dll
+C:\Users\User\Desktop\Work\KSEB\KSEB\obj\Debug\net8.0\refint\KSEB.dll
+C:\Users\User\Desktop\Work\KSEB\KSEB\obj\Debug\net8.0\KSEB.pdb
+C:\Users\User\Desktop\Work\KSEB\KSEB\obj\Debug\net8.0\KSEB.genruntimeconfig.cache
+C:\Users\User\Desktop\Work\KSEB\KSEB\obj\Debug\net8.0\ref\KSEB.dll
+C:\Arpit WorkData\KSEB\KSEB\bin\Debug\net8.0\appsettings.Development.json
+C:\Arpit WorkData\KSEB\KSEB\bin\Debug\net8.0\appsettings.json
+C:\Arpit WorkData\KSEB\KSEB\bin\Debug\net8.0\Views\WorkOrderManagemet\WorkOrderTracking.cshtml
+C:\Arpit WorkData\KSEB\KSEB\bin\Debug\net8.0\KSEB.staticwebassets.runtime.json
+C:\Arpit WorkData\KSEB\KSEB\bin\Debug\net8.0\KSEB.staticwebassets.endpoints.json
+C:\Arpit WorkData\KSEB\KSEB\bin\Debug\net8.0\KSEB.exe
+C:\Arpit WorkData\KSEB\KSEB\bin\Debug\net8.0\KSEB.deps.json
+C:\Arpit WorkData\KSEB\KSEB\bin\Debug\net8.0\KSEB.runtimeconfig.json
+C:\Arpit WorkData\KSEB\KSEB\bin\Debug\net8.0\KSEB.dll
+C:\Arpit WorkData\KSEB\KSEB\bin\Debug\net8.0\KSEB.pdb
+C:\Arpit WorkData\KSEB\KSEB\obj\Debug\net8.0\rpswa.dswa.cache.json
+C:\Arpit WorkData\KSEB\KSEB\obj\Debug\net8.0\KSEB.GeneratedMSBuildEditorConfig.editorconfig
+C:\Arpit WorkData\KSEB\KSEB\obj\Debug\net8.0\KSEB.AssemblyInfoInputs.cache
+C:\Arpit WorkData\KSEB\KSEB\obj\Debug\net8.0\KSEB.AssemblyInfo.cs
+C:\Arpit WorkData\KSEB\KSEB\obj\Debug\net8.0\KSEB.csproj.CoreCompileInputs.cache
+C:\Arpit WorkData\KSEB\KSEB\obj\Debug\net8.0\KSEB.MvcApplicationPartsAssemblyInfo.cache
+C:\Arpit WorkData\KSEB\KSEB\obj\Debug\net8.0\KSEB.RazorAssemblyInfo.cache
+C:\Arpit WorkData\KSEB\KSEB\obj\Debug\net8.0\KSEB.RazorAssemblyInfo.cs
+C:\Arpit WorkData\KSEB\KSEB\obj\Debug\net8.0\rjimswa.dswa.cache.json
+C:\Arpit WorkData\KSEB\KSEB\obj\Debug\net8.0\rjsmrazor.dswa.cache.json
+C:\Arpit WorkData\KSEB\KSEB\obj\Debug\net8.0\rjsmcshtml.dswa.cache.json
+C:\Arpit WorkData\KSEB\KSEB\obj\Debug\net8.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
+C:\Arpit WorkData\KSEB\KSEB\obj\Debug\net8.0\scopedcss\bundle\KSEB.styles.css
+C:\Arpit WorkData\KSEB\KSEB\obj\Debug\net8.0\scopedcss\projectbundle\KSEB.bundle.scp.css
+C:\Arpit WorkData\KSEB\KSEB\obj\Debug\net8.0\staticwebassets.build.json
+C:\Arpit WorkData\KSEB\KSEB\obj\Debug\net8.0\staticwebassets.build.json.cache
+C:\Arpit WorkData\KSEB\KSEB\obj\Debug\net8.0\staticwebassets.development.json
+C:\Arpit WorkData\KSEB\KSEB\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+C:\Arpit WorkData\KSEB\KSEB\obj\Debug\net8.0\swae.build.ex.cache
+C:\Arpit WorkData\KSEB\KSEB\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+C:\Arpit WorkData\KSEB\KSEB\obj\Debug\net8.0\KSEB.dll
+C:\Arpit WorkData\KSEB\KSEB\obj\Debug\net8.0\refint\KSEB.dll
+C:\Arpit WorkData\KSEB\KSEB\obj\Debug\net8.0\KSEB.pdb
+C:\Arpit WorkData\KSEB\KSEB\obj\Debug\net8.0\KSEB.genruntimeconfig.cache
+C:\Arpit WorkData\KSEB\KSEB\obj\Debug\net8.0\ref\KSEB.dll

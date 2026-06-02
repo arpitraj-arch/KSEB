@@ -1,0 +1,618 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+
+    ViewData["Title"] = "People";
+}
+@{
+    ViewData["ActiveMenu"] = "SystemAdministration";
+}
+
+
+    <title>People Module – System Administration</title>
+    <style>
+            @@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
+
+            *, *::before, *::after {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+
+            :root {
+                --bg: #f5f6fa;
+                --surface: #ffffff;
+                --border: #e4e7ef;
+                --text-primary: #1a1d2e;
+                --text-secondary: #6b7280;
+                --text-muted: #9ca3af;
+                --accent: #2d3a8c;
+                --accent-light: #eef0fb;
+                --green: #16a34a;
+                --green-bg: #dcfce7;
+                --orange: #d97706;
+                --orange-bg: #fef3c7;
+                --purple-bg: #f3e8ff;
+                --purple: #7c3aed;
+                --gray-bg: #f3f4f6;
+                --gray: #6b7280;
+            }
+
+            body {
+                font-family: 'DM Sans', sans-serif;
+                background: var(--bg);
+                color: var(--text-primary);
+                min-height: 100vh;
+            }
+
+            /* Topbar */
+            .topbar {
+                background: var(--surface);
+                border-bottom: 1px solid var(--border);
+                height: 48px;
+                display: flex;
+                align-items: center;
+                padding: 0 28px;
+                font-size: 12.5px;
+                color: var(--text-secondary);
+                gap: 6px;
+            }
+
+                .topbar span {
+                    color: var(--text-muted);
+                }
+
+                .topbar strong {
+                    color: var(--text-primary);
+                    font-weight: 600;
+                }
+
+            /* Page header */
+            .page-header {
+                padding: 5px 10px 0;
+                background: var(--surface);
+                border-bottom: 1px solid var(--border);
+            }
+
+                .page-header h1 {
+                    font-size: 21px;
+                    font-weight: 600;
+                    letter-spacing: -0.3px;
+                }
+
+                .page-header p {
+                    font-size: 12px;
+                    color: var(--text-secondary);
+                    margin-top: 2px;
+                    padding-bottom: 18px;
+                }
+
+            /* Toolbar */
+            .toolbar {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 14px 28px;
+                background: var(--surface);
+                border-bottom: 1px solid var(--border);
+            }
+
+            .toolbar-actions {
+                margin-left: auto;
+                display: flex;
+                gap: 8px;
+                align-items: center;
+            }
+
+            .search-wrap {
+                position: relative;
+                flex: 1;
+                max-width: 480px;
+            }
+
+                .search-wrap svg {
+                    position: absolute;
+                    left: 11px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    color: var(--text-muted);
+                }
+
+                .search-wrap input {
+                    width: 100%;
+                    padding: 8px 12px 8px 34px;
+                    border: 1px solid var(--border);
+                    border-radius: 8px;
+                    font-family: 'DM Sans', sans-serif;
+                    font-size: 13px;
+                    color: var(--text-primary);
+                    background: #fafbfc;
+                    outline: none;
+                    transition: border-color .15s;
+                }
+
+                    .search-wrap input:focus {
+                        border-color: var(--accent);
+                        background: #fff;
+                    }
+
+                    .search-wrap input::placeholder {
+                        color: var(--text-muted);
+                    }
+
+            /* Dropdown */
+            .dropdown-wrap {
+                position: relative;
+            }
+
+            .dropdown-btn {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                padding: 7px 12px;
+                border: 1px solid var(--border);
+                border-radius: 8px;
+                background: #fff;
+                font-family: 'DM Sans', sans-serif;
+                font-size: 13px;
+                color: var(--text-primary);
+                cursor: pointer;
+                white-space: nowrap;
+                min-width: 110px;
+                justify-content: space-between;
+                transition: border-color .15s;
+            }
+
+                .dropdown-btn svg {
+                    color: var(--text-muted);
+                    flex-shrink: 0;
+                }
+
+            .dropdown-menu {
+                position: absolute;
+                top: calc(100% + 4px);
+                left: 0;
+                min-width: 145px;
+                background: #fff;
+                border: 1px solid var(--border);
+                border-radius: 10px;
+                box-shadow: 0 8px 24px rgba(0,0,0,.10);
+                z-index: 100;
+                overflow: hidden;
+                display: none;
+            }
+
+                .dropdown-menu.open {
+                    display: block;
+                }
+
+                .dropdown-menu li {
+                    list-style: none;
+                    padding: 9px 14px;
+                    font-size: 13px;
+                    cursor: pointer;
+                    color: var(--text-primary);
+                    transition: background .12s;
+                }
+
+                    .dropdown-menu li:hover {
+                        background: var(--accent-light);
+                    }
+
+                    .dropdown-menu li.selected {
+                        background: var(--accent);
+                        color: #fff;
+                    }
+
+            /* Buttons */
+            .icon-btn {
+                width: 35px;
+                height: 35px;
+                border: 1px solid var(--border);
+                border-radius: 8px;
+                background: #fff;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                color: var(--text-secondary);
+                transition: background .15s, border-color .15s;
+            }
+
+                .icon-btn:hover {
+                    background: var(--accent-light);
+                    border-color: var(--accent);
+                }
+
+            .new-btn {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                padding: 8px 16px;
+                background: var(--accent);
+                color: #fff;
+                border: none;
+                border-radius: 8px;
+                font-family: 'DM Sans', sans-serif;
+                font-size: 13px;
+                font-weight: 500;
+                cursor: pointer;
+                transition: opacity .15s;
+            }
+
+                .new-btn:hover {
+                    opacity: .88;
+                }
+
+            /* Table */
+            .table-wrap {
+                padding: 0 2px;
+                overflow-x: auto;
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                background: var(--surface);
+                border-radius: 10px;
+                overflow: hidden;
+                box-shadow: 0 1px 4px rgba(0,0,0,.05);
+                margin-top: 16px;
+            }
+
+            thead tr {
+                background: #f9fafb;
+                border-bottom: 1px solid var(--border);
+            }
+
+            thead th {
+                padding: 11px 14px;
+                font-size: 11.5px;
+                font-weight: 600;
+                color: var(--text-secondary);
+                text-transform: uppercase;
+                letter-spacing: .6px;
+                text-align: left;
+                white-space: nowrap;
+            }
+
+                thead th:first-child {
+                    width: 40px;
+                    padding-left: 16px;
+                }
+
+            tbody tr {
+                border-bottom: 1px solid var(--border);
+                transition: background .12s;
+            }
+
+                tbody tr:last-child {
+                    border-bottom: none;
+                }
+
+                tbody tr:hover {
+                    background: #fafbff;
+                }
+
+            tbody td {
+                padding: 13px 14px;
+                font-size: 13.5px;
+                vertical-align: middle;
+            }
+
+                tbody td:first-child {
+                    padding-left: 16px;
+                }
+
+            .checkbox {
+                width: 16px;
+                height: 16px;
+                border: 1.5px solid var(--border);
+                border-radius: 4px;
+                cursor: pointer;
+                appearance: none;
+                -webkit-appearance: none;
+                background: #fff;
+                transition: border-color .12s;
+            }
+
+                .checkbox:hover {
+                    border-color: var(--accent);
+                }
+
+                .checkbox:checked {
+                    background: var(--accent);
+                    border-color: var(--accent);
+                }
+
+            .link-id {
+                color: var(--accent);
+                font-family: 'DM Mono', monospace;
+                font-size: 12.5px;
+                font-weight: 500;
+                text-decoration: none;
+                white-space: nowrap;
+            }
+
+                .link-id:hover {
+                    text-decoration: underline;
+                }
+
+            .name-cell {
+                font-weight: 500;
+            }
+
+            .designation-cell {
+                font-size: 13px;
+                font-weight: 500;
+            }
+
+            .dept-cell {
+                font-size: 12.5px;
+                color: var(--text-secondary);
+            }
+
+            .site-cell {
+                font-size: 12.5px;
+                color: var(--text-secondary);
+            }
+
+            .email-cell {
+                font-size: 12px;
+                color: var(--text-secondary);
+                font-family: 'DM Mono', monospace;
+            }
+
+            /* Badges */
+            .badge {
+                display: inline-flex;
+                align-items: center;
+                padding: 3px 10px;
+                border-radius: 20px;
+                font-size: 12px;
+                font-weight: 500;
+                white-space: nowrap;
+            }
+
+            .badge-emp {
+                background: var(--accent-light);
+                color: var(--accent);
+            }
+
+            .badge-cont {
+                background: var(--purple-bg);
+                color: var(--purple);
+            }
+
+            .status {
+                display: inline-flex;
+                align-items: center;
+                padding: 3px 10px;
+                border-radius: 20px;
+                font-size: 12px;
+                font-weight: 500;
+            }
+
+            .status-active {
+                background: var(--green-bg);
+                color: var(--green);
+            }
+
+            .status-approved {
+                background: var(--green-bg);
+                color: var(--green);
+            }
+
+            .status-leave {
+                background: var(--orange-bg);
+                color: var(--orange);
+            }
+
+            .status-retired {
+                background: var(--gray-bg);
+                color: var(--gray);
+            }
+
+            /* Footer */
+            .table-footer {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 14px 28px;
+                margin-top: 8px;
+                font-size: 12.5px;
+                color: var(--text-secondary);
+            }
+
+            .pagination {
+                display: flex;
+                gap: 8px;
+            }
+
+            .pag-btn {
+                padding: 7px 20px;
+                border: 1px solid var(--border);
+                border-radius: 8px;
+                background: var(--surface);
+                font-family: 'DM Sans', sans-serif;
+                font-size: 13px;
+                color: var(--text-primary);
+                cursor: pointer;
+                transition: background .12s;
+            }
+
+                .pag-btn:hover {
+                    background: var(--accent-light);
+                }
+    </style>
+
+
+    <div class="topbar">
+        <span>System Administration</span>
+        <svg width="14" height="14" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg>
+        <strong>People</strong>
+    </div>
+
+    <div class="page-header">
+        <h1>People Module</h1>
+        <p>System Administartion</p>
+    </div>
+
+    <div class="toolbar">
+        <div class="search-wrap">
+            <svg width="15" height="15" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.8" /><path d="M15 15l3 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" /></svg>
+            <input type="text" placeholder="Search by ID, Name, Email or Designation...">
+        </div>
+        <div class="toolbar-actions">
+            <div class="dropdown-wrap">
+                <button class="dropdown-btn" onclick="toggleDropdown('type-dd')">
+                    <span id="type-label">All Types</span>
+                    <svg width="14" height="14" viewBox="0 0 20 20" fill="none"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                </button>
+                <ul class="dropdown-menu" id="type-dd">
+                    <li onclick="selectOption('type-dd','type-label','All Types')">All Types</li>
+                    <li onclick="selectOption('type-dd','type-label','Employee')">Employee</li>
+                    <li class="selected" onclick="selectOption('type-dd','type-label','Contractor')">Contractor</li>
+                    <li onclick="selectOption('type-dd','type-label','Vendor')">Vendor</li>
+                </ul>
+            </div>
+            <div class="dropdown-wrap">
+                <button class="dropdown-btn" onclick="toggleDropdown('status-dd')">
+                    <span id="status-label">All Status</span>
+                    <svg width="14" height="14" viewBox="0 0 20 20" fill="none"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                </button>
+                <ul class="dropdown-menu" id="status-dd">
+                    <li onclick="selectOption('status-dd','status-label','All Status')">All Status</li>
+                    <li onclick="selectOption('status-dd','status-label','On-Leave')">On-Leave</li>
+                    <li onclick="selectOption('status-dd','status-label','Active')">Active</li>
+                    <li class="selected" onclick="selectOption('status-dd','status-label','Retired')">Retired</li>
+                </ul>
+            </div>
+            <div class="icon-btn" title="Filter">
+                <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M3 5h14M6 10h8M9 15h2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" /></svg>
+            </div>
+            <div class="icon-btn" title="Export">
+                <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M10 3v10m0 0l-3-3m3 3l3-3M4 16h12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg>
+            </div>
+            <button class="new-btn">
+                <svg width="14" height="14" viewBox="0 0 20 20" fill="none"><path d="M10 4v12M4 10h12" stroke="currentColor" stroke-width="2" stroke-linecap="round" /></svg>
+                New Person
+            </button>
+        </div>
+    </div>
+
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th><input type="checkbox" class="checkbox"></th>
+                    <th>PERSON ID</th>
+                    <th>NAME</th>
+                    <th>TYPE</th>
+                    <th>DESIGNATION</th>
+                    <th>DEPARTMENT</th>
+                    <th>SITE</th>
+                    <th>EMAIL</th>
+                    <th>STATUS</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><input type="checkbox" class="checkbox"></td>
+                    <td><a class="link-id" href="#">EMP-TVM-2342</a></td>
+                    <td class="name-cell">Anita Desai</td>
+                    <td><span class="badge badge-emp">Employee</span></td>
+                    <td class="designation-cell">Electrical Contractor</td>
+                    <td class="dept-cell">Maintenace Wing</td>
+                    <td class="site-cell">Thiruvananthapuram Circle</td>
+                    <td class="email-cell">anita.des…</td>
+                    <td><span class="status status-active">Active</span></td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" class="checkbox"></td>
+                    <td><a class="link-id" href="#">EMP-TVM-2343</a></td>
+                    <td class="name-cell">Vikram Singh</td>
+                    <td><span class="badge badge-emp">Employee</span></td>
+                    <td class="designation-cell">Safety Officer</td>
+                    <td class="dept-cell">Field Operations</td>
+                    <td class="site-cell">Pettah Section</td>
+                    <td class="email-cell">rahul.menon@kerala.gov</td>
+                    <td><span class="status status-approved">Approved</span></td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" class="checkbox"></td>
+                    <td><a class="link-id" href="#">EMP-TVM-2344</a></td>
+                    <td class="name-cell">Meera Nair</td>
+                    <td><span class="badge badge-cont">Contractor</span></td>
+                    <td class="designation-cell">Sub Engineer</td>
+                    <td class="dept-cell">Revenue Wing</td>
+                    <td class="site-cell">City Division</td>
+                    <td class="email-cell">anita.desai@kseb.in</td>
+                    <td><span class="status status-leave">On Leave</span></td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" class="checkbox"></td>
+                    <td><a class="link-id" href="#">EMP-TVM-2345</a></td>
+                    <td class="name-cell">Karan Patel</td>
+                    <td><span class="badge badge-emp">Employee</span></td>
+                    <td class="designation-cell">Electrical Contractor</td>
+                    <td class="dept-cell">External Services</td>
+                    <td class="site-cell">Thiruvananthapuram Circle</td>
+                    <td class="email-cell">meera.krishnan@kseb.in</td>
+                    <td><span class="status status-approved">Approved</span></td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" class="checkbox"></td>
+                    <td><a class="link-id" href="#">EMP-TVM-2346</a></td>
+                    <td class="name-cell">Sonal Gupta</td>
+                    <td><span class="badge badge-cont">Contractor</span></td>
+                    <td class="designation-cell">Safety Officer</td>
+                    <td class="dept-cell">Safety & Compliance</td>
+                    <td class="site-cell">Meera Krishnan</td>
+                    <td class="email-cell">arjun.pillai@kerala.gov</td>
+                    <td><span class="status status-approved">Approved</span></td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" class="checkbox"></td>
+                    <td><a class="link-id" href="#">EMP-TVM-2347</a></td>
+                    <td class="name-cell">Amitabh Joshi</td>
+                    <td><span class="badge badge-emp">Employee</span></td>
+                    <td class="designation-cell">Meter Reader</td>
+                    <td class="dept-cell">Revenue Wing</td>
+                    <td class="site-cell">Pettah Section</td>
+                    <td class="email-cell">sneha.nair@kseb.in</td>
+                    <td><span class="status status-approved">Approved</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="table-footer">
+        <span>Showing 6 of 6 sites</span>
+        <div class="pagination">
+            <button class="pag-btn">Previous</button>
+            <button class="pag-btn">Next</button>
+        </div>
+    </div>
+
+    <script>
+            function toggleDropdown(id) {
+              document.querySelectorAll('.dropdown-menu').forEach(m => {
+                if (m.id !== id) m.classList.remove('open');
+              });
+              document.getElementById(id).classList.toggle('open');
+            }
+            function selectOption(ddId, labelId, value) {
+              document.getElementById(labelId).textContent = value;
+              document.getElementById(ddId).querySelectorAll('li').forEach(li => {
+                li.classList.toggle('selected', li.textContent === value);
+              });
+              document.getElementById(ddId).classList.remove('open');
+            }
+            document.addEventListener('click', e => {
+              if (!e.target.closest('.dropdown-wrap'))
+                document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('open'));
+            });
+    </script>
+
