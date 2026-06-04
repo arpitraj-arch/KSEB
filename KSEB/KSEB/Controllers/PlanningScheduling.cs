@@ -2,23 +2,21 @@
 
 namespace KSEB.Controllers
 {
-    public class WorkOrderManagement : Controller
+    public class PlanningScheduling : Controller
     {
-        
-        public IActionResult WorkOrderTracking()
+        public IActionResult JobsPlans()
         {
             return View();
         }
-
-        public IActionResult ServiceRequest()
+        public IActionResult SafetyPlans()
         {
             return View();
         }
-        public IActionResult LabourReporting()
+        public IActionResult PreventiveMaintaince()
         {
             return View();
         }
-        public IActionResult QuickReporting()
+        public IActionResult GraphicalScheduling()
         {
             return View();
         }

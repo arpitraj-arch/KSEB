@@ -403,6 +403,12 @@
                 line-height: 1.2;
             }
 
+            .submenu-item a {
+                text-decoration: none;
+                color: inherit;
+                display: inline-block;
+                width: 100%;
+            }
             .user-name {
                 display: block;
                 font-weight: 600;
@@ -704,15 +710,30 @@
                                     Work Order Tracking
                                 </a>
                             </li>
-                            <li class="submenu-item">Service Request</li>
-                            <li class="submenu-item">Labour Reporting</li>
-                            <li class="submenu-item">Quick Reporting</li>
+                            <li class="submenu-item">
+                                <a asp-controller="WorkOrderManagement"
+                                   asp-action="ServiceRequest">
+                                    Service Request
+                                </a>
+                            </li>
+                            <li class="submenu-item">
+                                <a asp-controller="WorkOrderManagement"
+                                   asp-action="LabourReporting">
+                                    Labour Reporting
+                                </a>
+                            </li>
+                            <li class="submenu-item">
+                                <a asp-controller="WorkOrderManagement"
+                                   asp-action="QuickReporting">
+                                   Quick Reporting
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </li>
 
                 <!-- Planning & Scheduling -->
-                <li class="nav-item">
+                <li class="nav-item @(ViewData["ActiveMenu"]?.ToString() == "PlanningScheduling" ? "active open" : "")">
                     <a class="nav-link" onclick="handleLinkClick(this, true)">
                         <i class="fa-solid fa-chevron-right chevron-start"></i>
                         <div class="menu-icon-box"><i class="fa-solid fa-calendar-check"></i></div>
@@ -721,10 +742,30 @@
                     <div class="submenu-container">
                         <div class="vertical-line"></div>
                         <ul class="submenu-list">
-                            <li class="submenu-item">Job Plans</li>
-                            <li class="submenu-item">Safety Plans</li>
-                            <li class="submenu-item">Preventive Maintenance</li>
-                            <li class="submenu-item">Graphical Scheduling</li>
+                            <li class="submenu-item">
+                                <a asp-controller="PlanningScheduling"
+                                   asp-action="JobsPlans">
+                                    Jobs Plans
+                                </a>
+                            </li>
+                            <li class="submenu-item">
+                                <a asp-controller="PlanningScheduling"
+                                   asp-action="SafetyPlans">
+                                    Safety Plans
+                                </a>
+                            </li>
+                            <li class="submenu-item">
+                                <a asp-controller="PlanningScheduling"
+                                   asp-action="PreventiveMaintaince">
+                                    Preventive Maintaince
+                                </a>
+                            </li>
+                            <li class="submenu-item">
+                                <a asp-controller="PlanningScheduling"
+                                   asp-action="GraphicalScheduling">
+                                    Graphical Scheduling
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </li>
@@ -739,10 +780,30 @@
                     <div class="submenu-container">
                         <div class="vertical-line"></div>
                         <ul class="submenu-list">
-                            <li class="submenu-item">Sunrise Meeting e-Register</li>
-                            <li class="submenu-item">Crews</li>
-                            <li class="submenu-item">Labour & Crafts</li>
-                            <li class="submenu-item">Shifts</li>
+                            <li class="submenu-item">
+                                <a asp-controller="WorkForceManagement"
+                                   asp-action="Sunrisemeetingeregister">
+                                    Sunrise Meeting E-Register
+                                </a>
+                            </li>
+                            <li class="submenu-item">
+                                <a asp-controller="WorkForceManagement"
+                                   asp-action="Crew">
+                                   Crews
+                                </a>
+                            </li>
+                            <li class="submenu-item">
+                                <a asp-controller="WorkForceManagement"
+                                   asp-action="LabourCrafts">
+                                    Labour & Crafts
+                                </a>
+                            </li>
+                            <li class="submenu-item">
+                                <a asp-controller="WorkForceManagement"
+                                   asp-action="Shifts">
+                                  Shifts
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </li>

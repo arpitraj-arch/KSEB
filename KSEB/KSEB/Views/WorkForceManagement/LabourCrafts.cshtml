@@ -1,0 +1,569 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@{
+    ViewData["Title"] = "Labour & Crafts";
+}
+@{
+    ViewData["ActiveMenu"] = "Work Force management";
+}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Labor & Crafts – Workforce Management</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f0f2f7;
+    --surface: #fff;
+    --surface-2: #f7f8fc;
+    --surface-3: #edf0f7;
+    --border: #e2e7f0;
+    --border-strong: #c8d0e0;
+    --text-1: #111827;
+    --text-2: #374151;
+    --text-3: #6b7280;
+    --text-4: #9ca3af;
+    --blue: #1d4ed8;
+    --blue-2: #3b82f6;
+    --blue-bg: #eff6ff;
+    --green: #059669;
+    --green-bg: #ecfdf5;
+    --red: #dc2626;
+    --red-bg: #fef2f2;
+    --orange: #d97706;
+    --orange-bg: #fffbeb;
+    --teal: #0891b2;
+    --teal-bg: #ecfeff;
+    --purple: #7c3aed;
+    --purple-bg: #f5f3ff;
+    --amber: #b45309;
+    --amber-bg: #fef3c7;
+    --shadow-xs: 0 1px 2px rgba(0,0,0,.04);
+    --shadow-sm: 0 2px 8px rgba(0,0,0,.07);
+    --r: 10px; --r-sm: 6px; --r-xs: 4px;
+    --font: 'Inter', sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font); background: var(--bg); color: var(--text-1); font-size: 13px; min-height: 100vh; }
+
+  /* Breadcrumb */
+  .crumb {
+    background: var(--surface); border-bottom: 1px solid var(--border);
+    padding: 8px 22px; font-size: 11.5px; color: var(--text-4);
+    display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+  }
+  .crumb a { color: var(--text-4); text-decoration: none; }
+  .crumb a:hover { color: var(--blue); }
+  .crumb .cur { color: var(--text-2); font-weight: 600; }
+
+  /* Page Header */
+  .ph {
+    background: var(--surface); border-bottom: 1px solid var(--border);
+    padding: 13px 22px 15px;
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+  }
+  .ph-l { display: flex; align-items: center; gap: 11px; }
+  .back {
+    width: 30px; height: 30px; border: 1.5px solid var(--border-strong);
+    border-radius: var(--r-sm); background: transparent; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; color: var(--text-2);
+    transition: all .15s; flex-shrink: 0;
+  }
+  .back:hover { border-color: var(--blue); color: var(--blue); }
+  .ph-title h1 { font-size: 17px; font-weight: 800; letter-spacing: -.5px; }
+  .ph-title p { font-size: 11.5px; color: var(--text-4); margin-top: 2px; }
+  .ph-acts { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 8px 14px; border-radius: var(--r-sm);
+    font-size: 12.5px; font-weight: 600; cursor: pointer; font-family: var(--font);
+    transition: all .15s; white-space: nowrap; border: 1.5px solid transparent;
+  }
+  .btn-out { background: var(--surface); border-color: var(--border-strong); color: var(--text-2); }
+  .btn-out:hover { border-color: var(--blue); color: var(--blue); }
+  .btn-dark { background: var(--text-1); color: #fff; }
+  .btn-dark:hover { background: #1e2d4a; }
+
+  /* Stats Bar */
+  .stats {
+    background: var(--surface); border-bottom: 1px solid var(--border);
+    padding: 0 22px; display: flex; overflow-x: auto; -webkit-overflow-scrolling: touch;
+  }
+  .stat {
+    display: flex; align-items: center; gap: 12px;
+    padding: 14px 22px 14px 0; border-right: 1px solid var(--border); min-width: 155px;
+  }
+  .stat:first-child { padding-left: 0; }
+  .stat:last-child { border-right: none; }
+  .st-ico { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0; }
+  .st-lbl { font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .7px; color: var(--text-4); }
+  .st-val { font-size: 24px; font-weight: 800; letter-spacing: -1px; line-height: 1.1; margin-top: 2px; }
+  .st-sub { font-size: 10.5px; color: var(--text-4); margin-top: 2px; }
+
+  /* Search Row */
+  .search-row {
+    padding: 12px 22px 10px;
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  }
+  .srch-wrap { flex: 1; min-width: 200px; position: relative; max-width: 480px; }
+  .srch-wrap svg { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--text-4); pointer-events: none; }
+  .srch {
+    width: 100%; border: 1px solid var(--border); border-radius: var(--r-sm);
+    padding: 8px 10px 8px 32px; font-size: 12.5px; font-family: var(--font);
+    background: var(--surface); color: var(--text-1); outline: none; transition: border-color .15s;
+    box-shadow: var(--shadow-xs);
+  }
+  .srch:focus { border-color: var(--blue-2); }
+  .srch::placeholder { color: var(--text-4); }
+  .sr-btns { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+  .flt-btn, .rst-btn {
+    display: flex; align-items: center; gap: 5px;
+    border: 1px solid var(--border-strong); border-radius: var(--r-sm);
+    padding: 7px 13px; font-size: 12px; font-weight: 500; font-family: var(--font);
+    background: var(--surface); cursor: pointer; transition: all .15s; color: var(--text-2);
+  }
+  .flt-btn:hover { border-color: var(--blue); color: var(--blue); }
+  .rst-btn:hover { border-color: var(--orange); color: var(--orange); }
+
+  /* Main content layout */
+  .content { padding: 0 22px 22px; display: flex; flex-direction: column; gap: 14px; }
+
+  /* Panel */
+  .panel {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--r); overflow: hidden; box-shadow: var(--shadow-xs);
+  }
+  .panel-hd {
+    padding: 11px 16px 10px; border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap;
+  }
+  .panel-hd-l { display: flex; align-items: center; gap: 9px; }
+  .panel-title { font-size: 13.5px; font-weight: 700; }
+  .panel-sub { font-size: 11px; color: var(--text-4); margin-top: 1px; }
+
+  /* Labor Master Table */
+  .tbl-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  thead th {
+    padding: 7px 12px; text-align: left;
+    font-size: 10px; font-weight: 700; color: var(--text-4);
+    text-transform: uppercase; letter-spacing: .5px;
+    background: var(--surface-2); border-bottom: 1px solid var(--border); white-space: nowrap;
+  }
+  tbody tr { border-bottom: 1px solid var(--border); cursor: pointer; transition: background .1s; }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: #f5f7fd; }
+  tbody td { padding: 9px 12px; vertical-align: middle; }
+  .emp-id { color: var(--blue); font-weight: 700; font-size: 11.5px; font-family: var(--mono); white-space: nowrap; }
+  .emp-name { font-weight: 600; font-size: 12px; }
+  .emp-role { font-size: 11px; color: var(--text-4); }
+  .skill-badge {
+    display: inline-flex; align-items: center; justify-content: center;
+    padding: 3px 11px; border-radius: var(--r-xs); font-size: 11.5px; font-weight: 700; white-space: nowrap;
+  }
+  .sk-expert { background: var(--purple-bg); color: var(--purple); border: 1px solid #ddd6fe; }
+  .sk-senior { background: var(--blue-bg); color: var(--blue); border: 1px solid #bfdbfe; }
+  .sk-junior { background: var(--surface-3); color: var(--text-2); border: 1px solid var(--border-strong); }
+  .rate-cell { font-family: var(--mono); font-size: 12px; font-weight: 600; color: var(--text-1); }
+  .crew-cell { font-size: 12px; color: var(--text-2); }
+  .quals-cell { font-family: var(--mono); font-size: 12px; color: var(--text-2); text-align: center; }
+  .status-badge {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700;
+  }
+  .status-badge::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: currentColor; display: block; }
+  .s-active   { background: var(--green-bg); color: var(--green); }
+  .s-training { background: var(--blue-bg); color: var(--blue-2); }
+
+  /* Pagination */
+  .pager {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 9px 16px; border-top: 1px solid var(--border);
+    background: var(--surface-2); flex-wrap: wrap; gap: 8px;
+  }
+  .pg-l { display: flex; align-items: center; gap: 8px; }
+  .pg-sel {
+    border: 1px solid var(--border); border-radius: var(--r-xs);
+    padding: 4px 8px; font-size: 11.5px; font-family: var(--font);
+    background: var(--surface); outline: none;
+  }
+  .pg-info { font-size: 11px; color: var(--text-4); }
+  .pg-pages { display: flex; align-items: center; gap: 4px; }
+  .pg-lbl { font-size: 11px; color: var(--text-4); margin-right: 4px; }
+  .pgb {
+    min-width: 26px; height: 26px; padding: 0 5px;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid var(--border); border-radius: var(--r-xs);
+    background: var(--surface); font-size: 11.5px; cursor: pointer;
+    color: var(--text-2); transition: all .15s; font-family: var(--font);
+  }
+  .pgb:hover, .pgb.act { background: var(--blue); color: #fff; border-color: var(--blue); }
+  .pgdots { font-size: 11px; color: var(--text-4); padding: 0 2px; }
+
+  /* Bottom Grid */
+  .bottom-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+  /* Work Description Table */
+  .wd-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .wd-table thead th {
+    padding: 7px 14px;
+    font-size: 10px; font-weight: 700; color: var(--text-4);
+    text-transform: uppercase; letter-spacing: .5px;
+    background: var(--surface-2); border-bottom: 1px solid var(--border);
+  }
+  .wd-table tbody tr { border-bottom: 1px solid var(--border); transition: background .1s; }
+  .wd-table tbody tr:last-child { border-bottom: none; }
+  .wd-table tbody tr:hover { background: var(--surface-2); }
+  .wd-table tbody td { padding: 9px 14px; vertical-align: middle; }
+  .wd-activity { font-weight: 500; font-size: 12.5px; }
+  .wd-ref { color: var(--blue); font-weight: 600; font-size: 11.5px; font-family: var(--mono); }
+  .wd-num { font-family: var(--mono); font-size: 12px; color: var(--text-2); text-align: center; }
+
+  /* Qualification Register */
+  .qual-list { padding: 10px 14px; display: flex; flex-direction: column; gap: 10px; }
+  .qual-card {
+    border: 1px solid var(--border); border-radius: var(--r-sm);
+    padding: 12px 14px; background: var(--surface-2); transition: box-shadow .15s;
+  }
+  .qual-card:hover { box-shadow: var(--shadow-sm); }
+  .qual-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .qual-name { display: flex; align-items: center; gap: 7px; font-size: 12.5px; font-weight: 600; }
+  .qual-ico { font-size: 14px; flex-shrink: 0; }
+  .expiring-badge {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 2px 8px; border-radius: 20px; font-size: 10px; font-weight: 700;
+    background: var(--orange-bg); color: var(--orange); border: 1px solid #fed7aa;
+    white-space: nowrap; flex-shrink: 0;
+  }
+  .qual-meta { font-size: 11px; color: var(--text-4); margin-bottom: 8px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .qual-meta .dot { width: 3px; height: 3px; border-radius: 50%; background: var(--border-strong); }
+  .prog-track { height: 5px; background: var(--surface-3); border-radius: 10px; overflow: hidden; }
+  .prog-fill { height: 100%; border-radius: 10px; }
+  .pf-orange { background: linear-gradient(90deg, #f97316, #fb923c); }
+  .pf-green  { background: linear-gradient(90deg, #10b981, #34d399); }
+  .pf-blue   { background: linear-gradient(90deg, #3b82f6, #60a5fa); }
+
+  /* Download btn */
+  .dl-btn {
+    display: flex; align-items: center; gap: 5px;
+    border: 1px solid var(--border-strong); border-radius: var(--r-sm);
+    padding: 6px 12px; font-size: 11.5px; font-weight: 600; font-family: var(--font);
+    background: var(--surface); cursor: pointer; color: var(--text-2); transition: all .15s;
+  }
+  .dl-btn:hover { border-color: var(--blue); color: var(--blue); }
+
+  /* Responsive */
+  @@media (max-width: 860px) {
+    .bottom-grid { grid-template-columns: 1fr; }
+    .content { padding: 0 14px 18px; }
+    .stats { padding: 0 14px; }
+    .ph, .crumb, .search-row { padding-left: 14px; padding-right: 14px; }
+  }
+  @@media (max-width: 560px) {
+    .stat { min-width: 120px; padding-right: 14px; }
+    .st-val { font-size: 20px; }
+    .ph-acts .btn-out:not(.btn-dark) { display: none; }
+    .srch-wrap { max-width: 100%; }
+    thead th, tbody td { padding: 6px 8px; }
+  }
+</style>
+
+
+<!-- Breadcrumb -->
+<nav class="crumb">
+  <a href="#">Home</a> <span>›</span>
+  <a href="#">Workforce Management</a> <span>›</span>
+  <span class="cur">Labour &amp; Crafts</span>
+</nav>
+
+<!-- Page Header -->
+<header class="ph">
+  <div class="ph-l">
+    <button class="back">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <div class="ph-title">
+      <h1>Labor &amp; Crafts</h1>
+      <p>Labor master · craft catalog · skill levels · standard hourly rates · qualification</p>
+    </div>
+  </div>
+  <div class="ph-acts">
+    <button class="btn btn-out">
+      <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Export
+    </button>
+    <button class="btn btn-out">
+      <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      Training Plan
+    </button>
+    <button class="btn btn-dark">
+      <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+      Add labor
+    </button>
+  </div>
+</header>
+
+<!-- Stats Bar -->
+<div class="stats">
+  <div class="stat">
+    <div class="st-ico" style="background:var(--blue-bg);color:var(--blue);">
+      <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+    </div>
+    <div>
+      <div class="st-lbl">Active Labor</div>
+      <div class="st-val">35</div>
+      <div class="st-sub">all crafts</div>
+    </div>
+  </div>
+  <div class="stat">
+    <div class="st-ico" style="background:var(--orange-bg);color:var(--orange);">
+      <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+    </div>
+    <div>
+      <div class="st-lbl">Craft Types</div>
+      <div class="st-val">56</div>
+      <div class="st-sub">catalog</div>
+    </div>
+  </div>
+  <div class="stat">
+    <div class="st-ico" style="background:var(--green-bg);color:var(--green);">
+      <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+    </div>
+    <div>
+      <div class="st-lbl">Avg Hourly Rate</div>
+      <div class="st-val" style="font-size:20px;">Rs 418</div>
+      <div class="st-sub">weighted</div>
+    </div>
+  </div>
+  <div class="stat">
+    <div class="st-ico" style="background:var(--red-bg);color:var(--red);">
+      <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    </div>
+    <div>
+      <div class="st-lbl">Expiring Certs</div>
+      <div class="st-val">2</div>
+      <div class="st-sub">next 90 days</div>
+    </div>
+  </div>
+  <div class="stat">
+    <div class="st-ico" style="background:var(--teal-bg);color:var(--teal);">
+      <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+    </div>
+    <div>
+      <div class="st-lbl">In Training</div>
+      <div class="st-val">2</div>
+      <div class="st-sub">this month</div>
+    </div>
+  </div>
+</div>
+
+<!-- Search Row -->
+<div class="search-row">
+  <div class="srch-wrap">
+    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+    <input class="srch" type="text" placeholder="Search by Name / id…">
+  </div>
+  <div class="sr-btns">
+    <button class="flt-btn">
+      <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z"/></svg>
+      Filter
+    </button>
+    <button class="rst-btn">
+      Reset
+      <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.85"/></svg>
+    </button>
+  </div>
+</div>
+
+<!-- Main Content -->
+<div class="content">
+
+  <!-- Labor Master Table -->
+  <div class="panel">
+    <div class="panel-hd">
+      <div class="panel-hd-l">
+        <svg width="15" height="15" fill="none" stroke="var(--blue)" stroke-width="2.2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <div>
+          <div class="panel-title">Labor Master</div>
+          <div class="panel-sub">35 records · click to view qualification and assignment history</div>
+        </div>
+      </div>
+      <button class="dl-btn">
+        <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download
+      </button>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>EMP ID</th>
+            <th>Employee</th>
+            <th>Skill Level</th>
+            <th>Task / Activity</th>
+            <th>Rate</th>
+            <th>Crew</th>
+            <th>Quals</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="laborBody"></tbody>
+      </table>
+    </div>
+    <div class="pager">
+      <div class="pg-l">
+        <select class="pg-sel"><option>5</option><option>10</option><option>25</option></select>
+        <span class="pg-info">Showing 1 to 5 of 53 entries</span>
+      </div>
+      <div class="pg-pages">
+        <span class="pg-lbl">Page</span>
+        <button class="pgb">‹</button>
+        <button class="pgb act">1</button>
+        <span class="pgdots">…</span>
+        <button class="pgb">6</button>
+        <span class="pgdots">…</span>
+        <button class="pgb">10</button>
+        <button class="pgb">›</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Grid -->
+  <div class="bottom-grid">
+
+    <!-- Work Description -->
+    <div class="panel">
+      <div class="panel-hd">
+        <div class="panel-hd-l">
+          <svg width="14" height="14" fill="none" stroke="var(--text-2)" stroke-width="2.2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+          <div class="panel-title">Work Description</div>
+        </div>
+      </div>
+      <div style="overflow-x:auto;">
+        <table class="wd-table">
+          <thead>
+            <tr>
+              <th>Task / Activity</th>
+              <th>Headcount</th>
+              <th style="text-align:center">Regular</th>
+              <th style="text-align:center">Overtime</th>
+              <th style="text-align:center">STD Rate</th>
+            </tr>
+          </thead>
+          <tbody id="wdBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Qualification Register -->
+    <div class="panel">
+      <div class="panel-hd">
+        <div class="panel-hd-l">
+          <svg width="14" height="14" fill="none" stroke="var(--text-2)" stroke-width="2.2" viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+          <div>
+            <div class="panel-title">Qualification Register</div>
+            <div class="panel-sub">Certificate Coverage and renewals</div>
+          </div>
+        </div>
+      </div>
+      <div class="qual-list" id="qualList"></div>
+    </div>
+
+  </div><!-- /bottom-grid -->
+
+</div><!-- /content -->
+
+<script>
+  /* ─── Data ─────────────────────── */
+  const labor = [
+    { id:'EMP-2341', name:'S.Pillai', role:'Sr. Lineman', skill:'Expert',  task:'VCB Maintenance',   rate:'Rs 520', crew:'Crew-A', quals:15, status:'Active' },
+    { id:'EMP-0234', name:'S.Pillai', role:'Sr. Lineman', skill:'Senior',  task:'Oil Filteration Setup', rate:'Rs 450', crew:'Crew-B', quals:23, status:'Training' },
+    { id:'EMP-2389', name:'S.Pillai', role:'Sr. Lineman', skill:'Junior',  task:'Cable Jointing',    rate:'Rs 530', crew:'Crew-D', quals:42, status:'Active' },
+    { id:'EMP-0567', name:'S.Pillai', role:'Sr. Lineman', skill:'Senior',  task:'Emergency Response', rate:'Rs 495', crew:'Crew-A', quals:56, status:'Training' },
+    { id:'EMP-2456', name:'S.Pillai', role:'Sr. Lineman', skill:'Junior',  task:'Site Survey',       rate:'Rs 510', crew:'Crew-B', quals:71, status:'Active' },
+    { id:'EMP-2465', name:'S.Pillai', role:'Sr. Lineman', skill:'Expert',  task:'Sick Leave',        rate:'Rs 475', crew:'Crew-B', quals:89, status:'Training' },
+  ];
+
+  const wd = [
+    { task:'VCB Maintenance',      ref:'TXN-2341', head:6.0,  reg:6.0,  ot:6.0  },
+    { task:'Oil Filteration Setup', ref:'TXN-0234', head:8.0,  reg:8.0,  ot:8.0  },
+    { task:'Cable Jointing',        ref:'TXN-2389', head:4.0,  reg:4.0,  ot:4.0  },
+    { task:'Emergency Response',    ref:'TXN-0567', head:1.5,  reg:1.5,  ot:1.5  },
+    { task:'Site Survey',           ref:'TXN-2456', head:5.0,  reg:5.0,  ot:5.0  },
+    { task:'Sick Leave',            ref:'TXN-2465', head:7.0,  reg:7.0,  ot:7.0  },
+  ];
+
+  const quals = [
+    { name:'11kV Live-line Authorized', certified:12, total:35, pct:34, renewal:'next renewal in 14d', pfClass:'pf-orange' },
+    { name:'11kV Live-line Authorized', certified:12, total:35, pct:60, renewal:'next renewal in 14d', pfClass:'pf-green'  },
+    { name:'11kV Live-line Authorized', certified:12, total:35, pct:45, renewal:'next renewal in 14d', pfClass:'pf-blue'   },
+  ];
+
+  const skillClasses = { Expert:'sk-expert', Senior:'sk-senior', Junior:'sk-junior' };
+
+  /* ─── Render Labor Table ─────── */
+  document.getElementById('laborBody').innerHTML = labor.map((r,i) => `
+    <tr onclick="selRow(this)">
+      <td class="emp-id">${r.id}</td>
+      <td><div class="emp-name">${r.name}</div><div class="emp-role">${r.role}</div></td>
+      <td><span class="skill-badge ${skillClasses[r.skill]}">${r.skill}</span></td>
+      <td style="font-size:12px;color:var(--text-2)">${r.task}</td>
+      <td class="rate-cell">${r.rate}</td>
+      <td class="crew-cell">${r.crew}</td>
+      <td class="quals-cell">${r.quals}</td>
+      <td><span class="status-badge ${r.status==='Active'?'s-active':'s-training'}">${r.status}</span></td>
+    </tr>
+  `).join('');
+
+  function selRow(r) {
+    document.querySelectorAll('#laborBody tr').forEach(x => x.style.background = '');
+    r.style.background = 'var(--blue-bg)';
+  }
+
+  /* ─── Render Work Description ─── */
+  document.getElementById('wdBody').innerHTML = wd.map(r => `
+    <tr>
+      <td class="wd-activity">${r.task}</td>
+      <td class="wd-ref">${r.ref}</td>
+      <td class="wd-num">${r.head.toFixed(1)}</td>
+      <td class="wd-num">${r.reg.toFixed(1)}</td>
+      <td class="wd-num">${r.ot.toFixed(1)}</td>
+    </tr>
+  `).join('');
+
+  /* ─── Render Quals ──────────── */
+  document.getElementById('qualList').innerHTML = quals.map(q => `
+    <div class="qual-card">
+      <div class="qual-top">
+        <div class="qual-name">
+          <span class="qual-ico">📋</span>
+          ${q.name}
+        </div>
+        <span class="expiring-badge">
+          <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/></svg>
+          3 expiring
+        </span>
+      </div>
+      <div class="qual-meta">
+        <span>${q.certified}/${q.total} certified · ${q.pct}%</span>
+        <span class="dot"></span>
+        <span>📅 ${q.renewal}</span>
+      </div>
+      <div class="prog-track">
+        <div class="prog-fill ${q.pfClass}" style="width:${q.pct}%"></div>
+      </div>
+    </div>
+  `).join('');
+
+  /* ─── Pagination ──────────── */
+  document.querySelectorAll('.pgb').forEach(b => {
+    b.addEventListener('click', function() {
+      document.querySelectorAll('.pgb').forEach(x => x.classList.remove('act'));
+      this.classList.add('act');
+    });
+  });
+</script>
+

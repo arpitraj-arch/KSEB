@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("KSEB")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3afe42fb5478061b6b5db74fc792cae86b5867c3")]
 [assembly: System.Reflection.AssemblyProductAttribute("KSEB")]
 [assembly: System.Reflection.AssemblyTitleAttribute("KSEB")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

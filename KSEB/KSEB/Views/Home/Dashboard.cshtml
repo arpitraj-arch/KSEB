@@ -6,1430 +6,816 @@
 }
 
 
-    <title>Main Dashboard</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-            *, *::before, *::after {
-                box-sizing: border-box;
-                margin: 0;
-                padding: 0;
-            }
-
-            :root {
-                --bg: #f0f2f5;
-                --surface: #ffffff;
-                --surface2: #f5f6f8;
-                --border: #e4e7ec;
-                --text: #111827;
-                --text-muted: #6b7280;
-                --text-dim: #9ca3af;
-                --accent-blue: #2563eb;
-                --accent-green: #16a34a;
-                --accent-orange: #d97706;
-                --accent-red: #dc2626;
-                --accent-teal: #0d9488;
-                --accent-purple: #7c3aed;
-                --font-main: 'IBM Plex Sans', sans-serif;
-                --font-mono: 'IBM Plex Mono', monospace;
-            }
-
-            body {
-                background: var(--bg);
-                color: var(--text);
-                font-family: var(--font-main);
-                font-size: 13px;
-                min-height: 100vh;
-                padding: 0;
-            }
-
-            /* TOP NAV */
-            .top-nav {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                gap: 12px;
-                padding: 0 24px;
-                border-bottom: 1px solid var(--border);
-                background: var(--surface);
-                box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-                min-height: 64px;
-            }
-
-            .nav-left {
-                display: flex;
-                align-items: center;
-                gap: 0;
-                flex-shrink: 0;
-            }
-
-            .nav-left-text {
-                display: flex;
-                flex-direction: column;
-                gap: 2px;
-                padding-right: 20px;
-            }
-
-            .nav-breadcrumb {
-                display: flex;
-                align-items: center;
-                gap: 5px;
-                font-size: 11px;
-                color: var(--text-dim);
-                font-weight: 500;
-            }
-
-                .nav-breadcrumb a {
-                    color: var(--accent-blue);
-                    text-decoration: none;
-                    cursor: pointer;
-                }
-
-                    .nav-breadcrumb a:hover {
-                        text-decoration: underline;
-                    }
-
-                .nav-breadcrumb .sep {
-                    color: var(--text-dim);
-                    font-size: 12px;
-                }
-
-            .nav-title {
-                font-size: 15px;
-                font-weight: 700;
-                color: var(--text);
-                letter-spacing: -0.01em;
-                white-space: nowrap;
-            }
-
-                .nav-title span {
-                    color: var(--accent-blue);
-                }
-
-            .nav-sub {
-                font-size: 11px;
-                color: var(--text-muted);
-                font-weight: 400;
-            }
-
-            .nav-divider {
-                width: 1px;
-                height: 40px;
-                background: var(--border);
-                margin-right: 20px;
-                flex-shrink: 0;
-            }
-
-            .nav-right {
-                display: flex;
-                align-items: center;
-                gap: 8px;
-                flex-shrink: 0;
-            }
-
-            .nav-btn {
-                display: flex;
-                align-items: center;
-                gap: 6px;
-                padding: 7px 14px;
-                border-radius: 6px;
-                border: 1px solid var(--border);
-                background: var(--surface2);
-                color: var(--text);
-                font-family: var(--font-main);
-                font-size: 12px;
-                font-weight: 500;
-                cursor: pointer;
-                transition: all 0.15s;
-            }
-
-                .nav-btn:hover {
-                    border-color: var(--accent-blue);
-                    color: var(--accent-blue);
-                    background: #eff6ff;
-                }
-
-                .nav-btn svg {
-                    width: 13px;
-                    height: 13px;
-                }
-
-            /* MAIN LAYOUT */
-            .main {
-                padding: 10px 6px;
-                display: flex;
-                flex-direction: column;
-                gap: 8px;
-            }
-
-            /* STAT CARDS ROW */
-            .stat-cards {
-                display: grid;
-                grid-template-columns: repeat(4, 1fr);
-                gap: 14px;
-            }
-
-            .stat-card {
-                background: var(--surface);
-                border: 1px solid var(--border);
-                border-radius: 16px;
-                padding: 18px 20px 0 20px;
-                position: relative;
-                overflow: hidden;
-                box-shadow: 0 2px 8px rgba(0,0,0,0.07);
-                display: flex;
-                flex-direction: column;
-                min-height: 140px;
-            }
-
-            .stat-card-top {
-                display: flex;
-                align-items: center;
-                gap: 12px;
-                margin-bottom: 14px;
-            }
-
-            .stat-icon-box {
-                width: 44px;
-                height: 44px;
-                border-radius: 12px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                flex-shrink: 0;
-            }
-
-                .stat-icon-box svg {
-                    width: 22px;
-                    height: 22px;
-                }
-
-                .stat-icon-box.blue {
-                    background: #eff6ff;
-                }
-
-                .stat-icon-box.green {
-                    background: #f0fdf4;
-                }
-
-                .stat-icon-box.red {
-                    background: #fef2f2;
-                }
-
-                .stat-icon-box.orange {
-                    background: #fffbeb;
-                }
-
-            .stat-top-right {
-                display: flex;
-                flex-direction: column;
-                gap: 2px;
-                flex: 1;
-            }
-
-            .stat-label {
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                font-size: 11px;
-                font-weight: 700;
-                letter-spacing: 0.05em;
-                text-transform: uppercase;
-                color: var(--text-muted);
-            }
-
-            .stat-badge {
-                display: flex;
-                align-items: center;
-                gap: 3px;
-                font-size: 11px;
-                font-weight: 600;
-                padding: 2px 7px;
-                border-radius: 20px;
-                margin-left: auto;
-            }
-
-            .badge-green {
-                color: var(--accent-green);
-                background: rgba(22,163,74,0.1);
-            }
-
-            .badge-red {
-                color: var(--accent-red);
-                background: rgba(220,38,38,0.1);
-            }
-
-            .stat-card-bottom {
-                display: flex;
-                align-items: flex-end;
-                justify-content: space-between;
-                flex: 1;
-            }
-
-            .stat-card-bottom-left {
-                padding-bottom: 18px;
-            }
-
-            .stat-value {
-                font-size: 36px;
-                font-weight: 800;
-                line-height: 1;
-                margin-bottom: 5px;
-                font-family: var(--font-mono);
-                color: var(--text);
-            }
-
-            .stat-sub {
-                font-size: 12px;
-                color: var(--text-muted);
-            }
-
-            .sparkline {
-                width: 140px;
-                height: 60px;
-                flex-shrink: 0;
-                display: block;
-                align-self: flex-end;
-            }
-
- 
-            /* GRID ROW */
-            .grid-2 {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: 8px;
-            }
-
-            .grid-3-2 {
-                display: grid;
-                grid-template-columns: 3fr 2fr;
-                gap: 8px;
-            }
-
-            /* PANEL */
-            .panel {
-                background: var(--surface);
-                border: 1px solid var(--border);
-                border-radius: 20px;
-                padding: 18px 20px;
-                box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-            }
-
-            .panel-title {
-                display: flex;
-                align-items: center;
-                gap: 8px;
-                font-size: 15px; /* Slightly smaller for better balance */
-                font-weight: 800; /* Heavy weight without being chunky */
-                margin-bottom: 12px;
-                padding: 4px 8px;
-                color: #1e293b; /* Deep slate instead of pure black */
-                border-left: 4px solid #2563eb; /* Blue accent to match your first icon */
-                background: #f8fafc; /* Very light background to define the area */
-            }
-
-                .panel-title svg {
-                    width: 14px;
-                    height: 14px;
-                    color: var(--accent-blue);
-                }
-
-            .panel-sub {
-                font-size: 11px;
-                color: var(--text-muted);
-                margin-bottom: 14px;
-            }
-
-            .load-metrics {
-                display: flex;
-                gap: 4px;
-                margin-bottom: 14px;
-            }
-
-            .metric-item {
-                flex: 1;
-                background-color: #f8fafc; /* Soft off-white background */
-                border: 1px solid #e2e8f0; /* Distinct outer gray line border */
-                border-radius: 16px; /* Clean rounded corners */
-                padding: 10px 10px; /* Equal spacing from edges */
-                box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02); /* Faint depth shadow */
-            }
-
-            .metric-key {
-                font-size: 10px;
-                color: var(--text-muted);
-                text-transform: uppercase;
-                letter-spacing: 0.06em;
-                font-weight: 600;
-            }
-
-            .metric-val {
-                font-size: 18px;
-                font-weight: 700;
-                color: var(--accent-blue);
-                font-family: var(--font-mono);
-            }
-
-                .metric-val.green {
-                    color: var(--accent-green);
-                }
-
-            .metric-time {
-                font-size: 10px;
-                color: var(--text-dim);
-            }
-
-            /* LINE CHART */
-            .chart-wrap {
-                width: 100%;
-                height: 160px;
-                position: relative;
-            }
-
-            /* DONUT */
-            .donut-wrap {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                position: relative;
-            }
-
-            .donut-svg {
-                width: 160px;
-                height: 160px;
-            }
-
-            .donut-center {
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                text-align: center;
-                pointer-events: none;
-            }
-
-            .donut-num {
-                font-size: 24px;
-                font-weight: 700;
-                font-family: var(--font-mono);
-            }
-
-            .donut-lbl {
-                font-size: 11px;
-                color: var(--text-muted);
-            }
-
-            .legend {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 8px 14px;
-                margin-top: 10px;
-                justify-content: center;
-            }
-
-            .legend-item {
-                display: flex;
-                align-items: center;
-                gap: 5px;
-                font-size: 11px;
-                color: var(--text-muted);
-            }
-
-            .legend-dot {
-                width: 8px;
-                height: 8px;
-                border-radius: 50%;
-                flex-shrink: 0;
-            }
-
-            /* SYSTEM ASSET STATUS */
-            .asset-labels {
-                position: absolute;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                pointer-events: none;
-            }
-
-            /* PM COMPLIANCE */
-            .pm-donut-section {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                flex: 1;
-                position: relative;
-            }
-
-            /* WORKFLOW INBOX */
-            .inbox-header {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                margin-bottom: 12px;
-            }
-
-            .inbox-count {
-                font-size: 11px;
-                color: var(--text-muted);
-            }
-
-            .inbox-list {
-                display: flex;
-                flex-direction: column;
-                gap: 0;
-                max-height: 280px;
-                overflow-y: auto;
-            }
-
-            .inbox-item {
-                display: flex;
-                align-items: flex-start;
-                gap: 10px;
-                padding: 10px 0;
-                border-bottom: 1px solid var(--border);
-            }
-
-                .inbox-item:last-child {
-                    border-bottom: none;
-                }
-
-            .inbox-check {
-                margin-top: 2px;
-                accent-color: var(--accent-blue);
-                cursor: pointer;
-            }
-
-            .inbox-body {
-                flex: 1;
-                min-width: 0;
-            }
-
-            .inbox-id {
-                font-size: 11px;
-                color: var(--accent-blue);
-                font-weight: 600;
-                font-family: var(--font-mono);
-            }
-
-            .badge-medium {
-                display: inline-block;
-                font-size: 9px;
-                font-weight: 700;
-                letter-spacing: 0.06em;
-                padding: 1px 6px;
-                border-radius: 3px;
-                background: rgba(245,158,11,0.15);
-                color: var(--accent-orange);
-                margin-left: 6px;
-                vertical-align: middle;
-            }
-
-            .inbox-desc {
-                font-size: 12px;
-                color: var(--text);
-                margin: 2px 0;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-            }
-
-            .inbox-meta {
-                font-size: 10px;
-                color: var(--text-dim);
-            }
-
-            .inbox-actions {
-                display: flex;
-                align-items: center;
-                gap: 6px;
-                flex-shrink: 0;
-            }
-
-            .btn-icon {
-                width: 28px;
-                height: 28px;
-                border-radius: 6px;
-                border: 1px solid var(--border);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                cursor: pointer;
-                transition: all 0.15s;
-                background: var(--surface2);
-            }
-
-                .btn-icon:hover {
-                    border-color: var(--accent-green);
-                }
-
-                .btn-icon.red:hover {
-                    border-color: var(--accent-red);
-                }
-
-                .btn-icon svg {
-                    width: 12px;
-                    height: 12px;
-                }
-
-            .btn-review {
-                padding: 5px 12px;
-                border-radius: 6px;
-                border: 1px solid var(--border);
-                background: var(--surface2);
-                color: var(--text-muted);
-                font-size: 11px;
-                font-weight: 500;
-                cursor: pointer;
-                transition: all 0.15s;
-            }
-
-                .btn-review:hover {
-                    border-color: var(--accent-blue);
-                    color: var(--accent-blue);
-                }
-
-            /* BAR CHART */
-            .bar-chart-wrap {
-                width: 100%;
-                height: 160px;
-            }
-
-            /* ASSET HEALTH */
-            .asset-health-grid {
-                display: grid;
-                grid-template-columns: auto 1fr;
-                gap: 20px;
-                align-items: center;
-            }
-
-            .health-legend-list {
-                display: flex;
-                flex-direction: column;
-                gap: 8px;
-            }
-
-            .health-legend-row {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                gap: 12px;
-                font-size: 12px;
-            }
-
-            .health-legend-left {
-                display: flex;
-                align-items: center;
-                gap: 7px;
-            }
-
-            .health-nums {
-                text-align: right;
-            }
-
-            .health-num {
-                font-weight: 700;
-                font-family: var(--font-mono);
-                font-size: 13px;
-            }
-
-            .health-pct {
-                font-size: 11px;
-                color: var(--text-muted);
-            }
-
-            /* TABLE */
-            .table-header-row {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                margin-bottom: 12px;
-            }
-
-            .table-actions {
-                display: flex;
-                gap: 8px;
-            }
-
-            .tbl-icon-btn {
-                width: 28px;
-                height: 28px;
-                border: 1px solid var(--border);
-                border-radius: 6px;
-                background: var(--surface2);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                cursor: pointer;
-                color: var(--text-muted);
-                transition: all 0.15s;
-            }
-
-                .tbl-icon-btn:hover {
-                    color: var(--accent-blue);
-                    border-color: var(--accent-blue);
-                }
-
-                .tbl-icon-btn svg {
-                    width: 12px;
-                    height: 12px;
-                }
-
-            table {
-                width: 100%;
-                border-collapse: collapse;
-            }
-
-            thead tr {
-                border-bottom: 1px solid var(--border);
-            }
-
-            thead th {
-                padding: 8px 10px;
-                text-align: left;
-                font-size: 10px;
-                font-weight: 700;
-                letter-spacing: 0.07em;
-                text-transform: uppercase;
-                color: var(--text-dim);
-            }
-
-                thead th:first-child {
-                    width: 32px;
-                }
-
-            tbody tr {
-                border-bottom: 1px solid var(--border);
-                transition: background 0.1s;
-            }
-
-                tbody tr:hover {
-                    background: #f5f7ff;
-                }
-
-            tbody td {
-                padding: 10px 10px;
-                font-size: 12px;
-            }
-
-            .td-link {
-                color: var(--accent-blue);
-                font-family: var(--font-mono);
-                font-size: 11px;
-                cursor: pointer;
-            }
-
-                .td-link:hover {
-                    text-decoration: underline;
-                }
-
-            .status-badge {
-                display: inline-block;
-                padding: 3px 10px;
-                border-radius: 20px;
-                font-size: 10px;
-                font-weight: 600;
-            }
-
-            .status-approved {
-                background: rgba(62,207,142,0.15);
-                color: var(--accent-green);
-            }
-
-            .status-progress {
-                background: rgba(74,158,255,0.15);
-                color: var(--accent-blue);
-            }
-
-            .status-waiting {
-                background: rgba(245,158,11,0.15);
-                color: var(--accent-orange);
-            }
-
-            .table-footer {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                margin-top: 12px;
-                padding-top: 10px;
-                border-top: 1px solid var(--border);
-            }
-
-            .view-all-link {
-                font-size: 12px;
-                color: var(--accent-blue);
-                cursor: pointer;
-            }
-
-                .view-all-link:hover {
-                    text-decoration: underline;
-                }
-
-            .total-label {
-                font-size: 11px;
-                color: var(--text-muted);
-            }
-
-            /* DAYS LEFT BADGES */
-            .days-badge {
-                display: inline-block;
-                padding: 3px 10px;
-                border-radius: 20px;
-                font-size: 10px;
-                font-weight: 700;
-                font-family: var(--font-mono);
-            }
-
-            .days-urgent {
-                background: rgba(239,68,68,0.15);
-                color: var(--accent-red);
-            }
-
-            .days-ok {
-                background: rgba(62,207,142,0.15);
-                color: var(--accent-green);
-            }
-
-            .days-mid {
-                background: rgba(245,158,11,0.15);
-                color: var(--accent-orange);
-            }
-
-            /* Scrollbar global */
-            ::-webkit-scrollbar {
-                width: 6px;
-                height: 6px;
-            }
-
-            ::-webkit-scrollbar-track {
-                background: #f0f2f5;
-            }
-
-            ::-webkit-scrollbar-thumb {
-                background: #d1d5db;
-                border-radius: 3px;
-            }
-
-            .inbox-list::-webkit-scrollbar {
-                width: 4px;
-            }
-
-            .inbox-list::-webkit-scrollbar-track {
-                background: #f5f6f8;
-            }
-
-            .inbox-list::-webkit-scrollbar-thumb {
-                background: #e4e7ec;
-                border-radius: 2px;
-            }
-
-            .title-divider {
-                height: 1px;
-                background-color: #d6ddea; /* Light gray line */
-                width: 100%;
-                margin-bottom: 10px;
-            }
-    </style>
-
-
-    <!-- TOP NAV -->
-    <nav class="top-nav">
-        <div class="nav-left">
-            <div class="nav-left-text">
-                <div class="nav-breadcrumb">
-                    <a>Home</a>
-                    <span class="sep">›</span>
-                    <span>Main Dashboard</span>
-                </div>
-                <div class="nav-title">Operation &amp; <span>Maintenance</span> Dashboard</div>
-                <div class="nav-sub">Thiruvananthapuram Circle | Realtime Insight Maintaince</div>
-            </div>
-            <div class="nav-divider"></div>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>O&M Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #f0f2f5;
+  --surface: #ffffff;
+  --surface2: #f5f6f8;
+  --border: #e4e7ec;
+  --text: #111827;
+  --text-muted: #6b7280;
+  --text-dim: #9ca3af;
+  --blue: #2563eb;
+  --green: #16a34a;
+  --orange: #d97706;
+  --red: #dc2626;
+  --teal: #0d9488;
+  --purple: #7c3aed;
+  --font: 'IBM Plex Sans', sans-serif;
+  --mono: 'IBM Plex Mono', monospace;
+  --radius: 16px;
+  --radius-sm: 8px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.07);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 13px;
+  min-height: 100vh;
+}
+
+/* ── TOP NAV ── */
+.top-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 24px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+  min-height: 64px;
+  flex-wrap: wrap;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.nav-left1 { display: flex; align-items: center; gap: 0; }
+.nav-left1-text { display: flex; flex-direction: column; gap: 2px; padding-right: 20px; }
+.nav-breadcrumb { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--text-dim); font-weight: 500; }
+.nav-breadcrumb a { color: var(--blue); text-decoration: none; cursor: pointer; }
+.nav-breadcrumb a:hover { text-decoration: underline; }
+.nav-title { font-size: 15px; font-weight: 700; color: var(--text); letter-spacing: -.01em; white-space: nowrap; }
+.nav-title span { color: var(--blue); }
+.nav-sub { font-size: 11px; color: var(--text-muted); }
+.nav-divider { width: 1px; height: 40px; background: var(--border); margin-right: 20px; flex-shrink: 0; }
+.nav-right { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.nav-btn {
+  display: flex; align-items: center; gap: 6px;
+  padding: 7px 13px; border-radius: 6px; border: 1px solid var(--border);
+  background: var(--surface2); color: var(--text); font-family: var(--font);
+  font-size: 12px; font-weight: 500; cursor: pointer; transition: all .15s; white-space: nowrap;
+}
+.nav-btn:hover { border-color: var(--blue); color: var(--blue); background: #eff6ff; }
+.nav-btn svg { width: 13px; height: 13px; flex-shrink: 0; }
+
+/* ── MAIN ── */
+.main { padding: 14px 14px; display: flex; flex-direction: column; gap: 12px; }
+
+/* ── STAT CARDS ── */
+.stat-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.stat-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 18px 20px 0; position: relative;
+  overflow: hidden; box-shadow: var(--shadow); display: flex; flex-direction: column; min-height: 140px;
+}
+.stat-card-top { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+.stat-icon-box {
+  width: 44px; height: 44px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.stat-icon-box svg { width: 22px; height: 22px; }
+.stat-icon-box.blue   { background: #eff6ff; }
+.stat-icon-box.green  { background: #f0fdf4; }
+.stat-icon-box.red    { background: #fef2f2; }
+.stat-icon-box.orange { background: #fffbeb; }
+.stat-top-right { display: flex; flex-direction: column; gap: 2px; flex: 1; }
+.stat-label { display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--text-muted); flex-wrap: wrap; }
+.stat-badge { display: flex; align-items: center; gap: 3px; font-size: 11px; font-weight: 600; padding: 2px 7px; border-radius: 20px; margin-left: auto; }
+.badge-green { color: var(--green); background: rgba(22,163,74,.1); }
+.badge-red   { color: var(--red);   background: rgba(220,38,38,.1); }
+.stat-card-bottom { display: flex; align-items: flex-end; justify-content: space-between; flex: 1; }
+.stat-card-bottom-left { padding-bottom: 18px; }
+.stat-value { font-size: 34px; font-weight: 800; line-height: 1; margin-bottom: 4px; font-family: var(--mono); }
+.stat-sub { font-size: 12px; color: var(--text-muted); }
+.sparkline { width: 130px; height: 58px; flex-shrink: 0; display: block; align-self: flex-end; }
+
+/* ── PANELS ── */
+.panel {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 16px 18px; box-shadow: var(--shadow-sm);
+}
+.panel-title {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; font-weight: 800; margin-bottom: 10px;
+  padding: 4px 8px; color: #1e293b;
+  border-left: 4px solid var(--blue);
+  background: #f8fafc;
+}
+.panel-title svg { width: 14px; height: 14px; color: var(--blue); flex-shrink: 0; }
+.panel-sub { font-size: 11px; color: var(--text-muted); margin-bottom: 12px; }
+.title-divider { height: 1px; background: #d6ddea; width: 100%; margin-bottom: 10px; }
+
+/* ── GRID LAYOUTS ── */
+.grid-3-2 { display: grid; grid-template-columns: 3fr 2fr; gap: 12px; }
+.grid-2   { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+/* ── LOAD METRICS ── */
+.load-metrics { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; }
+.metric-item {
+  flex: 1; min-width: 90px;
+  background: #f8fafc; border: 1px solid #e2e8f0;
+  border-radius: 12px; padding: 10px;
+}
+.metric-key { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: .06em; font-weight: 600; }
+.metric-val { font-size: 16px; font-weight: 700; color: var(--blue); font-family: var(--mono); }
+.metric-val.green { color: var(--green); }
+.metric-time { font-size: 10px; color: var(--text-dim); }
+
+/* ── CHART ── */
+.chart-wrap { width: 100%; height: 155px; position: relative; }
+
+/* ── DONUT ── */
+.donut-svg { width: 160px; height: 160px; }
+.legend { display: flex; flex-wrap: wrap; gap: 8px 14px; margin-top: 10px; justify-content: center; }
+.legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--text-muted); }
+.legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+/* ── INBOX ── */
+.inbox-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.inbox-count { font-size: 11px; color: var(--text-muted); }
+.inbox-list { display: flex; flex-direction: column; max-height: 280px; overflow-y: auto; }
+.inbox-item { display: flex; align-items: flex-start; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+.inbox-item:last-child { border-bottom: none; }
+.inbox-check { margin-top: 2px; accent-color: var(--blue); cursor: pointer; flex-shrink: 0; }
+.inbox-body { flex: 1; min-width: 0; }
+.inbox-id { font-size: 11px; color: var(--blue); font-weight: 600; font-family: var(--mono); }
+.badge-medium {
+  display: inline-block; font-size: 9px; font-weight: 700; letter-spacing: .06em;
+  padding: 1px 6px; border-radius: 3px;
+  background: rgba(245,158,11,.15); color: var(--orange); margin-left: 6px; vertical-align: middle;
+}
+.inbox-desc { font-size: 12px; color: var(--text); margin: 2px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.inbox-meta { font-size: 10px; color: var(--text-dim); }
+.inbox-actions { display: flex; align-items: center; gap: 5px; flex-shrink: 0; }
+.btn-icon {
+  width: 28px; height: 28px; border-radius: 6px; border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center; cursor: pointer;
+  transition: all .15s; background: var(--surface2);
+}
+.btn-icon:hover { border-color: var(--green); }
+.btn-icon.red:hover { border-color: var(--red); }
+.btn-icon svg { width: 12px; height: 12px; }
+.btn-review {
+  padding: 5px 10px; border-radius: 6px; border: 1px solid var(--border);
+  background: var(--surface2); color: var(--text-muted);
+  font-size: 11px; font-weight: 500; cursor: pointer; transition: all .15s; white-space: nowrap;
+}
+.btn-review:hover { border-color: var(--blue); color: var(--blue); }
+
+/* ── BAR CHART ── */
+.bar-chart-wrap { width: 100%; height: 160px; }
+
+/* ── ASSET HEALTH ── */
+.asset-health-grid { display: grid; grid-template-columns: auto 1fr; gap: 18px; align-items: center; }
+.health-legend-list { display: flex; flex-direction: column; gap: 8px; }
+.health-legend-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: 12px; }
+.health-legend-left { display: flex; align-items: center; gap: 7px; }
+.health-num { font-weight: 700; font-family: var(--mono); font-size: 13px; }
+.health-pct { font-size: 11px; color: var(--text-muted); }
+
+/* ── TABLE ── */
+.table-header-row { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; gap: 8px; flex-wrap: wrap; }
+.table-actions { display: flex; gap: 6px; flex-shrink: 0; }
+.tbl-icon-btn {
+  width: 28px; height: 28px; border: 1px solid var(--border); border-radius: 6px;
+  background: var(--surface2); display: flex; align-items: center; justify-content: center;
+  cursor: pointer; color: var(--text-muted); transition: all .15s;
+}
+.tbl-icon-btn:hover { color: var(--blue); border-color: var(--blue); }
+.tbl-icon-btn svg { width: 12px; height: 12px; }
+table { width: 100%; border-collapse: collapse; }
+thead tr { border-bottom: 1px solid var(--border); }
+thead th {
+  padding: 8px 10px; text-align: left;
+  font-size: 10px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--text-dim);
+  white-space: nowrap;
+}
+thead th:first-child { width: 32px; }
+tbody tr { border-bottom: 1px solid var(--border); transition: background .1s; }
+tbody tr:hover { background: #f5f7ff; }
+tbody td { padding: 10px 10px; font-size: 12px; }
+.td-link { color: var(--blue); font-family: var(--mono); font-size: 11px; cursor: pointer; white-space: nowrap; }
+.td-link:hover { text-decoration: underline; }
+.status-badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 10px; font-weight: 600; white-space: nowrap; }
+.status-approved { background: rgba(62,207,142,.15); color: var(--green); }
+.status-progress  { background: rgba(74,158,255,.15); color: var(--blue); }
+.status-waiting   { background: rgba(245,158,11,.15);  color: var(--orange); }
+.days-badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 10px; font-weight: 700; font-family: var(--mono); white-space: nowrap; }
+.days-urgent { background: rgba(239,68,68,.15);  color: var(--red); }
+.days-ok     { background: rgba(62,207,142,.15);  color: var(--green); }
+.days-mid    { background: rgba(245,158,11,.15);  color: var(--orange); }
+.table-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--border); flex-wrap: wrap; gap: 6px; }
+.view-all-link { font-size: 12px; color: var(--blue); cursor: pointer; }
+.view-all-link:hover { text-decoration: underline; }
+.total-label { font-size: 11px; color: var(--text-muted); }
+
+/* ── TABLE SCROLL WRAPPER ── */
+.table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: #f0f2f5; }
+::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
+
+/* ═══════════════════════════════════════
+   RESPONSIVE BREAKPOINTS
+═══════════════════════════════════════ */
+
+/* 1280px: tighten grid-3-2 */
+@@media (max-width: 1280px) {
+  .stat-cards { grid-template-columns: repeat(2, 1fr); }
+  .sparkline { width: 100px; }
+}
+
+/* 1024px: stack grid-3-2 */
+@@media (max-width: 1024px) {
+  .grid-3-2 { grid-template-columns: 1fr; }
+  .grid-2   { grid-template-columns: 1fr; }
+  .main { padding: 12px; gap: 10px; }
+}
+
+/* 768px: tablets */
+@@media (max-width: 768px) {
+  .top-nav { padding: 10px 16px; min-height: auto; gap: 10px; }
+  .nav-divider { display: none; }
+  .nav-right { gap: 6px; }
+  .nav-btn { padding: 6px 10px; font-size: 11px; }
+  .nav-btn span.btn-label { display: none; } /* hide text, keep icon on xs */
+  .stat-cards { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .stat-value { font-size: 28px; }
+  .sparkline { width: 80px; height: 46px; }
+  .main { padding: 10px; }
+  .panel { padding: 14px 14px; }
+  /* hide less critical table columns */
+  .tbl-hide-md { display: none; }
+  .asset-health-grid { grid-template-columns: 1fr; justify-items: center; }
+  .donut-svg { width: 140px; height: 140px; }
+}
+
+/* 640px: large phones landscape */
+@@media (max-width: 640px) {
+  .top-nav { padding: 10px 12px; }
+  .nav-right .nav-btn:nth-child(n+3) { display: none; } /* keep first 2 btns */
+  .stat-cards { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .stat-card { min-height: 120px; padding: 14px 14px 0; }
+  .stat-icon-box { width: 36px; height: 36px; border-radius: 10px; }
+  .stat-icon-box svg { width: 18px; height: 18px; }
+  .stat-value { font-size: 24px; }
+  .stat-badge { display: none; }
+  .sparkline { display: none; }
+  .load-metrics { flex-direction: column; gap: 6px; }
+  .metric-item { min-width: unset; }
+  .panel-title { font-size: 12px; }
+  .inbox-actions .btn-review { display: none; }
+}
+
+/* 480px: phones portrait */
+@@media (max-width: 480px) {
+  .top-nav { padding: 8px 10px; }
+  .nav-right { width: 100%; justify-content: flex-end; }
+  .nav-right .nav-btn:nth-child(n+2) { display: none; } /* only 1 btn */
+  .nav-title { font-size: 13px; }
+  .nav-sub { display: none; }
+  .stat-cards { grid-template-columns: 1fr 1fr; gap: 6px; }
+  .stat-card { min-height: 110px; padding: 12px 12px 0; }
+  .stat-value { font-size: 22px; }
+  .main { padding: 8px; gap: 8px; }
+  .panel { padding: 12px 12px; border-radius: 12px; }
+  .tbl-hide-sm { display: none; }
+  .chart-wrap { height: 120px; }
+  .bar-chart-wrap { height: 130px; }
+  .donut-svg { width: 120px; height: 120px; }
+}
+
+/* 360px: very small phones */
+@@media (max-width: 360px) {
+  .stat-cards { grid-template-columns: 1fr; }
+  .stat-card { flex-direction: row; align-items: center; min-height: auto; padding: 12px; }
+  .stat-card-bottom { flex-direction: row; align-items: center; gap: 8px; }
+}
+</style>
+
+
+<!-- TOP NAV -->
+<nav class="top-nav">
+  <div class="nav-left1">
+    <div class="nav-left1-text">
+      <div class="nav-breadcrumb">
+        <a>Home</a><span class="sep">›</span><span>Main Dashboard</span>
+      </div>
+      <div class="nav-title">Operation &amp; <span>Maintenance</span> Dashboard</div>
+      <div class="nav-sub">Thiruvananthapuram Circle | Realtime Insight Maintenance</div>
+    </div>
+    <div class="nav-divider"></div>
+  </div>
+  <div class="nav-right">
+    <button class="nav-btn">
+      <svg viewBox="0 0 16 16" fill="none" stroke="#2563eb" stroke-width="1.5"><rect x="2" y="2" width="12" height="12" rx="2"/><path d="M5 8h6M8 5v6"/></svg>
+      <span class="btn-label">Create Work Order</span>
+    </button>
+    <button class="nav-btn">
+      <svg viewBox="0 0 16 16" fill="none" stroke="#0ea5e9" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg>
+      <span class="btn-label">Asset Tracking</span>
+    </button>
+    <button class="nav-btn">
+      <svg viewBox="0 0 16 16" fill="none" stroke="#10b981" stroke-width="1.5"><rect x="2" y="3" width="12" height="10" rx="1.5"/><path d="M5 7h6M5 10h4"/></svg>
+      <span class="btn-label">PM Schedules</span>
+    </button>
+    <button class="nav-btn">
+      <svg viewBox="0 0 16 16" fill="none" stroke="#f59e0b" stroke-width="1.5"><path d="M2 11l4-4 3 3 5-6"/></svg>
+      <span class="btn-label">View Reports</span>
+    </button>
+  </div>
+</nav>
+
+<div class="main">
+
+  <!-- STAT CARDS -->
+  <div class="stat-cards">
+    <div class="stat-card">
+      <div class="stat-card-top">
+        <div class="stat-icon-box blue">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.8"><path d="M20 7H4a2 2 0 00-2 2v9a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z"/><path d="M16 3H8a2 2 0 00-2 2v2h12V5a2 2 0 00-2-2z"/><path d="M12 13v3M10.5 13h3"/></svg>
         </div>
-        <div class="nav-right">
-            <!-- Create Work Order - Blue -->
-            <button class="nav-btn">
-                <svg viewBox="0 0 16 16" fill="none" stroke="#2563eb" stroke-width="1.5"><rect x="2" y="2" width="12" height="12" rx="2" /><path d="M5 8h6M8 5v6" /></svg>
-                Create Work Order
-            </button>
-
-            <!-- Asset Tracking - Light Blue -->
-            <button class="nav-btn">
-                <svg viewBox="0 0 16 16" fill="none" stroke="#0ea5e9" stroke-width="1.5"><circle cx="8" cy="8" r="6" /><path d="M8 5v3l2 2" /></svg>
-                Asset Tracking
-            </button>
-
-            <!-- PM Schedules - Green -->
-            <button class="nav-btn">
-                <svg viewBox="0 0 16 16" fill="none" stroke="#10b981" stroke-width="1.5"><rect x="2" y="3" width="12" height="10" rx="1.5" /><path d="M5 7h6M5 10h4" /></svg>
-                PM Schedules
-            </button>
-
-            <!-- View Reports - Orange -->
-            <button class="nav-btn">
-                <svg viewBox="0 0 16 16" fill="none" stroke="#f59e0b" stroke-width="1.5"><path d="M2 11l4-4 3 3 5-6" /></svg>
-                View Reports
-            </button>
+        <div class="stat-top-right">
+          <div class="stat-label">Active Work Orders <span class="stat-badge badge-green">↗ +12%</span></div>
         </div>
-    </nav>
-
-    <div class="main">
-
-        <!-- STAT CARDS -->
-        <div class="stat-cards">
-            <!-- Active Work Orders -->
-            <div class="stat-card card-blue">
-                <div class="stat-card-top">
-                    <div class="stat-icon-box blue">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.8"><path d="M20 7H4a2 2 0 00-2 2v9a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z" /><path d="M16 3H8a2 2 0 00-2 2v2h12V5a2 2 0 00-2-2z" /><path d="M12 13v3M10.5 13h3" /></svg>
-                    </div>
-                    <div class="stat-label">Active Work Orders <span class="stat-badge badge-green">↗ +12%</span></div>
-                </div>
-                <div class="stat-card-bottom">
-                    <div class="stat-card-bottom-left">
-                        <div class="stat-value">67</div>
-                        <div class="stat-sub">today</div>
-                    </div>
-                    <svg class="sparkline" viewBox="0 0 140 60" preserveAspectRatio="none">
-                        <defs><linearGradient id="sg1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#2563eb" stop-opacity="0.25" /><stop offset="100%" stop-color="#2563eb" stop-opacity="0" /></linearGradient></defs>
-                        <path d="M0,50 L20,44 L40,46 L60,34 L80,36 L100,24 L120,20 L140,10" stroke="#2563eb" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" />
-                        <path d="M0,50 L20,44 L40,46 L60,34 L80,36 L100,24 L120,20 L140,10 L140,60 L0,60Z" fill="url(#sg1)" />
-                        <circle cx="60" cy="34" r="3" fill="#2563eb" />
-                        <circle cx="100" cy="24" r="3" fill="#2563eb" />
-                        <circle cx="140" cy="10" r="3" fill="#2563eb" />
-                    </svg>
-                </div>
-            </div>
-
-            <!-- PM Compliance -->
-            <div class="stat-card card-green">
-                <div class="stat-card-top">
-                    <div class="stat-icon-box green">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="1.8"><path d="M22 11.08V12a10 10 0 11-5.93-9.14" /><path d="M22 4L12 14.01l-3-3" /></svg>
-                    </div>
-                    <div class="stat-label">PM Compliance <span class="stat-badge badge-green">↗ +12%</span></div>
-                </div>
-                <div class="stat-card-bottom">
-                    <div class="stat-card-bottom-left">
-                        <div class="stat-value" style="color:var(--accent-green)">87.3%</div>
-                        <div class="stat-sub">vs last month</div>
-                    </div>
-                    <svg class="sparkline" viewBox="0 0 140 60" preserveAspectRatio="none">
-                        <defs><linearGradient id="sg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#16a34a" stop-opacity="0.25" /><stop offset="100%" stop-color="#16a34a" stop-opacity="0" /></linearGradient></defs>
-                        <path d="M0,52 L20,46 L40,48 L60,38 L80,30 L100,22 L120,16 L140,8" stroke="#16a34a" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" />
-                        <path d="M0,52 L20,46 L40,48 L60,38 L80,30 L100,22 L120,16 L140,8 L140,60 L0,60Z" fill="url(#sg2)" />
-                        <circle cx="80" cy="30" r="3" fill="#16a34a" />
-                        <circle cx="140" cy="8" r="3" fill="#16a34a" />
-                    </svg>
-                </div>
-            </div>
-
-            <!-- Critical Assets -->
-            <div class="stat-card card-red">
-                <div class="stat-card-top">
-                    <div class="stat-icon-box red">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="1.8"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" /><line x1="12" y1="9" x2="12" y2="13" /><line x1="12" y1="17" x2="12.01" y2="17" /></svg>
-                    </div>
-                    <div class="stat-label">Critical Assets <span class="stat-badge badge-red">↘ -12%</span></div>
-                </div>
-                <div class="stat-card-bottom">
-                    <div class="stat-card-bottom-left">
-                        <div class="stat-value" style="color:var(--accent-red)">5</div>
-                        <div class="stat-sub">requires attention</div>
-                    </div>
-                    <svg class="sparkline" viewBox="0 0 140 60" preserveAspectRatio="none">
-                        <defs><linearGradient id="sg3" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#dc2626" stop-opacity="0.25" /><stop offset="100%" stop-color="#dc2626" stop-opacity="0" /></linearGradient></defs>
-                        <path d="M0,10 L20,18 L40,14 L60,26 L80,30 L100,38 L120,34 L140,48" stroke="#dc2626" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" />
-                        <path d="M0,10 L20,18 L40,14 L60,26 L80,30 L100,38 L120,34 L140,48 L140,60 L0,60Z" fill="url(#sg3)" />
-                        <circle cx="60" cy="26" r="3" fill="#dc2626" />
-                        <circle cx="140" cy="48" r="3" fill="#dc2626" />
-                    </svg>
-                </div>
-            </div>
-
-            <!-- Average MTTR -->
-            <div class="stat-card card-orange">
-                <div class="stat-card-top">
-                    <div class="stat-icon-box orange">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="1.8"><circle cx="12" cy="12" r="10" /><path d="M12 6v6l4 2" /></svg>
-                    </div>
-                    <div class="stat-label">Average MTTR <span class="stat-badge badge-green">↗ +12%</span></div>
-                </div>
-                <div class="stat-card-bottom">
-                    <div class="stat-card-bottom-left">
-                        <div class="stat-value" style="color:var(--accent-orange)">4.2<span style="font-size:18px;font-weight:500">h</span></div>
-                        <div class="stat-sub">improvement</div>
-                    </div>
-                    <svg class="sparkline" viewBox="0 0 140 60" preserveAspectRatio="none">
-                        <defs><linearGradient id="sg4" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#d97706" stop-opacity="0.25" /><stop offset="100%" stop-color="#d97706" stop-opacity="0" /></linearGradient></defs>
-                        <path d="M0,46 L20,40 L40,42 L60,30 L80,28 L100,18 L120,22 L140,10" stroke="#d97706" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" />
-                        <path d="M0,46 L20,40 L40,42 L60,30 L80,28 L100,18 L120,22 L140,10 L140,60 L0,60Z" fill="url(#sg4)" />
-                        <circle cx="100" cy="18" r="3" fill="#d97706" />
-                        <circle cx="140" cy="10" r="3" fill="#d97706" />
-                    </svg>
-                </div>
-            </div>
+      </div>
+      <div class="stat-card-bottom">
+        <div class="stat-card-bottom-left">
+          <div class="stat-value">67</div>
+          <div class="stat-sub">today</div>
         </div>
-
-        <!-- GRID LOAD + SYSTEM ASSET STATUS -->
-        <div class="grid-3-2">
-            <!-- Grid Load Panel -->
-            <div class="panel">
-                <div class="panel-title">
-                    <svg viewBox="0 0 16 16" fill="none" stroke="var(--accent-blue)" stroke-width="1.5"><path d="M2 11l4-4 3 3 5-6" /></svg>
-                    Grid Load . Last 24 Hours
-                </div>
-                <div class="panel-sub">Thiruvandhapuram Circle (MW) · Live SCADA feed</div>
-                <div class="title-divider"></div>
-                <div class="load-metrics">
-                    <div class="metric-item">
-                        <div class="metric-key">Peak Load</div>
-                        <div class="metric-val">1,080 MW</div>
-                        <div class="metric-time">16:00</div>
-                    </div>
-                    <div class="metric-item">
-                        <div class="metric-key">Avg Demand</div>
-                        <div class="metric-val green">1,080 MW</div>
-                        <div class="metric-time">24h</div>
-                    </div>
-                    <div class="metric-item">
-                        <div class="metric-key">Reliability</div>
-                        <div class="metric-val green">99.4%</div>
-                        <div class="metric-time">SAIDI Compliant</div>
-                    </div>
-                </div>
-                <!-- Line Chart SVG -->
-                <div class="chart-wrap">
-                    <svg width="100%" height="160" viewBox="0 0 540 160" preserveAspectRatio="none">
-                        <defs>
-                            <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="0%" stop-color="#2563eb" stop-opacity="0.15" />
-                                <stop offset="100%" stop-color="#2563eb" stop-opacity="0" />
-                            </linearGradient>
-                            <linearGradient id="areaGrad2" x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="0%" stop-color="#16a34a" stop-opacity="0.1" />
-                                <stop offset="100%" stop-color="#16a34a" stop-opacity="0" />
-                            </linearGradient>
-                        </defs>
-                        <!-- Grid lines -->
-                        <line x1="0" y1="32" x2="540" y2="32" stroke="#e4e7ec" stroke-width="1" />
-                        <line x1="0" y1="64" x2="540" y2="64" stroke="#e4e7ec" stroke-width="1" />
-                        <line x1="0" y1="96" x2="540" y2="96" stroke="#e4e7ec" stroke-width="1" />
-                        <line x1="0" y1="128" x2="540" y2="128" stroke="#e4e7ec" stroke-width="1" />
-                        <!-- Y labels -->
-                        <text x="0" y="32" fill="#9ca3af" font-size="9" dy="-3">100</text>
-                        <text x="0" y="64" fill="#9ca3af" font-size="9" dy="-3">80</text>
-                        <text x="0" y="96" fill="#9ca3af" font-size="9" dy="-3">60</text>
-                        <text x="0" y="128" fill="#9ca3af" font-size="9" dy="-3">40</text>
-                        <text x="0" y="158" fill="#9ca3af" font-size="9">20</text>
-                        <path d="M18,128 L54,112 L90,120 L126,80 L162,60 L198,72 L234,48 L270,56 L306,40 L342,52 L378,36 L414,44 L450,32 L486,38 L522,30" stroke="#2563eb" stroke-width="2" fill="none" />
-                        <path d="M18,128 L54,112 L90,120 L126,80 L162,60 L198,72 L234,48 L270,56 L306,40 L342,52 L378,36 L414,44 L450,32 L486,38 L522,30 L522,160 L18,160Z" fill="url(#areaGrad)" />
-                        <!-- Green area (alternate) -->
-                        <path d="M18,140 L54,130 L90,136 L126,108 L162,90 L198,100 L234,76 L270,84 L306,68 L342,80 L378,62 L414,72 L450,58 L486,64 L522,56" stroke="#16a34a" stroke-width="1.5" fill="none" stroke-dasharray="4 2" opacity="0.7" />
-                        <path d="M18,140 L54,130 L90,136 L126,108 L162,90 L198,100 L234,76 L270,84 L306,68 L342,80 L378,62 L414,72 L450,58 L486,64 L522,56 L522,160 L18,160Z" fill="url(#areaGrad2)" />
-                        <!-- Dots on blue line -->
-                        <circle cx="162" cy="60" r="3" fill="#2563eb" />
-                        <circle cx="306" cy="40" r="3" fill="#2563eb" />
-                        <circle cx="450" cy="32" r="3" fill="#2563eb" />
-                        <!-- X labels -->
-                        <text x="18" y="158" fill="#9ca3af" font-size="9" text-anchor="middle">00:00</text>
-                        <text x="90" y="158" fill="#9ca3af" font-size="9" text-anchor="middle">03:00</text>
-                        <text x="162" y="158" fill="#9ca3af" font-size="9" text-anchor="middle">06:00</text>
-                        <text x="234" y="158" fill="#9ca3af" font-size="9" text-anchor="middle">09:00</text>
-                        <text x="306" y="158" fill="#9ca3af" font-size="9" text-anchor="middle">12:00</text>
-                        <text x="378" y="158" fill="#9ca3af" font-size="9" text-anchor="middle">15:00</text>
-                        <text x="450" y="158" fill="#9ca3af" font-size="9" text-anchor="middle">18:00</text>
-                        <text x="522" y="158" fill="#9ca3af" font-size="9" text-anchor="middle">21:00</text>
-                    </svg>
-                </div>
-            </div>
-            <!-- System Asset Status -->
-            <div class="panel">
-                <div class="panel-title">
-                    <svg viewBox="0 0 16 16" fill="none" stroke="var(--accent-blue)" stroke-width="1.5"><circle cx="8" cy="8" r="6" /><path d="M8 5v3l2 2" /></svg>
-                    System / Asset Status
-                </div>
-                <div class="title-divider"></div>
-                <div style="display:flex;flex-direction:column;align-items:center;padding-top:10px;position:relative;">
-                    <svg class="donut-svg" viewBox="0 0 160 160">
-                        <!-- Segments: Engineers 33%, Liners 42%, Technicians 26%, Others 33% — simplified to 4 segments -->
-                        <!-- Total donut, cx=80,cy=80, r=55, circumference=345.6 -->
-                        <!-- Engineers: 33.04% of 345.6 = 114.2, offset=0 -->
-                        <circle cx="80" cy="80" r="55" fill="none" stroke="#4a9eff" stroke-width="22"
-                                stroke-dasharray="114 232" stroke-dashoffset="86.4" transform="rotate(-90 80 80)" />
-                        <!-- Line Workers: 41.67%, =144 -->
-                        <circle cx="80" cy="80" r="55" fill="none" stroke="#3ecf8e" stroke-width="22"
-                                stroke-dasharray="144 202" stroke-dashoffset="-28" transform="rotate(-90 80 80)" />
-                        <!-- Technicians: 25.83%, =89 -->
-                        <circle cx="80" cy="80" r="55" fill="none" stroke="#14b8a6" stroke-width="22"
-                                stroke-dasharray="89 257" stroke-dashoffset="-172" transform="rotate(-90 80 80)" />
-                        <!-- Others: remaining -->
-                        <circle cx="80" cy="80" r="55" fill="none" stroke="#f59e0b" stroke-width="22"
-                                stroke-dasharray="27 320" stroke-dashoffset="-261" transform="rotate(-90 80 80)" />
-                        <!-- Inner -->
-                        <circle cx="80" cy="80" r="44" fill="#ffffff" />
-                        <text x="80" y="76" text-anchor="middle" fill="#111827" font-size="20" font-weight="700" font-family="IBM Plex Mono">240</text>
-                        <text x="80" y="92" text-anchor="middle" fill="#6b7280" font-size="11">Total</text>
-                    </svg>
-                    <!-- Labels around donut -->
-                    <div style="font-size:10px;color:var(--text-muted);text-align:center;margin-top:2px;">
-                        <div style="display:flex;gap:6px;align-items:center;position:absolute;top:8px;left:-10px;flex-direction:column;text-align:left;">
-                            <span style="color:#4a9eff;font-size:10px;font-weight:600;">Engineers<br><span style="color:var(--text-muted)">33.04%</span></span>
-                        </div>
-                        <div style="display:flex;gap:6px;align-items:center;position:absolute;top:8px;right:-10px;flex-direction:column;text-align:right;">
-                            <span style="color:#3ecf8e;font-size:10px;font-weight:600;">Liner Workers<br><span style="color:var(--text-muted)">41.67%</span></span>
-                        </div>
-                        <div style="display:flex;gap:6px;align-items:center;position:absolute;bottom:52px;left:-10px;flex-direction:column;text-align:left;">
-                            <span style="color:#14b8a6;font-size:10px;font-weight:600;">Technicians<br><span style="color:var(--text-muted)">25.83%</span></span>
-                        </div>
-                        <div style="display:flex;gap:6px;align-items:center;position:absolute;bottom:52px;right:-10px;flex-direction:column;text-align:right;">
-                            <span style="color:#f59e0b;font-size:10px;font-weight:600;">Others<br><span style="color:var(--text-muted)">33.04%</span></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="legend" style="margin-top:14px;">
-                    <div class="legend-item"><div class="legend-dot" style="background:#14b8a6"></div>Technicians</div>
-                    <div class="legend-item"><div class="legend-dot" style="background:#4a9eff"></div>Engineers</div>
-                    <div class="legend-item"><div class="legend-dot" style="background:#3ecf8e"></div>Line Workers</div>
-                    <div class="legend-item"><div class="legend-dot" style="background:#f59e0b"></div>Others</div>
-                </div>
-            </div>
+        <svg class="sparkline" viewBox="0 0 140 60" preserveAspectRatio="none">
+          <defs><linearGradient id="sg1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#2563eb" stop-opacity="0.25"/><stop offset="100%" stop-color="#2563eb" stop-opacity="0"/></linearGradient></defs>
+          <path d="M0,50 L20,44 L40,46 L60,34 L80,36 L100,24 L120,20 L140,10" stroke="#2563eb" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M0,50 L20,44 L40,46 L60,34 L80,36 L100,24 L120,20 L140,10 L140,60 L0,60Z" fill="url(#sg1)"/>
+          <circle cx="140" cy="10" r="3" fill="#2563eb"/>
+        </svg>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card-top">
+        <div class="stat-icon-box green">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="1.8"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
         </div>
-
-        <!-- PM COMPLIANCE + WORKFLOW INBOX -->
-        <div class="grid-2">
-            <!-- PM Compliance -->
-            <div class="panel">
-                <div class="panel-title">
-                    <svg viewBox="0 0 16 16" fill="none" stroke="var(--accent-blue)" stroke-width="1.5"><path d="M2 11l4-4 3 3 5-6" /></svg>
-                    PM Compliance
-                </div>
-                <div class="title-divider"></div>
-                <div style="display:flex;align-items:center;justify-content:center;margin-top:16px;gap:30px;">
-                    <div style="position:relative;width:180px;height:180px;">
-                        <svg viewBox="0 0 180 180" width="180" height="180">
-                            <circle cx="90" cy="90" r="66" fill="none" stroke="#2a2a2a" stroke-width="28" />
-                            <!-- 66% blue -->
-                            <circle cx="90" cy="90" r="66" fill="none" stroke="#4a9eff" stroke-width="28"
-                                    stroke-dasharray="276 138" stroke-dashoffset="103.7" transform="rotate(-90 90 90)" opacity="0.9" />
-                            <!-- 34% faded -->
-                            <circle cx="90" cy="90" r="66" fill="none" stroke="#8b5cf6" stroke-width="28"
-                                    stroke-dasharray="141 276" stroke-dashoffset="-172" transform="rotate(-90 90 90)" opacity="0.5" />
-                            <circle cx="90" cy="90" r="52" fill="#ffffff" />
-                        </svg>
-                        <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;">
-                        </div>
-                    </div>
-                    <div style="display:flex;flex-direction:column;gap:12px;">
-                        <div>
-                            <div style="font-size:22px;font-weight:700;font-family:var(--font-mono);color:#4a9eff">66%</div>
-                            <div style="font-size:11px;color:var(--text-muted)">Balanced Waste</div>
-                        </div>
-                        <div>
-                            <div style="font-size:22px;font-weight:700;font-family:var(--font-mono);color:#8b5cf6">34%</div>
-                            <div style="font-size:11px;color:var(--text-muted)">Processed Waste</div>
-                        </div>
-                        <div class="legend" style="flex-direction:column;align-items:flex-start;margin-top:4px;">
-                            <div class="legend-item"><div class="legend-dot" style="background:#14b8a6"></div>Technicians</div>
-                            <div class="legend-item"><div class="legend-dot" style="background:#4a9eff"></div>Engineers</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Workflow Inbox -->
-            <div class="panel">
-                <div class="inbox-header">
-                    <div>
-                        <div class="panel-title" style="margin-bottom:2px;">
-                            <svg viewBox="0 0 16 16" fill="none" stroke="var(--accent-blue)" stroke-width="1.5"><rect x="2" y="3" width="12" height="10" rx="1.5" /><path d="M5 7h6M5 10h4" /></svg>
-                            Workflow Inbox
-                        </div>
-                        <div class="inbox-count">4 Pending Action</div>
-                    </div>
-
-                </div>
-                <div class="title-divider"></div>
-                <div class="inbox-list" id="inboxList">
-                    <!-- Items generated by JS -->
-                </div>
-            </div>
+        <div class="stat-top-right">
+          <div class="stat-label">PM Compliance <span class="stat-badge badge-green">↗ +12%</span></div>
         </div>
-
-        <!-- TOP FAILURE CAUSES + ASSET HEALTH -->
-        <div class="grid-2">
-            <!-- Top Failure Causes -->
-            <div class="panel">
-                <div class="panel-title">
-                    <svg viewBox="0 0 16 16" fill="none" stroke="var(--accent-blue)" stroke-width="1.5"><path d="M2 11l4-4 3 3 5-6" /></svg>
-                    Top Failure Causes
-                </div>
-                <div class="panel-sub">Problem Code Distribution across the Circle</div>
-                <div class="title-divider"></div>
-                <div class="bar-chart-wrap">
-                    <svg width="100%" height="160" viewBox="0 0 340 160" preserveAspectRatio="xMidYMid meet">
-                        <!-- Y gridlines -->
-                        <line x1="32" y1="10" x2="340" y2="10" stroke="#e4e7ec" stroke-width="1" />
-                        <line x1="32" y1="37" x2="340" y2="37" stroke="#e4e7ec" stroke-width="1" />
-                        <line x1="32" y1="64" x2="340" y2="64" stroke="#e4e7ec" stroke-width="1" />
-                        <line x1="32" y1="91" x2="340" y2="91" stroke="#e4e7ec" stroke-width="1" />
-                        <line x1="32" y1="118" x2="340" y2="118" stroke="#e4e7ec" stroke-width="1" />
-                        <!-- Y Labels -->
-                        <text x="28" y="13" fill="#9ca3af" font-size="9" text-anchor="end">100</text>
-                        <text x="28" y="40" fill="#9ca3af" font-size="9" text-anchor="end">80</text>
-                        <text x="28" y="67" fill="#9ca3af" font-size="9" text-anchor="end">60</text>
-                        <text x="28" y="94" fill="#9ca3af" font-size="9" text-anchor="end">40</text>
-                        <text x="28" y="121" fill="#9ca3af" font-size="9" text-anchor="end">20</text>
-                        <!-- Bars: Insulation=55, Oil leak=62, Cable Joint=75, Lightning=78 -->
-                        <!-- Insulation (green) -->
-                        <rect x="52" y="68" width="44" height="50" fill="#3ecf8e" rx="4" />
-                        <!-- Oil Leak (teal) -->
-                        <rect x="130" y="57" width="44" height="61" fill="#14b8a6" rx="4" />
-                        <!-- Cable Joint (orange) -->
-                        <rect x="208" y="44" width="44" height="74" fill="#f59e0b" rx="4" />
-                        <!-- Lightning (red) -->
-                        <rect x="286" y="41" width="44" height="77" fill="#ef4444" rx="4" />
-                        <!-- X labels -->
-                        <text x="74" y="145" fill="#6b7280" font-size="9" text-anchor="middle">Insulation</text>
-                        <text x="152" y="145" fill="#6b7280" font-size="9" text-anchor="middle">Oil leak</text>
-                        <text x="230" y="145" fill="#6b7280" font-size="9" text-anchor="middle">Cable Joint</text>
-                        <text x="308" y="145" fill="#6b7280" font-size="9" text-anchor="middle">Lightning</text>
-                    </svg>
-                </div>
-            </div>
-
-            <!-- Asset Health Distribution -->
-            <div class="panel">
-                <div class="panel-title">
-                    <svg viewBox="0 0 16 16" fill="none" stroke="var(--accent-blue)" stroke-width="1.5"><circle cx="8" cy="8" r="6" /></svg>
-                    Asset Health Distribution
-                </div>
-                <div class="panel-sub">2,847 total assets monitored</div>
-                <div class="title-divider"></div>
-                <div class="asset-health-grid">
-                    <div style="position:relative;width:150px;height:150px;">
-                        <svg viewBox="0 0 150 150" width="150" height="150">
-                            <!-- Operational 87.6% -->
-                            <circle cx="75" cy="75" r="55" fill="none" stroke="#4a9eff" stroke-width="22"
-                                    stroke-dasharray="302 43" stroke-dashoffset="86" transform="rotate(-90 75 75)" />
-                            <!-- Under Maintenance 92.4% -->
-                            <circle cx="75" cy="75" r="55" fill="none" stroke="#3ecf8e" stroke-width="22"
-                                    stroke-dasharray="16 330" stroke-dashoffset="-216" transform="rotate(-90 75 75)" />
-                            <!-- Critical 78.4% -->
-                            <circle cx="75" cy="75" r="55" fill="none" stroke="#f59e0b" stroke-width="22"
-                                    stroke-dasharray="12 334" stroke-dashoffset="-232" transform="rotate(-90 75 75)" />
-                            <!-- Standby -->
-                            <circle cx="75" cy="75" r="55" fill="none" stroke="#ef4444" stroke-width="22"
-                                    stroke-dasharray="8 338" stroke-dashoffset="-244" transform="rotate(-90 75 75)" />
-                            <circle cx="75" cy="75" r="44" fill="#ffffff" />
-                        </svg>
-                    </div>
-                    <div class="health-legend-list">
-                        <div class="health-legend-row">
-                            <div class="health-legend-left">
-                                <div class="legend-dot" style="background:#4a9eff"></div>
-                                <span style="color:var(--text-muted)">Operational</span>
-                            </div>
-                            <div class="health-nums">
-                                <div class="health-num">3,415</div>
-                                <div class="health-pct">87.6%</div>
-                            </div>
-                        </div>
-                        <div class="health-legend-row">
-                            <div class="health-legend-left">
-                                <div class="legend-dot" style="background:#3ecf8e"></div>
-                                <span style="color:var(--text-muted)">Under Maintenance</span>
-                            </div>
-                            <div class="health-nums">
-                                <div class="health-num">2,893</div>
-                                <div class="health-pct">92.4%</div>
-                            </div>
-                        </div>
-                        <div class="health-legend-row">
-                            <div class="health-legend-left">
-                                <div class="legend-dot" style="background:#f59e0b"></div>
-                                <span style="color:var(--text-muted)">Critical</span>
-                            </div>
-                            <div class="health-nums">
-                                <div class="health-num">1,982</div>
-                                <div class="health-pct">78.4%</div>
-                            </div>
-                        </div>
-                        <div class="health-legend-row">
-                            <div class="health-legend-left">
-                                <div class="legend-dot" style="background:#ef4444"></div>
-                                <span style="color:var(--text-muted)">Standby</span>
-                            </div>
-                            <div class="health-nums">
-                                <div class="health-num">3,145</div>
-                                <div class="health-pct">89.7%</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+      </div>
+      <div class="stat-card-bottom">
+        <div class="stat-card-bottom-left">
+          <div class="stat-value" style="color:var(--green)">87.3%</div>
+          <div class="stat-sub">vs last month</div>
         </div>
-
-        <!-- OPEN WORK ORDERS TABLE -->
-        <div class="panel">
-            <div class="table-header-row">
-                <div>
-                    <div class="panel-title">
-                        <svg viewBox="0 0 16 16" fill="none" stroke="var(--accent-blue)" stroke-width="1.5"><rect x="2" y="3" width="12" height="10" rx="1.5" /><path d="M5 7h6M5 10h4" /></svg>
-                        Open Work Orders
-                    </div>
-                    <div class="panel-sub" style="margin-bottom:0">5 Active Assignments · Result Set</div>
-                </div>
-
-                <div class="table-actions">
-
-                    <button class="tbl-icon-btn" title="Filter">
-                        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4h12M4 8h8M6 12h4" /></svg>
-                    </button>
-                    <button class="tbl-icon-btn" title="Download">
-                        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 3v7m0 0l-3-3m3 3l3-3M3 13h10" /></svg>
-                    </button>
-                    <button class="tbl-icon-btn" title="Expand">
-                        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 2l4 4M2 2h4M2 2v4M14 14l-4-4M14 14h-4M14 14v-4" /></svg>
-                    </button>
-                </div>
-            </div>
-            <div class="title-divider"></div>
-            <table>
-                <thead>
-                    <tr>
-                        <th><input type="checkbox" style="accent-color:var(--accent-blue)" /></th>
-                        <th>Work Order ID</th>
-                        <th>Description</th>
-                        <th>Status</th>
-                        <th>Target</th>
-                        <th>Location</th>
-                    </tr>
-                </thead>
-                <tbody id="workOrdersTable"></tbody>
-            </table>
-            <div class="table-footer">
-                <span class="view-all-link">View all work orders →</span>
-                <span class="total-label">Total: 5</span>
-            </div>
+        <svg class="sparkline" viewBox="0 0 140 60" preserveAspectRatio="none">
+          <defs><linearGradient id="sg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#16a34a" stop-opacity="0.25"/><stop offset="100%" stop-color="#16a34a" stop-opacity="0"/></linearGradient></defs>
+          <path d="M0,52 L20,46 L40,48 L60,38 L80,30 L100,22 L120,16 L140,8" stroke="#16a34a" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M0,52 L20,46 L40,48 L60,38 L80,30 L100,22 L120,16 L140,8 L140,60 L0,60Z" fill="url(#sg2)"/>
+          <circle cx="140" cy="8" r="3" fill="#16a34a"/>
+        </svg>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card-top">
+        <div class="stat-icon-box red">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="1.8"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
         </div>
-
-        <!-- WARRANTY EXPIRING TABLE -->
-        <div class="panel" style="margin-bottom:24px;">
-            <div class="table-header-row">
-                <div>
-                    <div class="panel-title">
-                        <svg viewBox="0 0 16 16" fill="none" stroke="var(--accent-blue)" stroke-width="1.5"><path d="M8 2l1.5 4.5H14l-3.5 2.5 1.5 4.5L8 11l-4 2.5 1.5-4.5L2 6.5h4.5Z" /></svg>
-                        Assets - Warranty Expiring Soon
-                    </div>
-                    <div class="panel-sub" style="margin-bottom:0">Next 90 days · Thiruvananthapuram Circle</div>
-                </div>
-                <div class="table-actions">
-                    <button class="tbl-icon-btn"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4h12M4 8h8M6 12h4" /></svg></button>
-                    <button class="tbl-icon-btn"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 3v7m0 0l-3-3m3 3l3-3M3 13h10" /></svg></button>
-                    <button class="tbl-icon-btn"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 2l4 4M2 2h4M2 2v4M14 14l-4-4M14 14h-4M14 14v-4" /></svg></button>
-                </div>
-            </div>
-            <div class="title-divider"></div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Asset ID</th>
-                        <th>Description</th>
-                        <th>Location</th>
-                        <th>Expiry</th>
-                        <th>Days Left</th>
-                    </tr>
-                </thead>
-                <tbody id="warrantyTable"></tbody>
-            </table>
-            <div class="table-footer">
-                <span class="view-all-link">View all expiring warranties →</span>
-            </div>
+        <div class="stat-top-right">
+          <div class="stat-label">Critical Assets <span class="stat-badge badge-red">↘ -12%</span></div>
         </div>
+      </div>
+      <div class="stat-card-bottom">
+        <div class="stat-card-bottom-left">
+          <div class="stat-value" style="color:var(--red)">5</div>
+          <div class="stat-sub">requires attention</div>
+        </div>
+        <svg class="sparkline" viewBox="0 0 140 60" preserveAspectRatio="none">
+          <defs><linearGradient id="sg3" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#dc2626" stop-opacity="0.25"/><stop offset="100%" stop-color="#dc2626" stop-opacity="0"/></linearGradient></defs>
+          <path d="M0,10 L20,18 L40,14 L60,26 L80,30 L100,38 L120,34 L140,48" stroke="#dc2626" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M0,10 L20,18 L40,14 L60,26 L80,30 L100,38 L120,34 L140,48 L140,60 L0,60Z" fill="url(#sg3)"/>
+          <circle cx="140" cy="48" r="3" fill="#dc2626"/>
+        </svg>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card-top">
+        <div class="stat-icon-box orange">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        </div>
+        <div class="stat-top-right">
+          <div class="stat-label">Average MTTR <span class="stat-badge badge-green">↗ +12%</span></div>
+        </div>
+      </div>
+      <div class="stat-card-bottom">
+        <div class="stat-card-bottom-left">
+          <div class="stat-value" style="color:var(--orange)">4.2<span style="font-size:17px;font-weight:500">h</span></div>
+          <div class="stat-sub">improvement</div>
+        </div>
+        <svg class="sparkline" viewBox="0 0 140 60" preserveAspectRatio="none">
+          <defs><linearGradient id="sg4" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#d97706" stop-opacity="0.25"/><stop offset="100%" stop-color="#d97706" stop-opacity="0"/></linearGradient></defs>
+          <path d="M0,46 L20,40 L40,42 L60,30 L80,28 L100,18 L120,22 L140,10" stroke="#d97706" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M0,46 L20,40 L40,42 L60,30 L80,28 L100,18 L120,22 L140,10 L140,60 L0,60Z" fill="url(#sg4)"/>
+          <circle cx="140" cy="10" r="3" fill="#d97706"/>
+        </svg>
+      </div>
+    </div>
+  </div>
 
-    </div><!-- end main -->
+  <!-- GRID LOAD + SYSTEM ASSET STATUS -->
+  <div class="grid-3-2">
+    <div class="panel">
+      <div class="panel-title">
+        <svg viewBox="0 0 16 16" fill="none" stroke="var(--blue)" stroke-width="1.5"><path d="M2 11l4-4 3 3 5-6"/></svg>
+        Grid Load · Last 24 Hours
+      </div>
+      <div class="panel-sub">Thiruvananthapuram Circle (MW) · Live SCADA feed</div>
+      <div class="title-divider"></div>
+      <div class="load-metrics">
+        <div class="metric-item">
+          <div class="metric-key">Peak Load</div>
+          <div class="metric-val">1,080 MW</div>
+          <div class="metric-time">16:00</div>
+        </div>
+        <div class="metric-item">
+          <div class="metric-key">Avg Demand</div>
+          <div class="metric-val green">1,080 MW</div>
+          <div class="metric-time">24h</div>
+        </div>
+        <div class="metric-item">
+          <div class="metric-key">Reliability</div>
+          <div class="metric-val green">99.4%</div>
+          <div class="metric-time">SAIDI Compliant</div>
+        </div>
+      </div>
+      <div class="chart-wrap">
+        <svg width="100%" height="155" viewBox="0 0 540 155" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#2563eb" stop-opacity="0.15"/><stop offset="100%" stop-color="#2563eb" stop-opacity="0"/></linearGradient>
+            <linearGradient id="areaGrad2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#16a34a" stop-opacity="0.1"/><stop offset="100%" stop-color="#16a34a" stop-opacity="0"/></linearGradient>
+          </defs>
+          <line x1="0" y1="30" x2="540" y2="30" stroke="#e4e7ec" stroke-width="1"/>
+          <line x1="0" y1="60" x2="540" y2="60" stroke="#e4e7ec" stroke-width="1"/>
+          <line x1="0" y1="90" x2="540" y2="90" stroke="#e4e7ec" stroke-width="1"/>
+          <line x1="0" y1="120" x2="540" y2="120" stroke="#e4e7ec" stroke-width="1"/>
+          <text x="2" y="30" fill="#9ca3af" font-size="9" dy="-3">100</text>
+          <text x="2" y="60" fill="#9ca3af" font-size="9" dy="-3">80</text>
+          <text x="2" y="90" fill="#9ca3af" font-size="9" dy="-3">60</text>
+          <text x="2" y="120" fill="#9ca3af" font-size="9" dy="-3">40</text>
+          <path d="M18,128 L54,112 L90,120 L126,80 L162,60 L198,72 L234,48 L270,56 L306,40 L342,52 L378,36 L414,44 L450,32 L486,38 L522,30" stroke="#2563eb" stroke-width="2" fill="none"/>
+          <path d="M18,128 L54,112 L90,120 L126,80 L162,60 L198,72 L234,48 L270,56 L306,40 L342,52 L378,36 L414,44 L450,32 L486,38 L522,30 L522,155 L18,155Z" fill="url(#areaGrad)"/>
+          <path d="M18,140 L54,130 L90,136 L126,108 L162,90 L198,100 L234,76 L270,84 L306,68 L342,80 L378,62 L414,72 L450,58 L486,64 L522,56" stroke="#16a34a" stroke-width="1.5" fill="none" stroke-dasharray="4 2" opacity="0.7"/>
+          <path d="M18,140 L54,130 L90,136 L126,108 L162,90 L198,100 L234,76 L270,84 L306,68 L342,80 L378,62 L414,72 L450,58 L486,64 L522,56 L522,155 L18,155Z" fill="url(#areaGrad2)"/>
+          <circle cx="162" cy="60" r="3" fill="#2563eb"/>
+          <circle cx="306" cy="40" r="3" fill="#2563eb"/>
+          <circle cx="450" cy="32" r="3" fill="#2563eb"/>
+          <text x="18" y="153" fill="#9ca3af" font-size="9" text-anchor="middle">00:00</text>
+          <text x="90" y="153" fill="#9ca3af" font-size="9" text-anchor="middle">03:00</text>
+          <text x="162" y="153" fill="#9ca3af" font-size="9" text-anchor="middle">06:00</text>
+          <text x="234" y="153" fill="#9ca3af" font-size="9" text-anchor="middle">09:00</text>
+          <text x="306" y="153" fill="#9ca3af" font-size="9" text-anchor="middle">12:00</text>
+          <text x="378" y="153" fill="#9ca3af" font-size="9" text-anchor="middle">15:00</text>
+          <text x="450" y="153" fill="#9ca3af" font-size="9" text-anchor="middle">18:00</text>
+          <text x="522" y="153" fill="#9ca3af" font-size="9" text-anchor="middle">21:00</text>
+        </svg>
+      </div>
+    </div>
 
-    <script>
-            // ---- INBOX ITEMS ----
-            const inboxItems = [
-              { id: 'WO - 2026-0852', priority: 'MEDIUM', desc: 'Emergency Repair - Distribution Line Fault, Pettah', meta: '29 Apr Emergency WO Review $Est: 12,000' },
-              { id: 'WO - 2026-0852', priority: 'MEDIUM', desc: 'Emergency Repair - Distribution Line Fault, Pettah', meta: '29 Apr Emergency WO Review $Est: 12,000' },
-              { id: 'WO - 2026-0852', priority: 'MEDIUM', desc: 'Emergency Repair - Distribution Line Fault, Pettah', meta: '29 Apr Emergency WO Review $Est: 12,000' },
-              { id: 'WO - 2026-0852', priority: 'MEDIUM', desc: 'Emergency Repair - Distribution Line Fault, Pettah', meta: '29 Apr Emergency WO Review $Est: 12,000' },
-              { id: 'WO - 2026-0852', priority: 'MEDIUM', desc: 'Emergency Repair - Distribution Line Fault, Pettah', meta: '29 Apr Emergency WO Review $Est: 12,000' },
-            ];
+    <div class="panel">
+      <div class="panel-title">
+        <svg viewBox="0 0 16 16" fill="none" stroke="var(--blue)" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg>
+        System / Asset Status
+      </div>
+      <div class="title-divider"></div>
+      <div style="display:flex;flex-direction:column;align-items:center;padding-top:10px;position:relative;">
+        <svg class="donut-svg" viewBox="0 0 160 160">
+          <circle cx="80" cy="80" r="55" fill="none" stroke="#4a9eff" stroke-width="22" stroke-dasharray="114 232" stroke-dashoffset="86.4" transform="rotate(-90 80 80)"/>
+          <circle cx="80" cy="80" r="55" fill="none" stroke="#3ecf8e" stroke-width="22" stroke-dasharray="144 202" stroke-dashoffset="-28" transform="rotate(-90 80 80)"/>
+          <circle cx="80" cy="80" r="55" fill="none" stroke="#14b8a6" stroke-width="22" stroke-dasharray="89 257" stroke-dashoffset="-172" transform="rotate(-90 80 80)"/>
+          <circle cx="80" cy="80" r="55" fill="none" stroke="#f59e0b" stroke-width="22" stroke-dasharray="27 320" stroke-dashoffset="-261" transform="rotate(-90 80 80)"/>
+          <circle cx="80" cy="80" r="44" fill="#ffffff"/>
+          <text x="80" y="76" text-anchor="middle" fill="#111827" font-size="20" font-weight="700" font-family="IBM Plex Mono">240</text>
+          <text x="80" y="92" text-anchor="middle" fill="#6b7280" font-size="11">Total</text>
+        </svg>
+        <div style="font-size:10px;color:var(--text-muted);text-align:center;margin-top:4px;position:relative;width:260px;">
+          <div style="display:flex;gap:6px;align-items:center;position:absolute;top:-168px;left:-10px;flex-direction:column;text-align:left;">
+            <span style="color:#4a9eff;font-size:10px;font-weight:600;">Engineers<br><span style="color:var(--text-muted)">33.04%</span></span>
+          </div>
+          <div style="display:flex;gap:6px;align-items:center;position:absolute;top:-168px;right:-10px;flex-direction:column;text-align:right;">
+            <span style="color:#3ecf8e;font-size:10px;font-weight:600;">Line Workers<br><span style="color:var(--text-muted)">41.67%</span></span>
+          </div>
+          <div style="display:flex;gap:6px;align-items:center;position:absolute;top:-80px;left:-10px;flex-direction:column;text-align:left;">
+            <span style="color:#14b8a6;font-size:10px;font-weight:600;">Technicians<br><span style="color:var(--text-muted)">25.83%</span></span>
+          </div>
+          <div style="display:flex;gap:6px;align-items:center;position:absolute;top:-80px;right:-10px;flex-direction:column;text-align:right;">
+            <span style="color:#f59e0b;font-size:10px;font-weight:600;">Others<br><span style="color:var(--text-muted)">33.04%</span></span>
+          </div>
+        </div>
+      </div>
+      <div class="legend" style="margin-top:14px;">
+        <div class="legend-item"><div class="legend-dot" style="background:#14b8a6"></div>Technicians</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#4a9eff"></div>Engineers</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#3ecf8e"></div>Line Workers</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#f59e0b"></div>Others</div>
+      </div>
+    </div>
+  </div>
 
-            const inboxList = document.getElementById('inboxList');
-            inboxItems.forEach((item, i) => {
-              inboxList.innerHTML += `
-                <div class="inbox-item">
-                  <input type="checkbox" class="inbox-check">
-                  <div class="inbox-body">
-                    <div><span class="inbox-id">${item.id}</span><span class="badge-medium">${item.priority}</span></div>
-                    <div class="inbox-desc">${item.desc}</div>
-                    <div class="inbox-meta">📅 ${item.meta}</div>
-                  </div>
-                  <div class="inbox-actions">
-                    <button class="btn-icon" title="Approve" onclick="this.style.borderColor='var(--accent-green)'">
-                      <svg viewBox="0 0 16 16" fill="none" stroke="#3ecf8e" stroke-width="2"><path d="M3 8l4 4 6-7"/></svg>
-                    </button>
-                    <button class="btn-icon red" title="Reject" onclick="this.style.borderColor='var(--accent-red)'">
-                      <svg viewBox="0 0 16 16" fill="none" stroke="#ef4444" stroke-width="2"><path d="M4 4l8 8M12 4l-8 8"/></svg>
-                    </button>
-                    <button class="btn-review">Review</button>
-                  </div>
-                </div>`;
-            });
+  <!-- PM COMPLIANCE + WORKFLOW INBOX -->
+  <div class="grid-2">
+    <div class="panel">
+      <div class="panel-title">
+        <svg viewBox="0 0 16 16" fill="none" stroke="var(--blue)" stroke-width="1.5"><path d="M2 11l4-4 3 3 5-6"/></svg>
+        PM Compliance
+      </div>
+      <div class="title-divider"></div>
+      <div style="display:flex;align-items:center;justify-content:center;margin-top:16px;gap:24px;flex-wrap:wrap;">
+        <div style="position:relative;width:180px;height:180px;flex-shrink:0;">
+          <svg viewBox="0 0 180 180" width="180" height="180">
+            <circle cx="90" cy="90" r="66" fill="none" stroke="#2a2a2a" stroke-width="28"/>
+            <circle cx="90" cy="90" r="66" fill="none" stroke="#4a9eff" stroke-width="28" stroke-dasharray="276 138" stroke-dashoffset="103.7" transform="rotate(-90 90 90)" opacity="0.9"/>
+            <circle cx="90" cy="90" r="66" fill="none" stroke="#8b5cf6" stroke-width="28" stroke-dasharray="141 276" stroke-dashoffset="-172" transform="rotate(-90 90 90)" opacity="0.5"/>
+            <circle cx="90" cy="90" r="52" fill="#ffffff"/>
+          </svg>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div>
+            <div style="font-size:22px;font-weight:700;font-family:var(--mono);color:#4a9eff">66%</div>
+            <div style="font-size:11px;color:var(--text-muted)">Balanced Waste</div>
+          </div>
+          <div>
+            <div style="font-size:22px;font-weight:700;font-family:var(--mono);color:#8b5cf6">34%</div>
+            <div style="font-size:11px;color:var(--text-muted)">Processed Waste</div>
+          </div>
+          <div class="legend" style="flex-direction:column;align-items:flex-start;margin-top:4px;justify-content:flex-start;">
+            <div class="legend-item"><div class="legend-dot" style="background:#14b8a6"></div>Technicians</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#4a9eff"></div>Engineers</div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-            // ---- WORK ORDERS TABLE ----
-            const workOrders = [
-              { desc: 'Grid maintenance...', status: 'Approved', target: '12 May', location: 'Ernakulam' },
-              { desc: 'Grid maintenance...', status: 'In Progress', target: '19 May', location: 'Thiruvananthapuram' },
-              { desc: 'Grid maintenance...', status: 'Waiting Materials', target: '26 May', location: 'Calicut' },
-              { desc: 'Transformer repair...', status: 'Approved', target: '2 June', location: 'Trichur' },
-              { desc: 'Substation upgrade...', status: 'Approved', target: '9 June', location: 'Quilon' },
-              { desc: 'Transformer repair...', status: 'Approved', target: '16 June', location: 'Alleppey' },
-            ];
-            const statusClass = { 'Approved': 'status-approved', 'In Progress': 'status-progress', 'Waiting Materials': 'status-waiting' };
-            const tbody = document.getElementById('workOrdersTable');
-            workOrders.forEach(wo => {
-              tbody.innerHTML += `<tr>
-                <td><input type="checkbox" style="accent-color:var(--accent-blue)"></td>
-                <td><span class="td-link">W0 - 2026-0852</span></td>
-                <td>${wo.desc}</td>
-                <td><span class="status-badge ${statusClass[wo.status]||'status-approved'}">${wo.status}</span></td>
-                <td>${wo.target}</td>
-                <td>${wo.location}</td>
-              </tr>`;
-            });
+    <div class="panel">
+      <div class="inbox-header">
+        <div>
+          <div class="panel-title" style="margin-bottom:2px;">
+            <svg viewBox="0 0 16 16" fill="none" stroke="var(--blue)" stroke-width="1.5"><rect x="2" y="3" width="12" height="10" rx="1.5"/><path d="M5 7h6M5 10h4"/></svg>
+            Workflow Inbox
+          </div>
+          <div class="inbox-count">4 Pending Action</div>
+        </div>
+      </div>
+      <div class="title-divider"></div>
+      <div class="inbox-list" id="inboxList"></div>
+    </div>
+  </div>
 
-            // ---- WARRANTY TABLE ----
-            const warranties = [
-              { desc: 'Grid maintenance...', loc: 'Ernakulam', expiry: '12 May', days: 12, cls: 'days-urgent' },
-              { desc: 'Grid maintenance...', loc: 'Thiruvananthapuram', expiry: '19 May', days: 84, cls: 'days-ok' },
-              { desc: 'Grid maintenance...', loc: 'Calicut', expiry: '26 May', days: 47, cls: 'days-mid' },
-              { desc: 'Transformer repair...', loc: 'Trichur', expiry: '2 June', days: 29, cls: 'days-urgent' },
-              { desc: 'Substation upgrade...', loc: 'Quilon', expiry: '9 June', days: 84, cls: 'days-ok' },
-              { desc: 'Transformer repair...', loc: 'Alleppey', expiry: '16 June', days: 12, cls: 'days-urgent' },
-            ];
-            const wTbody = document.getElementById('warrantyTable');
-            warranties.forEach(w => {
-              wTbody.innerHTML += `<tr>
-                <td><span class="td-link">W0 - 2026-0852</span></td>
-                <td>${w.desc}</td>
-                <td>${w.loc}</td>
-                <td>${w.expiry}</td>
-                <td><span class="days-badge ${w.cls}">${w.days} days</span></td>
-              </tr>`;
-            });
+  <!-- TOP FAILURE CAUSES + ASSET HEALTH -->
+  <div class="grid-2">
+    <div class="panel">
+      <div class="panel-title">
+        <svg viewBox="0 0 16 16" fill="none" stroke="var(--blue)" stroke-width="1.5"><path d="M2 11l4-4 3 3 5-6"/></svg>
+        Top Failure Causes
+      </div>
+      <div class="panel-sub">Problem Code Distribution across the Circle</div>
+      <div class="title-divider"></div>
+      <div class="bar-chart-wrap">
+        <svg width="100%" height="160" viewBox="0 0 340 160" preserveAspectRatio="xMidYMid meet">
+          <line x1="32" y1="10" x2="340" y2="10" stroke="#e4e7ec" stroke-width="1"/>
+          <line x1="32" y1="37" x2="340" y2="37" stroke="#e4e7ec" stroke-width="1"/>
+          <line x1="32" y1="64" x2="340" y2="64" stroke="#e4e7ec" stroke-width="1"/>
+          <line x1="32" y1="91" x2="340" y2="91" stroke="#e4e7ec" stroke-width="1"/>
+          <line x1="32" y1="118" x2="340" y2="118" stroke="#e4e7ec" stroke-width="1"/>
+          <text x="28" y="13" fill="#9ca3af" font-size="9" text-anchor="end">100</text>
+          <text x="28" y="40" fill="#9ca3af" font-size="9" text-anchor="end">80</text>
+          <text x="28" y="67" fill="#9ca3af" font-size="9" text-anchor="end">60</text>
+          <text x="28" y="94" fill="#9ca3af" font-size="9" text-anchor="end">40</text>
+          <text x="28" y="121" fill="#9ca3af" font-size="9" text-anchor="end">20</text>
+          <rect x="52" y="68" width="44" height="50" fill="#3ecf8e" rx="4"/>
+          <rect x="130" y="57" width="44" height="61" fill="#14b8a6" rx="4"/>
+          <rect x="208" y="44" width="44" height="74" fill="#f59e0b" rx="4"/>
+          <rect x="286" y="41" width="44" height="77" fill="#ef4444" rx="4"/>
+          <text x="74"  y="145" fill="#6b7280" font-size="9" text-anchor="middle">Insulation</text>
+          <text x="152" y="145" fill="#6b7280" font-size="9" text-anchor="middle">Oil Leak</text>
+          <text x="230" y="145" fill="#6b7280" font-size="9" text-anchor="middle">Cable Joint</text>
+          <text x="308" y="145" fill="#6b7280" font-size="9" text-anchor="middle">Lightning</text>
+        </svg>
+      </div>
+    </div>
 
-            // ---- CHECKBOX: select all ----
-            document.querySelectorAll('thead input[type=checkbox]').forEach(cb => {
-              cb.addEventListener('change', function() {
-                const table = this.closest('table');
-                table.querySelectorAll('tbody input[type=checkbox]').forEach(c => c.checked = this.checked);
-              });
-            });
-    </script>
+    <div class="panel">
+      <div class="panel-title">
+        <svg viewBox="0 0 16 16" fill="none" stroke="var(--blue)" stroke-width="1.5"><circle cx="8" cy="8" r="6"/></svg>
+        Asset Health Distribution
+      </div>
+      <div class="panel-sub">2,847 total assets monitored</div>
+      <div class="title-divider"></div>
+      <div class="asset-health-grid">
+        <div style="flex-shrink:0;">
+          <svg viewBox="0 0 150 150" width="150" height="150">
+            <circle cx="75" cy="75" r="55" fill="none" stroke="#4a9eff" stroke-width="22" stroke-dasharray="302 43" stroke-dashoffset="86" transform="rotate(-90 75 75)"/>
+            <circle cx="75" cy="75" r="55" fill="none" stroke="#3ecf8e" stroke-width="22" stroke-dasharray="16 330" stroke-dashoffset="-216" transform="rotate(-90 75 75)"/>
+            <circle cx="75" cy="75" r="55" fill="none" stroke="#f59e0b" stroke-width="22" stroke-dasharray="12 334" stroke-dashoffset="-232" transform="rotate(-90 75 75)"/>
+            <circle cx="75" cy="75" r="55" fill="none" stroke="#ef4444" stroke-width="22" stroke-dasharray="8 338" stroke-dashoffset="-244" transform="rotate(-90 75 75)"/>
+            <circle cx="75" cy="75" r="44" fill="#ffffff"/>
+          </svg>
+        </div>
+        <div class="health-legend-list">
+          <div class="health-legend-row">
+            <div class="health-legend-left"><div class="legend-dot" style="background:#4a9eff"></div><span style="color:var(--text-muted)">Operational</span></div>
+            <div><div class="health-num">3,415</div><div class="health-pct">87.6%</div></div>
+          </div>
+          <div class="health-legend-row">
+            <div class="health-legend-left"><div class="legend-dot" style="background:#3ecf8e"></div><span style="color:var(--text-muted)">Under Maintenance</span></div>
+            <div><div class="health-num">2,893</div><div class="health-pct">92.4%</div></div>
+          </div>
+          <div class="health-legend-row">
+            <div class="health-legend-left"><div class="legend-dot" style="background:#f59e0b"></div><span style="color:var(--text-muted)">Critical</span></div>
+            <div><div class="health-num">1,982</div><div class="health-pct">78.4%</div></div>
+          </div>
+          <div class="health-legend-row">
+            <div class="health-legend-left"><div class="legend-dot" style="background:#ef4444"></div><span style="color:var(--text-muted)">Standby</span></div>
+            <div><div class="health-num">3,145</div><div class="health-pct">89.7%</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OPEN WORK ORDERS TABLE -->
+  <div class="panel">
+    <div class="table-header-row">
+      <div>
+        <div class="panel-title">
+          <svg viewBox="0 0 16 16" fill="none" stroke="var(--blue)" stroke-width="1.5"><rect x="2" y="3" width="12" height="10" rx="1.5"/><path d="M5 7h6M5 10h4"/></svg>
+          Open Work Orders
+        </div>
+        <div class="panel-sub" style="margin-bottom:0">5 Active Assignments · Result Set</div>
+      </div>
+      <div class="table-actions">
+        <button class="tbl-icon-btn"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4h12M4 8h8M6 12h4"/></svg></button>
+        <button class="tbl-icon-btn"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 3v7m0 0l-3-3m3 3l3-3M3 13h10"/></svg></button>
+        <button class="tbl-icon-btn"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 2l4 4M2 2h4M2 2v4M14 14l-4-4M14 14h-4M14 14v-4"/></svg></button>
+      </div>
+    </div>
+    <div class="title-divider"></div>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th><input type="checkbox" style="accent-color:var(--blue)"/></th>
+            <th>Work Order ID</th>
+            <th>Description</th>
+            <th>Status</th>
+            <th class="tbl-hide-md">Target</th>
+            <th class="tbl-hide-md">Location</th>
+          </tr>
+        </thead>
+        <tbody id="workOrdersTable"></tbody>
+      </table>
+    </div>
+    <div class="table-footer">
+      <span class="view-all-link">View all work orders →</span>
+      <span class="total-label">Total: 5</span>
+    </div>
+  </div>
+
+  <!-- WARRANTY EXPIRING TABLE -->
+  <div class="panel" style="margin-bottom:20px;">
+    <div class="table-header-row">
+      <div>
+        <div class="panel-title">
+          <svg viewBox="0 0 16 16" fill="none" stroke="var(--blue)" stroke-width="1.5"><path d="M8 2l1.5 4.5H14l-3.5 2.5 1.5 4.5L8 11l-4 2.5 1.5-4.5L2 6.5h4.5Z"/></svg>
+          Assets — Warranty Expiring Soon
+        </div>
+        <div class="panel-sub" style="margin-bottom:0">Next 90 days · Thiruvananthapuram Circle</div>
+      </div>
+      <div class="table-actions">
+        <button class="tbl-icon-btn"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4h12M4 8h8M6 12h4"/></svg></button>
+        <button class="tbl-icon-btn"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 3v7m0 0l-3-3m3 3l3-3M3 13h10"/></svg></button>
+        <button class="tbl-icon-btn"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 2l4 4M2 2h4M2 2v4M14 14l-4-4M14 14h-4M14 14v-4"/></svg></button>
+      </div>
+    </div>
+    <div class="title-divider"></div>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Asset ID</th>
+            <th>Description</th>
+            <th class="tbl-hide-sm">Location</th>
+            <th class="tbl-hide-sm">Expiry</th>
+            <th>Days Left</th>
+          </tr>
+        </thead>
+        <tbody id="warrantyTable"></tbody>
+      </table>
+    </div>
+    <div class="table-footer">
+      <span class="view-all-link">View all expiring warranties →</span>
+    </div>
+  </div>
+
+</div><!-- end main -->
+
+<script>
+  // INBOX
+  const inboxItems = [
+    { id: 'WO-2026-0852', priority: 'MEDIUM', desc: 'Emergency Repair - Distribution Line Fault, Pettah', meta: '29 Apr  Emergency WO Review · Est: ₹12,000' },
+    { id: 'WO-2026-0853', priority: 'MEDIUM', desc: 'Transformer Oil Leak - Kazhakuttom Substation', meta: '30 Apr  Maintenance Review · Est: ₹8,500' },
+    { id: 'WO-2026-0854', priority: 'MEDIUM', desc: 'Cable Joint Failure - Technopark Feeder', meta: '01 May  Emergency WO Review · Est: ₹22,000' },
+    { id: 'WO-2026-0855', priority: 'MEDIUM', desc: 'Insulation Breakdown - Vattiyoorkavu Area', meta: '02 May  Scheduled PM Review · Est: ₹5,000' },
+    { id: 'WO-2026-0856', priority: 'MEDIUM', desc: 'Lightning Arrester Replacement - Balaramapuram', meta: '03 May  Asset Replacement · Est: ₹18,000' },
+  ];
+  const inboxList = document.getElementById('inboxList');
+  inboxItems.forEach(item => {
+    inboxList.innerHTML += `<div class="inbox-item">
+      <input type="checkbox" class="inbox-check">
+      <div class="inbox-body">
+        <div><span class="inbox-id">${item.id}</span><span class="badge-medium">${item.priority}</span></div>
+        <div class="inbox-desc">${item.desc}</div>
+        <div class="inbox-meta">📅 ${item.meta}</div>
+      </div>
+      <div class="inbox-actions">
+        <button class="btn-icon" title="Approve" onclick="this.style.borderColor='var(--green)'">
+          <svg viewBox="0 0 16 16" fill="none" stroke="#3ecf8e" stroke-width="2"><path d="M3 8l4 4 6-7"/></svg>
+        </button>
+        <button class="btn-icon red" title="Reject" onclick="this.style.borderColor='var(--red)'">
+          <svg viewBox="0 0 16 16" fill="none" stroke="#ef4444" stroke-width="2"><path d="M4 4l8 8M12 4l-8 8"/></svg>
+        </button>
+        <button class="btn-review">Review</button>
+      </div>
+    </div>`;
+  });
+
+  // WORK ORDERS
+  const workOrders = [
+    { desc: 'Grid maintenance – Distribution Panel', status: 'Approved', target: '12 May', location: 'Ernakulam' },
+    { desc: 'Grid maintenance – Feeder No.3', status: 'In Progress', target: '19 May', location: 'Thiruvananthapuram' },
+    { desc: 'Grid maintenance – HT Line Inspection', status: 'Waiting Materials', target: '26 May', location: 'Calicut' },
+    { desc: 'Transformer repair – 11kV Unit', status: 'Approved', target: '2 June', location: 'Trichur' },
+    { desc: 'Substation upgrade – Bay Extension', status: 'Approved', target: '9 June', location: 'Quilon' },
+  ];
+  const statusClass = { 'Approved': 'status-approved', 'In Progress': 'status-progress', 'Waiting Materials': 'status-waiting' };
+  const tbody = document.getElementById('workOrdersTable');
+  workOrders.forEach(wo => {
+    tbody.innerHTML += `<tr>
+      <td><input type="checkbox" style="accent-color:var(--blue)"></td>
+      <td><span class="td-link">WO-2026-0852</span></td>
+      <td>${wo.desc}</td>
+      <td><span class="status-badge ${statusClass[wo.status]||'status-approved'}">${wo.status}</span></td>
+      <td class="tbl-hide-md">${wo.target}</td>
+      <td class="tbl-hide-md">${wo.location}</td>
+    </tr>`;
+  });
+
+  // WARRANTY
+  const warranties = [
+    { desc: 'Distribution Transformer 100kVA', loc: 'Ernakulam', expiry: '12 May', days: 12, cls: 'days-urgent' },
+    { desc: 'HT Switchgear Assembly', loc: 'Thiruvananthapuram', expiry: '19 May', days: 84, cls: 'days-ok' },
+    { desc: 'Cable Joint Kit', loc: 'Calicut', expiry: '26 May', days: 47, cls: 'days-mid' },
+    { desc: 'Transformer 200kVA', loc: 'Trichur', expiry: '2 June', days: 29, cls: 'days-urgent' },
+    { desc: 'Substation Control Panel', loc: 'Quilon', expiry: '9 June', days: 84, cls: 'days-ok' },
+    { desc: 'Metering Equipment', loc: 'Alleppey', expiry: '16 June', days: 12, cls: 'days-urgent' },
+  ];
+  const wTbody = document.getElementById('warrantyTable');
+  warranties.forEach(w => {
+    wTbody.innerHTML += `<tr>
+      <td><span class="td-link">WO-2026-0852</span></td>
+      <td>${w.desc}</td>
+      <td class="tbl-hide-sm">${w.loc}</td>
+      <td class="tbl-hide-sm">${w.expiry}</td>
+      <td><span class="days-badge ${w.cls}">${w.days} days</span></td>
+    </tr>`;
+  });
+
+  // SELECT ALL
+  document.querySelectorAll('thead input[type=checkbox]').forEach(cb => {
+    cb.addEventListener('change', function() {
+      const t = this.closest('table');
+      t.querySelectorAll('tbody input[type=checkbox]').forEach(c => c.checked = this.checked);
+    });
+  });
+</script>
+

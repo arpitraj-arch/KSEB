@@ -1,66 +1,42 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Arpit WorkData\\KSEB\\",
+  "WorkspaceRootPath": "C:\\Arpit WorkData\\Github\\KSEB\\KSEB\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{BAFD49A6-5A4D-B6BE-21D8-79673288C81A}|KSEB\\KSEB.csproj|c:\\arpit workdata\\kseb\\kseb\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "AbsoluteMoniker": "D:0:0:{BAFD49A6-5A4D-B6BE-21D8-79673288C81A}|KSEB\\KSEB.csproj|c:\\arpit workdata\\github\\kseb\\kseb\\kseb\\views\\workforcemanagement\\shifts.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{BAFD49A6-5A4D-B6BE-21D8-79673288C81A}|KSEB\\KSEB.csproj|solutionrelative:kseb\\views\\workforcemanagement\\shifts.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BAFD49A6-5A4D-B6BE-21D8-79673288C81A}|KSEB\\KSEB.csproj|c:\\arpit workdata\\github\\kseb\\kseb\\kseb\\views\\workforcemanagement\\labourcrafts.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{BAFD49A6-5A4D-B6BE-21D8-79673288C81A}|KSEB\\KSEB.csproj|solutionrelative:kseb\\views\\workforcemanagement\\labourcrafts.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BAFD49A6-5A4D-B6BE-21D8-79673288C81A}|KSEB\\KSEB.csproj|c:\\arpit workdata\\github\\kseb\\kseb\\kseb\\views\\workforcemanagement\\sunrisemeetingeregister.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{BAFD49A6-5A4D-B6BE-21D8-79673288C81A}|KSEB\\KSEB.csproj|solutionrelative:kseb\\views\\workforcemanagement\\sunrisemeetingeregister.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BAFD49A6-5A4D-B6BE-21D8-79673288C81A}|KSEB\\KSEB.csproj|c:\\arpit workdata\\github\\kseb\\kseb\\kseb\\controllers\\workforcemanagement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BAFD49A6-5A4D-B6BE-21D8-79673288C81A}|KSEB\\KSEB.csproj|solutionrelative:kseb\\controllers\\workforcemanagement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BAFD49A6-5A4D-B6BE-21D8-79673288C81A}|KSEB\\KSEB.csproj|c:\\arpit workdata\\github\\kseb\\kseb\\kseb\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{BAFD49A6-5A4D-B6BE-21D8-79673288C81A}|KSEB\\KSEB.csproj|solutionrelative:kseb\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{BAFD49A6-5A4D-B6BE-21D8-79673288C81A}|KSEB\\KSEB.csproj|c:\\arpit workdata\\kseb\\kseb\\views\\workordermanagemet\\workordertracking.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{BAFD49A6-5A4D-B6BE-21D8-79673288C81A}|KSEB\\KSEB.csproj|solutionrelative:kseb\\views\\workordermanagemet\\workordertracking.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{BAFD49A6-5A4D-B6BE-21D8-79673288C81A}|KSEB\\KSEB.csproj|c:\\arpit workdata\\github\\kseb\\kseb\\kseb\\views\\workforcemanagement\\crew.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{BAFD49A6-5A4D-B6BE-21D8-79673288C81A}|KSEB\\KSEB.csproj|solutionrelative:kseb\\views\\workforcemanagement\\crew.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{BAFD49A6-5A4D-B6BE-21D8-79673288C81A}|KSEB\\KSEB.csproj|c:\\arpit workdata\\kseb\\kseb\\controllers\\workordermanagement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{BAFD49A6-5A4D-B6BE-21D8-79673288C81A}|KSEB\\KSEB.csproj|c:\\arpit workdata\\github\\kseb\\kseb\\kseb\\views\\planningscheduling\\safetyplans.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{BAFD49A6-5A4D-B6BE-21D8-79673288C81A}|KSEB\\KSEB.csproj|solutionrelative:kseb\\views\\planningscheduling\\safetyplans.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BAFD49A6-5A4D-B6BE-21D8-79673288C81A}|KSEB\\KSEB.csproj|c:\\arpit workdata\\github\\kseb\\kseb\\kseb\\views\\workordermanagement\\labourreporting.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{BAFD49A6-5A4D-B6BE-21D8-79673288C81A}|KSEB\\KSEB.csproj|solutionrelative:kseb\\views\\workordermanagement\\labourreporting.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BAFD49A6-5A4D-B6BE-21D8-79673288C81A}|KSEB\\KSEB.csproj|c:\\arpit workdata\\github\\kseb\\kseb\\kseb\\controllers\\workordermanagement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{BAFD49A6-5A4D-B6BE-21D8-79673288C81A}|KSEB\\KSEB.csproj|solutionrelative:kseb\\controllers\\workordermanagement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{BAFD49A6-5A4D-B6BE-21D8-79673288C81A}|KSEB\\KSEB.csproj|c:\\arpit workdata\\kseb\\kseb\\controllers\\assetmanagement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{BAFD49A6-5A4D-B6BE-21D8-79673288C81A}|KSEB\\KSEB.csproj|solutionrelative:kseb\\controllers\\assetmanagement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{BAFD49A6-5A4D-B6BE-21D8-79673288C81A}|KSEB\\KSEB.csproj|c:\\arpit workdata\\kseb\\kseb\\views\\systemadministrator\\communicationtemplates.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{BAFD49A6-5A4D-B6BE-21D8-79673288C81A}|KSEB\\KSEB.csproj|solutionrelative:kseb\\views\\systemadministrator\\communicationtemplates.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{BAFD49A6-5A4D-B6BE-21D8-79673288C81A}|KSEB\\KSEB.csproj|c:\\arpit workdata\\kseb\\kseb\\views\\home\\dashboard.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{BAFD49A6-5A4D-B6BE-21D8-79673288C81A}|KSEB\\KSEB.csproj|solutionrelative:kseb\\views\\home\\dashboard.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{BAFD49A6-5A4D-B6BE-21D8-79673288C81A}|KSEB\\KSEB.csproj|c:\\arpit workdata\\kseb\\kseb\\views\\auth\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{BAFD49A6-5A4D-B6BE-21D8-79673288C81A}|KSEB\\KSEB.csproj|solutionrelative:kseb\\views\\auth\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{BAFD49A6-5A4D-B6BE-21D8-79673288C81A}|KSEB\\KSEB.csproj|c:\\arpit workdata\\kseb\\kseb\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{BAFD49A6-5A4D-B6BE-21D8-79673288C81A}|KSEB\\KSEB.csproj|solutionrelative:kseb\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{BAFD49A6-5A4D-B6BE-21D8-79673288C81A}|KSEB\\KSEB.csproj|c:\\arpit workdata\\kseb\\kseb\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{BAFD49A6-5A4D-B6BE-21D8-79673288C81A}|KSEB\\KSEB.csproj|solutionrelative:kseb\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{BAFD49A6-5A4D-B6BE-21D8-79673288C81A}|KSEB\\KSEB.csproj|c:\\arpit workdata\\kseb\\kseb\\controllers\\systemadministrator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{BAFD49A6-5A4D-B6BE-21D8-79673288C81A}|KSEB\\KSEB.csproj|solutionrelative:kseb\\controllers\\systemadministrator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{BAFD49A6-5A4D-B6BE-21D8-79673288C81A}|KSEB\\KSEB.csproj|c:\\arpit workdata\\kseb\\kseb\\views\\systemadministrator\\escalations.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{BAFD49A6-5A4D-B6BE-21D8-79673288C81A}|KSEB\\KSEB.csproj|solutionrelative:kseb\\views\\systemadministrator\\escalations.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{BAFD49A6-5A4D-B6BE-21D8-79673288C81A}|KSEB\\KSEB.csproj|c:\\arpit workdata\\kseb\\kseb\\views\\systemadministrator\\securitygroups.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{BAFD49A6-5A4D-B6BE-21D8-79673288C81A}|KSEB\\KSEB.csproj|solutionrelative:kseb\\views\\systemadministrator\\securitygroups.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{BAFD49A6-5A4D-B6BE-21D8-79673288C81A}|KSEB\\KSEB.csproj|c:\\arpit workdata\\kseb\\kseb\\views\\systemadministrator\\workflowdesigner.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{BAFD49A6-5A4D-B6BE-21D8-79673288C81A}|KSEB\\KSEB.csproj|solutionrelative:kseb\\views\\systemadministrator\\workflowdesigner.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{BAFD49A6-5A4D-B6BE-21D8-79673288C81A}|KSEB\\KSEB.csproj|c:\\arpit workdata\\kseb\\kseb\\views\\systemadministrator\\people.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{BAFD49A6-5A4D-B6BE-21D8-79673288C81A}|KSEB\\KSEB.csproj|solutionrelative:kseb\\views\\systemadministrator\\people.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{BAFD49A6-5A4D-B6BE-21D8-79673288C81A}|KSEB\\KSEB.csproj|c:\\arpit workdata\\kseb\\kseb\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{BAFD49A6-5A4D-B6BE-21D8-79673288C81A}|KSEB\\KSEB.csproj|solutionrelative:kseb\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -75,183 +51,116 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "_Layout.cshtml",
-              "DocumentMoniker": "C:\\Arpit WorkData\\KSEB\\KSEB\\Views\\Shared\\_Layout.cshtml",
-              "RelativeDocumentMoniker": "KSEB\\Views\\Shared\\_Layout.cshtml",
-              "ToolTip": "C:\\Arpit WorkData\\KSEB\\KSEB\\Views\\Shared\\_Layout.cshtml",
-              "RelativeToolTip": "KSEB\\Views\\Shared\\_Layout.cshtml",
-              "ViewState": "AgIAALICAAAAAAAAAAAAALoCAAA5AAAAAAAAAA==",
+              "Title": "Shifts.cshtml",
+              "DocumentMoniker": "C:\\Arpit WorkData\\Github\\KSEB\\KSEB\\KSEB\\Views\\WorkForceManagement\\Shifts.cshtml",
+              "RelativeDocumentMoniker": "KSEB\\Views\\WorkForceManagement\\Shifts.cshtml",
+              "ToolTip": "C:\\Arpit WorkData\\Github\\KSEB\\KSEB\\KSEB\\Views\\WorkForceManagement\\Shifts.cshtml",
+              "RelativeToolTip": "KSEB\\Views\\WorkForceManagement\\Shifts.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-06-02T05:42:26.521Z",
+              "WhenOpened": "2026-06-04T10:21:40.513Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "LabourCrafts.cshtml",
+              "DocumentMoniker": "C:\\Arpit WorkData\\Github\\KSEB\\KSEB\\KSEB\\Views\\WorkForceManagement\\LabourCrafts.cshtml",
+              "RelativeDocumentMoniker": "KSEB\\Views\\WorkForceManagement\\LabourCrafts.cshtml",
+              "ToolTip": "C:\\Arpit WorkData\\Github\\KSEB\\KSEB\\KSEB\\Views\\WorkForceManagement\\LabourCrafts.cshtml",
+              "RelativeToolTip": "KSEB\\Views\\WorkForceManagement\\LabourCrafts.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-06-04T10:20:45.133Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "WorkForceManagement.cs",
+              "DocumentMoniker": "C:\\Arpit WorkData\\Github\\KSEB\\KSEB\\KSEB\\Controllers\\WorkForceManagement.cs",
+              "RelativeDocumentMoniker": "KSEB\\Controllers\\WorkForceManagement.cs",
+              "ToolTip": "C:\\Arpit WorkData\\Github\\KSEB\\KSEB\\KSEB\\Controllers\\WorkForceManagement.cs",
+              "RelativeToolTip": "KSEB\\Controllers\\WorkForceManagement.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAjAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-04T09:25:01.719Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "crew.cshtml",
+              "DocumentMoniker": "C:\\Arpit WorkData\\Github\\KSEB\\KSEB\\KSEB\\Views\\WorkForceManagement\\crew.cshtml",
+              "RelativeDocumentMoniker": "KSEB\\Views\\WorkForceManagement\\crew.cshtml",
+              "ToolTip": "C:\\Arpit WorkData\\Github\\KSEB\\KSEB\\KSEB\\Views\\WorkForceManagement\\crew.cshtml",
+              "RelativeToolTip": "KSEB\\Views\\WorkForceManagement\\crew.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAeAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-06-04T09:20:43.249Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "WorkOrderManagement.cs",
-              "DocumentMoniker": "C:\\Arpit WorkData\\KSEB\\KSEB\\Controllers\\WorkOrderManagement.cs",
-              "RelativeDocumentMoniker": "KSEB\\Controllers\\WorkOrderManagement.cs",
-              "ToolTip": "C:\\Arpit WorkData\\KSEB\\KSEB\\Controllers\\WorkOrderManagement.cs",
-              "RelativeToolTip": "KSEB\\Controllers\\WorkOrderManagement.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAoAAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-06-02T05:41:17.803Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "WorkOrderTracking.cshtml",
-              "DocumentMoniker": "C:\\Arpit WorkData\\KSEB\\KSEB\\Views\\WorkOrderManagemet\\WorkOrderTracking.cshtml",
-              "RelativeDocumentMoniker": "KSEB\\Views\\WorkOrderManagemet\\WorkOrderTracking.cshtml",
-              "ToolTip": "C:\\Arpit WorkData\\KSEB\\KSEB\\Views\\WorkOrderManagemet\\WorkOrderTracking.cshtml",
-              "RelativeToolTip": "KSEB\\Views\\WorkOrderManagemet\\WorkOrderTracking.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAsAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-06-02T05:37:49.034Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "AssetManagement.cs",
-              "DocumentMoniker": "C:\\Arpit WorkData\\KSEB\\KSEB\\Controllers\\AssetManagement.cs",
-              "RelativeDocumentMoniker": "KSEB\\Controllers\\AssetManagement.cs",
-              "ToolTip": "C:\\Arpit WorkData\\KSEB\\KSEB\\Controllers\\AssetManagement.cs",
-              "RelativeToolTip": "KSEB\\Controllers\\AssetManagement.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAGAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-06-02T05:32:02.809Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "HomeController.cs",
-              "DocumentMoniker": "C:\\Arpit WorkData\\KSEB\\KSEB\\Controllers\\HomeController.cs",
-              "RelativeDocumentMoniker": "KSEB\\Controllers\\HomeController.cs",
-              "ToolTip": "C:\\Arpit WorkData\\KSEB\\KSEB\\Controllers\\HomeController.cs",
-              "RelativeToolTip": "KSEB\\Controllers\\HomeController.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-06-02T05:31:52.481Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "Dashboard.cshtml",
-              "DocumentMoniker": "C:\\Arpit WorkData\\KSEB\\KSEB\\Views\\Home\\Dashboard.cshtml",
-              "RelativeDocumentMoniker": "KSEB\\Views\\Home\\Dashboard.cshtml",
-              "ToolTip": "C:\\Arpit WorkData\\KSEB\\KSEB\\Views\\Home\\Dashboard.cshtml",
-              "RelativeToolTip": "KSEB\\Views\\Home\\Dashboard.cshtml",
+              "Title": "Sunrisemeetingeregister.cshtml",
+              "DocumentMoniker": "C:\\Arpit WorkData\\Github\\KSEB\\KSEB\\KSEB\\Views\\WorkForceManagement\\Sunrisemeetingeregister.cshtml",
+              "RelativeDocumentMoniker": "KSEB\\Views\\WorkForceManagement\\Sunrisemeetingeregister.cshtml",
+              "ToolTip": "C:\\Arpit WorkData\\Github\\KSEB\\KSEB\\KSEB\\Views\\WorkForceManagement\\Sunrisemeetingeregister.cshtml",
+              "RelativeToolTip": "KSEB\\Views\\WorkForceManagement\\Sunrisemeetingeregister.cshtml",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-06-02T05:31:42.111Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "AuthController.cs",
-              "DocumentMoniker": "C:\\Arpit WorkData\\KSEB\\KSEB\\Controllers\\AuthController.cs",
-              "RelativeDocumentMoniker": "KSEB\\Controllers\\AuthController.cs",
-              "ToolTip": "C:\\Arpit WorkData\\KSEB\\KSEB\\Controllers\\AuthController.cs",
-              "RelativeToolTip": "KSEB\\Controllers\\AuthController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-06-02T04:55:01.547Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "Escalations.cshtml",
-              "DocumentMoniker": "C:\\Arpit WorkData\\KSEB\\KSEB\\Views\\SystemAdministrator\\Escalations.cshtml",
-              "RelativeDocumentMoniker": "KSEB\\Views\\SystemAdministrator\\Escalations.cshtml",
-              "ToolTip": "C:\\Arpit WorkData\\KSEB\\KSEB\\Views\\SystemAdministrator\\Escalations.cshtml",
-              "RelativeToolTip": "KSEB\\Views\\SystemAdministrator\\Escalations.cshtml",
-              "ViewState": "AgIAAAkAAAAAAAAAAAAAAAkAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-06-01T13:00:31.905Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "WorkflowDesigner.cshtml",
-              "DocumentMoniker": "C:\\Arpit WorkData\\KSEB\\KSEB\\Views\\SystemAdministrator\\WorkflowDesigner.cshtml",
-              "RelativeDocumentMoniker": "KSEB\\Views\\SystemAdministrator\\WorkflowDesigner.cshtml",
-              "ToolTip": "C:\\Arpit WorkData\\KSEB\\KSEB\\Views\\SystemAdministrator\\WorkflowDesigner.cshtml",
-              "RelativeToolTip": "KSEB\\Views\\SystemAdministrator\\WorkflowDesigner.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-06-01T12:58:29.601Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "SystemAdministrator.cs",
-              "DocumentMoniker": "C:\\Arpit WorkData\\KSEB\\KSEB\\Controllers\\SystemAdministrator.cs",
-              "RelativeDocumentMoniker": "KSEB\\Controllers\\SystemAdministrator.cs",
-              "ToolTip": "C:\\Arpit WorkData\\KSEB\\KSEB\\Controllers\\SystemAdministrator.cs",
-              "RelativeToolTip": "KSEB\\Controllers\\SystemAdministrator.cs",
-              "ViewState": "AgIAAAwAAAAAAAAAAAAYwBUAAAAtAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-06-01T12:58:02.824Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "SecurityGroups.cshtml",
-              "DocumentMoniker": "C:\\Arpit WorkData\\KSEB\\KSEB\\Views\\SystemAdministrator\\SecurityGroups.cshtml",
-              "RelativeDocumentMoniker": "KSEB\\Views\\SystemAdministrator\\SecurityGroups.cshtml",
-              "ToolTip": "C:\\Arpit WorkData\\KSEB\\KSEB\\Views\\SystemAdministrator\\SecurityGroups.cshtml",
-              "RelativeToolTip": "KSEB\\Views\\SystemAdministrator\\SecurityGroups.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAoAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-06-01T12:56:14.199Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "CommunicationTemplates.cshtml",
-              "DocumentMoniker": "C:\\Arpit WorkData\\KSEB\\KSEB\\Views\\SystemAdministrator\\CommunicationTemplates.cshtml",
-              "RelativeDocumentMoniker": "KSEB\\Views\\SystemAdministrator\\CommunicationTemplates.cshtml",
-              "ToolTip": "C:\\Arpit WorkData\\KSEB\\KSEB\\Views\\SystemAdministrator\\CommunicationTemplates.cshtml",
-              "RelativeToolTip": "KSEB\\Views\\SystemAdministrator\\CommunicationTemplates.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-06-01T12:52:46.753Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 13,
-              "Title": "People.cshtml",
-              "DocumentMoniker": "C:\\Arpit WorkData\\KSEB\\KSEB\\Views\\SystemAdministrator\\People.cshtml",
-              "RelativeDocumentMoniker": "KSEB\\Views\\SystemAdministrator\\People.cshtml",
-              "ToolTip": "C:\\Arpit WorkData\\KSEB\\KSEB\\Views\\SystemAdministrator\\People.cshtml",
-              "RelativeToolTip": "KSEB\\Views\\SystemAdministrator\\People.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAaAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-06-01T12:52:33.031Z"
+              "WhenOpened": "2026-06-04T09:20:24.863Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 6,
-              "Title": "Login.cshtml",
-              "DocumentMoniker": "C:\\Arpit WorkData\\KSEB\\KSEB\\Views\\Auth\\Login.cshtml",
-              "RelativeDocumentMoniker": "KSEB\\Views\\Auth\\Login.cshtml",
-              "ToolTip": "C:\\Arpit WorkData\\KSEB\\KSEB\\Views\\Auth\\Login.cshtml",
-              "RelativeToolTip": "KSEB\\Views\\Auth\\Login.cshtml",
-              "ViewState": "AgIAAN8BAAAAAAAAAAAAAOYBAAA1AAAAAAAAAA==",
+              "Title": "SafetyPlans.cshtml",
+              "DocumentMoniker": "C:\\Arpit WorkData\\Github\\KSEB\\KSEB\\KSEB\\Views\\PlanningScheduling\\SafetyPlans.cshtml",
+              "RelativeDocumentMoniker": "KSEB\\Views\\PlanningScheduling\\SafetyPlans.cshtml",
+              "ToolTip": "C:\\Arpit WorkData\\Github\\KSEB\\KSEB\\KSEB\\Views\\PlanningScheduling\\SafetyPlans.cshtml",
+              "RelativeToolTip": "KSEB\\Views\\PlanningScheduling\\SafetyPlans.cshtml",
+              "ViewState": "AgIAAL8BAAAAAAAAAAAnwJABAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-06-01T12:02:20.648Z"
+              "WhenOpened": "2026-06-03T07:08:05.318Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Arpit WorkData\\KSEB\\KSEB\\Program.cs",
-              "RelativeDocumentMoniker": "KSEB\\Program.cs",
-              "ToolTip": "C:\\Arpit WorkData\\KSEB\\KSEB\\Program.cs",
-              "RelativeToolTip": "KSEB\\Program.cs",
-              "ViewState": "AgIAAAkAAAAAAAAAAAAAABkAAAAyAAAAAAAAAA==",
+              "DocumentIndex": 4,
+              "Title": "_Layout.cshtml",
+              "DocumentMoniker": "C:\\Arpit WorkData\\Github\\KSEB\\KSEB\\KSEB\\Views\\Shared\\_Layout.cshtml",
+              "RelativeDocumentMoniker": "KSEB\\Views\\Shared\\_Layout.cshtml",
+              "ToolTip": "C:\\Arpit WorkData\\Github\\KSEB\\KSEB\\KSEB\\Views\\Shared\\_Layout.cshtml",
+              "RelativeToolTip": "KSEB\\Views\\Shared\\_Layout.cshtml",
+              "ViewState": "AgIAAA0DAAAAAAAAAAAYwB0DAAAtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-06-03T05:34:47.07Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "WorkOrderManagement.cs",
+              "DocumentMoniker": "C:\\Arpit WorkData\\Github\\KSEB\\KSEB\\KSEB\\Controllers\\WorkOrderManagement.cs",
+              "RelativeDocumentMoniker": "KSEB\\Controllers\\WorkOrderManagement.cs",
+              "ToolTip": "C:\\Arpit WorkData\\Github\\KSEB\\KSEB\\KSEB\\Controllers\\WorkOrderManagement.cs",
+              "RelativeToolTip": "KSEB\\Controllers\\WorkOrderManagement.cs",
+              "ViewState": "AgIAAAQAAAAAAAAAAAAuwBMAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-06-01T09:14:00.997Z"
+              "WhenOpened": "2026-06-03T05:34:19.703Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "LabourReporting.cshtml",
+              "DocumentMoniker": "C:\\Arpit WorkData\\Github\\KSEB\\KSEB\\KSEB\\Views\\WorkOrderManagement\\LabourReporting.cshtml",
+              "RelativeDocumentMoniker": "KSEB\\Views\\WorkOrderManagement\\LabourReporting.cshtml",
+              "ToolTip": "C:\\Arpit WorkData\\Github\\KSEB\\KSEB\\KSEB\\Views\\WorkOrderManagement\\LabourReporting.cshtml",
+              "RelativeToolTip": "KSEB\\Views\\WorkOrderManagement\\LabourReporting.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-06-03T05:32:57.864Z"
             }
           ]
         }

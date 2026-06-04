@@ -1,0 +1,2047 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@{
+    ViewData["Title"] = "Work Order Tracking";
+}
+@{
+    ViewData["ActiveMenu"] = "Work Order Management";
+}
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Work Order Details</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+    *, *::before, *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0
+    }
+
+    :root {
+        --bg: #f0f2f5;
+        --surface: #fff;
+        --surface2: #f8fafc;
+        --border: #e4e7ec;
+        --text: #111827;
+        --muted: #6b7280;
+        --dim: #9ca3af;
+        --blue: #2563eb;
+        --green: #16a34a;
+        --red: #dc2626;
+        --orange: #d97706;
+        --teal: #0d9488;
+        --mono: 'IBM Plex Mono',monospace;
+        --sans: 'IBM Plex Sans',sans-serif;
+    }
+
+    body {
+        font-family: var(--sans);
+        font-size: 13px;
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column
+    }
+
+    /* ── TOP BAR ── */
+    .topbar {
+        background: var(--surface);
+        border-bottom: 1px solid var(--border);
+        padding: 0 20px;
+        min-height: 56px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        box-shadow: 0 1px 4px rgba(0,0,0,.06);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        flex-wrap: wrap;
+    }
+
+    .topbar-left {
+        display: flex;
+        align-items: center;
+        gap: 12px
+    }
+
+    .back-btn {
+        width: 34px;
+        height: 34px;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        background: var(--surface2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        color: var(--muted);
+        transition: .15s;
+        flex-shrink: 0;
+    }
+
+        .back-btn:hover {
+            border-color: var(--blue);
+            color: var(--blue)
+        }
+
+        .back-btn svg {
+            width: 16px;
+            height: 16px
+        }
+
+    .topbar-title h1 {
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--text);
+        line-height: 1.2
+    }
+
+    .topbar-title p {
+        font-size: 11px;
+        color: var(--muted)
+    }
+
+    .esc-btn {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        background: #111827;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        padding: 8px 16px;
+        font-family: var(--sans);
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: .15s;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+
+        .esc-btn:hover {
+            background: #1d4ed8
+        }
+
+        .esc-btn svg {
+            width: 13px;
+            height: 13px
+        }
+
+    /* ── STATUS STRIP ── */
+    .status-strip {
+        background: var(--surface);
+        border-bottom: 1px solid var(--border);
+        padding: 0 20px;
+        display: flex;
+        align-items: stretch;
+        gap: 0;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+        .status-strip::-webkit-scrollbar {
+            height: 0
+        }
+
+    .strip-item {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        padding: 10px 20px 10px 0;
+        border-right: 1px solid var(--border);
+        min-width: max-content;
+        gap: 2px;
+    }
+
+        .strip-item:last-child {
+            border-right: none
+        }
+
+        .strip-item:first-child {
+            padding-left: 0
+        }
+
+    .strip-label {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: .07em;
+        text-transform: uppercase;
+        color: var(--dim);
+    }
+
+        .strip-label svg {
+            width: 12px;
+            height: 12px
+        }
+
+    .strip-val {
+        font-size: 15px;
+        font-weight: 700;
+        font-family: var(--mono)
+    }
+
+        .strip-val.blue {
+            color: var(--blue)
+        }
+
+        .strip-val.red {
+            color: var(--red)
+        }
+
+        .strip-val.orange {
+            color: var(--orange)
+        }
+
+        .strip-val.green {
+            color: var(--green)
+        }
+
+        .strip-val.purple {
+            color: #7c3aed
+        }
+
+    .progress-bar-wrap {
+        width: 100%;
+        height: 4px;
+        background: #e4e7ec;
+        border-radius: 2px;
+        margin-top: 3px
+    }
+
+    .progress-bar-inner {
+        height: 4px;
+        border-radius: 2px;
+        background: var(--green)
+    }
+
+    /* ── MAIN LAYOUT ── */
+    .main {
+        display: grid;
+        grid-template-columns: 1fr 280px;
+        gap: 6px;
+        padding: 4px 8px;
+        flex: 1;
+        align-items: start
+    }
+
+    /* ── LEFT PANEL ── */
+    .left-panel {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        overflow: hidden
+    }
+
+    .wo-header {
+        padding: 16px 20px;
+        border-bottom: 1px solid var(--border)
+    }
+
+    .wo-id-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 6px;
+        flex-wrap: wrap
+    }
+
+    .wo-id {
+        font-size: 15px;
+        font-weight: 700;
+        font-family: var(--mono);
+        color: var(--text)
+    }
+
+    .badge {
+        display: inline-block;
+        padding: 3px 10px;
+        border-radius: 20px;
+        font-size: 10px;
+        font-weight: 700
+    }
+
+    .badge-inprogress {
+        background: rgba(37,99,235,.1);
+        color: var(--blue)
+    }
+
+    .badge-approved {
+        background: rgba(22,163,74,.12);
+        color: var(--green)
+    }
+
+    .badge-waiting {
+        background: rgba(217,119,6,.12);
+        color: var(--orange)
+    }
+
+    .wo-desc {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--text);
+        margin-bottom: 4px
+    }
+
+    .wo-location {
+        font-size: 11px;
+        color: var(--muted);
+        display: flex;
+        align-items: center;
+        gap: 4px
+    }
+
+        .wo-location svg {
+            width: 12px;
+            height: 12px;
+            flex-shrink: 0
+        }
+
+    .wo-meta-grid {
+        display: grid;
+        grid-template-columns: repeat(3,1fr);
+        gap: 0;
+        padding: 0 20px;
+        border-bottom: 1px solid var(--border)
+    }
+
+    .meta-cell {
+        padding: 12px 0;
+        border-right: 1px solid var(--border)
+    }
+
+        .meta-cell:nth-child(3n) {
+            border-right: none
+        }
+
+        .meta-cell:nth-child(n+4) {
+            border-top: 1px solid var(--border)
+        }
+
+    .meta-cell {
+        padding-right: 16px
+    }
+
+    .meta-key {
+        font-size: 10px;
+        color: var(--dim);
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: .05em;
+        margin-bottom: 3px
+    }
+
+    .meta-val {
+        font-size: 12px;
+        color: var(--text);
+        font-weight: 500
+    }
+
+        .meta-val.red {
+            color: var(--red);
+            font-weight: 700
+        }
+
+    /* ── TABS ── */
+    .tabs-bar {
+        display: flex;
+        align-items: center;
+        gap: 0;
+        border-bottom: 1px solid var(--border);
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        padding: 0 12px;
+    }
+
+        .tabs-bar::-webkit-scrollbar {
+            height: 0
+        }
+
+    .tab-btn {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        padding: 12px 12px;
+        border: none;
+        background: none;
+        font-family: var(--sans);
+        font-size: 12px;
+        font-weight: 500;
+        color: var(--muted);
+        cursor: pointer;
+        transition: .15s;
+        white-space: nowrap;
+        border-bottom: 2px solid transparent;
+        margin-bottom: -1px;
+    }
+
+        .tab-btn:hover {
+            color: var(--blue)
+        }
+
+        .tab-btn.active {
+            color: var(--blue);
+            border-bottom-color: var(--blue);
+            font-weight: 600
+        }
+
+        .tab-btn svg {
+            width: 13px;
+            height: 13px
+        }
+
+    .tab-count {
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        font-size: 10px;
+        font-weight: 700;
+        padding: 0 5px;
+        color: var(--muted);
+    }
+
+    .tab-btn.active .tab-count {
+        background: rgba(37,99,235,.1);
+        border-color: transparent;
+        color: var(--blue)
+    }
+
+    /* ── TAB CONTENT ── */
+    .tab-content {
+        display: none;
+        padding: 20px
+    }
+
+        .tab-content.active {
+            display: block
+        }
+
+    /* Overview sections */
+    .section-title {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--text);
+        margin-bottom: 14px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid var(--border);
+    }
+
+        .section-title svg {
+            width: 14px;
+            height: 14px;
+            color: var(--blue)
+        }
+
+    .detail-grid {
+        display: grid;
+        grid-template-columns: repeat(3,1fr);
+        gap: 14px;
+        margin-bottom: 20px
+    }
+
+    .detail-cell {
+    }
+
+    .detail-key {
+        font-size: 10px;
+        color: var(--dim);
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: .05em;
+        margin-bottom: 3px
+    }
+
+    .detail-val {
+        font-size: 12px;
+        color: var(--text);
+        font-weight: 500
+    }
+
+    .work-desc-text {
+        font-size: 12px;
+        color: var(--muted);
+        line-height: 1.6;
+        margin-bottom: 20px
+    }
+
+    /* Safety fields */
+    .safety-fields {
+        display: grid;
+        grid-template-columns: repeat(3,1fr);
+        gap: 12px;
+        margin-bottom: 20px
+    }
+
+    .safety-cell {
+    }
+
+    .safety-key {
+        font-size: 10px;
+        color: var(--dim);
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: .05em;
+        margin-bottom: 4px
+    }
+
+    .safety-val {
+        font-size: 12px;
+        color: var(--text);
+        font-weight: 500
+    }
+
+    /* ── LABOUR TAB ── */
+    .data-table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 520px
+    }
+
+        .data-table thead tr {
+            border-bottom: 1px solid var(--border)
+        }
+
+        .data-table thead th {
+            padding: 8px 10px;
+            text-align: left;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            color: var(--dim);
+            white-space: nowrap
+        }
+
+        .data-table tbody tr {
+            border-bottom: 1px solid var(--border);
+            transition: .1s
+        }
+
+            .data-table tbody tr:hover {
+                background: #f5f7ff
+            }
+
+        .data-table tbody td {
+            padding: 10px 10px;
+            font-size: 12px;
+            color: var(--text)
+        }
+
+    .td-link {
+        color: var(--blue);
+        font-family: var(--mono);
+        font-size: 11px;
+        cursor: pointer;
+        font-weight: 600
+    }
+
+        .td-link:hover {
+            text-decoration: underline
+        }
+
+    .table-wrap {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch
+    }
+
+    .summary-grid {
+        display: grid;
+        grid-template-columns: repeat(4,1fr);
+        gap: 12px;
+        margin-top: 16px;
+        padding-top: 16px;
+        border-top: 1px solid var(--border)
+    }
+
+    .summary-card {
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 12px
+    }
+
+    .summary-label {
+        font-size: 10px;
+        color: var(--dim);
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: .05em;
+        margin-bottom: 4px
+    }
+
+    .summary-val {
+        font-size: 16px;
+        font-weight: 700;
+        font-family: var(--mono);
+        color: var(--blue)
+    }
+
+    /* ── MATERIALS TAB ── */
+    .material-badge {
+        display: inline-block;
+        padding: 2px 8px;
+        border-radius: 12px;
+        font-size: 10px;
+        font-weight: 600
+    }
+
+    .mat-available {
+        background: rgba(22,163,74,.1);
+        color: var(--green)
+    }
+
+    .mat-pending {
+        background: rgba(217,119,6,.1);
+        color: var(--orange)
+    }
+
+    .mat-issued {
+        background: rgba(37,99,235,.1);
+        color: var(--blue)
+    }
+
+    /* ── TASKS TAB ── */
+    .task-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 12px 0;
+        border-bottom: 1px solid var(--border)
+    }
+
+        .task-item:last-child {
+            border-bottom: none
+        }
+
+    .task-check {
+        width: 18px;
+        height: 18px;
+        border-radius: 5px;
+        border: 2px solid var(--border);
+        flex-shrink: 0;
+        margin-top: 1px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: .15s;
+    }
+
+        .task-check.done {
+            background: var(--green);
+            border-color: var(--green)
+        }
+
+        .task-check svg {
+            width: 11px;
+            height: 11px;
+            stroke: #fff;
+            display: none
+        }
+
+        .task-check.done svg {
+            display: block
+        }
+
+    .task-body {
+        flex: 1
+    }
+
+    .task-name {
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--text);
+        margin-bottom: 3px
+    }
+
+        .task-name.done {
+            text-decoration: line-through;
+            color: var(--dim)
+        }
+
+    .task-meta {
+        font-size: 10px;
+        color: var(--dim)
+    }
+
+    .task-status-badge {
+        padding: 2px 8px;
+        border-radius: 10px;
+        font-size: 10px;
+        font-weight: 600;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+
+    /* ── SAFETY TAB ── */
+    .permit-card {
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 14px;
+        margin-bottom: 12px;
+    }
+
+    .permit-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 10px;
+        flex-wrap: wrap;
+        gap: 8px
+    }
+
+    .permit-id {
+        font-family: var(--mono);
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--blue)
+    }
+
+    .checklist-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 7px 0;
+        border-bottom: 1px solid var(--border);
+        font-size: 12px
+    }
+
+        .checklist-item:last-child {
+            border-bottom: none
+        }
+
+    .check-icon {
+        width: 16px;
+        height: 16px;
+        border-radius: 4px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center
+    }
+
+    .check-yes {
+        background: rgba(22,163,74,.12)
+    }
+
+        .check-yes svg, .check-no svg {
+            width: 10px;
+            height: 10px
+        }
+
+        .check-yes svg {
+            stroke: var(--green)
+        }
+
+    .check-no {
+        background: rgba(220,38,38,.1)
+    }
+
+        .check-no svg {
+            stroke: var(--red)
+        }
+
+    /* ── HISTORY TAB ── */
+    .history-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0
+    }
+
+    .history-item {
+        display: flex;
+        gap: 12px;
+        padding: 12px 0;
+        border-bottom: 1px solid var(--border)
+    }
+
+        .history-item:last-child {
+            border-bottom: none
+        }
+
+    .h-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        margin-top: 3px;
+        flex-shrink: 0
+    }
+
+    .h-content {
+        flex: 1
+    }
+
+    .h-event {
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--text)
+    }
+
+    .h-user {
+        font-size: 11px;
+        color: var(--muted);
+        margin-top: 1px
+    }
+
+    .h-time {
+        font-size: 10px;
+        color: var(--dim);
+        margin-top: 2px;
+        font-family: var(--mono)
+    }
+
+    /* ── ATTACHMENTS TAB ── */
+    .attachments-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill,minmax(160px,1fr));
+        gap: 12px
+    }
+
+    .attach-card {
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        overflow: hidden;
+        transition: .15s;
+        cursor: pointer;
+    }
+
+        .attach-card:hover {
+            border-color: var(--blue);
+            box-shadow: 0 2px 8px rgba(37,99,235,.1)
+        }
+
+    .attach-preview {
+        height: 90px;
+        background: var(--surface2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .attach-preview svg {
+            width: 32px;
+            height: 32px;
+            color: var(--dim)
+        }
+
+    .attach-info {
+        padding: 8px 10px
+    }
+
+    .attach-name {
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--text);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis
+    }
+
+    .attach-size {
+        font-size: 10px;
+        color: var(--dim);
+        margin-top: 1px
+    }
+
+    /* ── RIGHT PANEL ── */
+    .right-panel {
+        display: flex;
+        flex-direction: column;
+        gap: 6px
+    }
+
+    .r-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        overflow: hidden
+    }
+
+    .r-card-header {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        padding: 14px 16px 10px;
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--text);
+        border-bottom: 1px solid var(--border);
+    }
+
+        .r-card-header svg {
+            width: 14px;
+            height: 14px;
+            color: var(--blue)
+        }
+
+    .r-card-body {
+        padding: 14px 16px
+    }
+
+    /* Timeline */
+    .timeline-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0
+    }
+
+    .tl-item {
+        display: flex;
+        gap: 10px;
+        padding: 10px 0;
+        position: relative
+    }
+
+        .tl-item:not(:last-child)::before {
+            content: '';
+            position: absolute;
+            left: 6px;
+            top: 22px;
+            bottom: -10px;
+            width: 1px;
+            background: var(--border);
+        }
+
+    .tl-dot {
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        border: 2px solid var(--border);
+        flex-shrink: 0;
+        margin-top: 2px;
+        position: relative;
+        z-index: 1;
+    }
+
+        .tl-dot.green {
+            background: var(--green);
+            border-color: var(--green)
+        }
+
+        .tl-dot.orange {
+            background: var(--orange);
+            border-color: var(--orange)
+        }
+
+        .tl-dot.grey {
+            background: var(--dim);
+            border-color: var(--dim)
+        }
+
+    .tl-content {
+    }
+
+    .tl-time {
+        font-size: 9px;
+        font-family: var(--mono);
+        color: var(--dim);
+        margin-bottom: 2px
+    }
+
+    .tl-event {
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--text)
+    }
+
+    .tl-user {
+        font-size: 11px;
+        color: var(--muted)
+    }
+
+    /* SLA donut */
+    .sla-donut-wrap {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 6px 0 14px
+    }
+
+        .sla-donut-wrap svg {
+            width: 120px;
+            height: 120px
+        }
+
+    .sla-rows {
+        display: flex;
+        flex-direction: column;
+        gap: 8px
+    }
+
+    .sla-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 12px
+    }
+
+    .sla-key {
+        color: var(--muted)
+    }
+
+    .sla-val {
+        font-weight: 600;
+        font-family: var(--mono);
+        color: var(--text)
+    }
+
+        .sla-val.green {
+            color: var(--green)
+        }
+
+    .sla-divider {
+        height: 1px;
+        background: var(--border);
+        margin: 6px 0
+    }
+
+    .sla-status-badge {
+        display: inline-block;
+        padding: 2px 8px;
+        border-radius: 6px;
+        font-size: 10px;
+        font-weight: 700
+    }
+
+    .sla-inprog {
+        background: rgba(217,119,6,.1);
+        color: var(--orange)
+    }
+
+    /* ── FOOTER ACTIONS ── */
+    .footer-actions {
+        position: sticky;
+        bottom: 0;
+        background: var(--surface);
+        border-top: 1px solid var(--border);
+        padding: 12px 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+        z-index: 50;
+        box-shadow: 0 -2px 8px rgba(0,0,0,.06);
+    }
+
+    .footer-btn {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 9px 16px;
+        border-radius: 8px;
+        font-family: var(--sans);
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: .15s;
+        border: 1px solid transparent;
+        white-space: nowrap;
+    }
+
+    .footer-btn-primary {
+        background: #2563eb;
+        color: #fff;
+        border-color: #2563eb
+    }
+
+        .footer-btn-primary:hover {
+            background: #1d4ed8
+        }
+
+    .footer-btn-outline {
+        background: var(--surface);
+        color: var(--text);
+        border-color: var(--border)
+    }
+
+        .footer-btn-outline:hover {
+            border-color: var(--blue);
+            color: var(--blue)
+        }
+
+    .footer-btn-danger {
+        background: var(--red);
+        color: #fff;
+        border-color: var(--red)
+    }
+
+        .footer-btn-danger:hover {
+            background: #b91c1c
+        }
+
+    .footer-btn svg {
+        width: 13px;
+        height: 13px
+    }
+
+    .footer-spacer {
+        flex: 1
+    }
+
+    /* =====================
+       RESPONSIVE BREAKPOINTS
+       ===================== */
+
+    /* ≤1024px: sidebar goes below */
+    @@media(max-width:1024px) {
+        .main {
+            grid-template-columns: 1fr;
+            gap: 14px
+        }
+
+        .right-panel {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px
+        }
+    }
+
+    /* ≤768px: tablet */
+    @@media(max-width:768px) {
+        .topbar {
+            padding: 0 14px;
+            min-height: 52px
+        }
+
+        .topbar-title h1 {
+            font-size: 14px
+        }
+
+        .esc-btn span {
+            display: none
+        }
+
+        .esc-btn {
+            padding: 8px 10px
+        }
+
+        .status-strip {
+            padding: 0 14px
+        }
+
+        .strip-item {
+            padding: 8px 14px 8px 0
+        }
+
+        .strip-val {
+            font-size: 13px
+        }
+
+        .main {
+            padding: 12px 14px
+        }
+
+        .wo-meta-grid {
+            grid-template-columns: 1fr 1fr
+        }
+
+        .meta-cell:nth-child(3n) {
+            border-right: 1px solid var(--border)
+        }
+
+        .meta-cell:nth-child(2n) {
+            border-right: none
+        }
+
+        .meta-cell:nth-child(n+3) {
+            border-top: 1px solid var(--border)
+        }
+
+        .detail-grid {
+            grid-template-columns: 1fr 1fr
+        }
+
+        .safety-fields {
+            grid-template-columns: 1fr 1fr
+        }
+
+        .summary-grid {
+            grid-template-columns: 1fr 1fr
+        }
+
+        .right-panel {
+            grid-template-columns: 1fr
+        }
+
+        .footer-actions {
+            padding: 10px 14px;
+            gap: 8px
+        }
+
+        .footer-btn {
+            padding: 8px 12px;
+            font-size: 11px
+        }
+    }
+
+    /* ≤480px: mobile */
+    @@media(max-width:480px) {
+        .topbar {
+            padding: 0 12px
+        }
+
+        .topbar-title h1 {
+            font-size: 13px
+        }
+
+        .topbar-title p {
+            display: none
+        }
+
+        .status-strip {
+            gap: 0
+        }
+
+        .strip-item {
+            padding: 8px 12px 8px 0;
+            min-width: auto
+        }
+
+        .strip-label {
+            font-size: 8px
+        }
+
+        .strip-val {
+            font-size: 12px
+        }
+
+        .main {
+            padding: 10px 12px
+        }
+
+        .wo-id {
+            font-size: 13px
+        }
+
+        .wo-desc {
+            font-size: 13px
+        }
+
+        .wo-meta-grid {
+            grid-template-columns: 1fr
+        }
+
+        .meta-cell {
+            border-right: none !important;
+            border-top: 1px solid var(--border)
+        }
+
+            .meta-cell:first-child {
+                border-top: none
+            }
+
+        .detail-grid {
+            grid-template-columns: 1fr
+        }
+
+        .safety-fields {
+            grid-template-columns: 1fr
+        }
+
+        .summary-grid {
+            grid-template-columns: 1fr 1fr
+        }
+
+        .attachments-grid {
+            grid-template-columns: repeat(2,1fr)
+        }
+
+        .tab-btn {
+            padding: 10px 8px;
+            font-size: 11px
+        }
+
+        .footer-actions {
+            gap: 6px
+        }
+
+        .footer-btn {
+            padding: 8px 10px;
+            font-size: 11px
+        }
+
+        .footer-spacer {
+            display: none
+        }
+
+        .footer-btn-outline:nth-child(2), .footer-btn-outline:nth-child(3) {
+            flex: 1;
+            justify-content: center
+        }
+    }
+
+    @@media(max-width:360px) {
+        .summary-grid {
+            grid-template-columns: 1fr
+        }
+
+        .attachments-grid {
+            grid-template-columns: 1fr
+        }
+    }
+</style>
+
+
+<!-- TOP BAR -->
+<div class="topbar">
+    <div class="topbar-left">
+        <button class="back-btn">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M10 12L6 8l4-4" /></svg>
+        </button>
+        <div class="topbar-title">
+            <h1>Work Order Details</h1>
+            <p>System Administration</p>
+        </div>
+    </div>
+    <button class="esc-btn">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 3v10M3 8l5-5 5 5" /></svg>
+        <span>+ New Escalations</span>
+    </button>
+</div>
+
+<!-- STATUS STRIP -->
+<div class="status-strip">
+    <div class="strip-item">
+        <div class="strip-label">
+            <svg viewBox="0 0 16 16" fill="none" stroke="#d97706" stroke-width="1.5"><rect x="2" y="2" width="12" height="12" rx="2" /><path d="M5 8h6M8 5v6" /></svg>
+            WO Status
+        </div>
+        <div class="strip-val blue">In Progress</div>
+    </div>
+    <div class="strip-item" style="padding-left:20px">
+        <div class="strip-label">
+            <svg viewBox="0 0 16 16" fill="none" stroke="#dc2626" stroke-width="1.5"><path d="M8 2l6 12H2z" /><line x1="8" y1="7" x2="8" y2="10" /><circle cx="8" cy="12" r=".5" fill="#dc2626" /></svg>
+            Priority
+        </div>
+        <div class="strip-val red">High</div>
+    </div>
+    <div class="strip-item" style="padding-left:20px">
+        <div class="strip-label">
+            <svg viewBox="0 0 16 16" fill="none" stroke="#7c3aed" stroke-width="1.5"><circle cx="8" cy="8" r="6" /><path d="M8 5v3l2 2" /></svg>
+            SLA Remaining
+        </div>
+        <div class="strip-val orange">01h 24m</div>
+        <div class="progress-bar-wrap" style="width:80px"><div class="progress-bar-inner" style="width:35%;background:#d97706"></div></div>
+    </div>
+    <div class="strip-item" style="padding-left:20px">
+        <div class="strip-label">
+            <svg viewBox="0 0 16 16" fill="none" stroke="#16a34a" stroke-width="1.5"><path d="M2 12l4-5 3 3 5-6" /></svg>
+            Overall Progress
+        </div>
+        <div class="strip-val green">65%</div>
+        <div class="progress-bar-wrap" style="width:80px"><div class="progress-bar-inner" style="width:65%"></div></div>
+    </div>
+    <div class="strip-item" style="padding-left:20px">
+        <div class="strip-label">
+            <svg viewBox="0 0 16 16" fill="none" stroke="#7c3aed" stroke-width="1.5"><circle cx="8" cy="8" r="6" /><path d="M8 5v3l2 2" /></svg>
+            Age of WO
+        </div>
+        <div class="strip-val purple">1d 2h</div>
+    </div>
+    <div class="strip-item" style="padding-left:20px">
+        <div class="strip-label">
+            <svg viewBox="0 0 16 16" fill="none" stroke="#16a34a" stroke-width="1.5"><path d="M12 4l-5 6-3-3" /><circle cx="8" cy="8" r="6" /></svg>
+            Safety Status
+        </div>
+        <div class="strip-val green">Safe</div>
+    </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="main">
+
+    <!-- LEFT PANEL -->
+    <div class="left-panel">
+
+        <!-- WO Header -->
+        <div class="wo-header">
+            <div class="wo-id-row">
+                <span class="wo-id">WO-2025-001248</span>
+                <span class="badge badge-inprogress">In Progress</span>
+            </div>
+            <div class="wo-desc">Replace 11kV Insulator on line PTK/11KV/01</div>
+            <div class="wo-location">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2C5.8 2 4 3.8 4 6c0 3 4 8 4 8s4-5 4-8c0-2.2-1.8-4-4-4z" /><circle cx="8" cy="6" r="1.5" /></svg>
+                Pattom SS, Thiruvananthapuram
+            </div>
+        </div>
+
+        <!-- Meta grid -->
+        <div class="wo-meta-grid">
+            <div class="meta-cell">
+                <div class="meta-key">Work Type</div>
+                <div class="meta-val">Corrective</div>
+            </div>
+            <div class="meta-cell" style="padding-left:16px">
+                <div class="meta-key">Priority</div>
+                <div class="meta-val red">High</div>
+            </div>
+            <div class="meta-cell" style="padding-left:16px">
+                <div class="meta-key">Requested On</div>
+                <div class="meta-val">23-May-2026 04:15 PM</div>
+            </div>
+            <div class="meta-cell">
+                <div class="meta-key">Scheduled Start</div>
+                <div class="meta-val">24-May-2026 08:00 AM</div>
+            </div>
+            <div class="meta-cell" style="padding-left:16px">
+                <div class="meta-key">Requested By</div>
+                <div class="meta-val">Line Inspector</div>
+            </div>
+            <div class="meta-cell" style="padding-left:16px">
+                <div class="meta-key">Planned By</div>
+                <div class="meta-val">Arun S</div>
+            </div>
+            <div class="meta-cell">
+                <div class="meta-key">Due Start</div>
+                <div class="meta-val">24-May-2026 05:00 PM</div>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs-bar">
+            <button class="tab-btn active" data-tab="overview">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="12" height="12" rx="2" /></svg>
+                Overview
+            </button>
+            <button class="tab-btn" data-tab="tasks">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="12" height="10" rx="1.5" /><path d="M5 7h6M5 10h4" /></svg>
+                Tasks <span class="tab-count">2</span>
+            </button>
+            <button class="tab-btn" data-tab="labour">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6" cy="5" r="2" /><path d="M2 13c0-2.2 1.8-4 4-4M10 9l2 2 4-4" /></svg>
+                Labour <span class="tab-count">2</span>
+            </button>
+            <button class="tab-btn" data-tab="materials">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 3h10l-1 8H4L3 3z" /><path d="M1 3h14" /></svg>
+                Materials <span class="tab-count">3</span>
+            </button>
+            <button class="tab-btn" data-tab="safety">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2L3 5v4c0 3 2.5 5 5 6 2.5-1 5-3 5-6V5z" /></svg>
+                Safety
+            </button>
+            <button class="tab-btn" data-tab="history">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6" /><path d="M8 5v3l2 2" /></svg>
+                History
+            </button>
+            <button class="tab-btn" data-tab="attachments">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13 9l-5 5a4 4 0 01-5.7-5.7l6-6a2.5 2.5 0 013.5 3.5l-6 6a1 1 0 01-1.4-1.4L10 5" /></svg>
+                Attachments
+            </button>
+        </div>
+
+        <!-- TAB: OVERVIEW -->
+        <div class="tab-content active" id="tab-overview">
+            <div class="section-title">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="12" height="12" rx="2" /></svg>
+                Work Description
+            </div>
+            <p class="work-desc-text">Pin Insulator found damaged on 11kV line PTK/11KV/01 near pole no: 45. Need to replace with new 11kV pin insulator and check line condition.</p>
+
+            <div class="detail-grid">
+                <div class="detail-cell">
+                    <div class="detail-key">Asset</div>
+                    <div class="detail-val">11kV Line - PTK/11KV/01</div>
+                </div>
+                <div class="detail-cell">
+                    <div class="detail-key">Location</div>
+                    <div class="detail-val">Pattom SS</div>
+                </div>
+                <div class="detail-cell">
+                    <div class="detail-key">Functional Location</div>
+                    <div class="detail-val">Thiruvananthapuram</div>
+                </div>
+                <div class="detail-cell">
+                    <div class="detail-key">Equipment</div>
+                    <div class="detail-val">11kV Pin Insulator</div>
+                </div>
+                <div class="detail-cell">
+                    <div class="detail-key">Failure Code</div>
+                    <div class="detail-val">INSU - 01</div>
+                </div>
+                <div class="detail-cell">
+                    <div class="detail-key">Work Category</div>
+                    <div class="detail-val">Electrical Line Maintenance</div>
+                </div>
+            </div>
+
+            <div class="section-title">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="12" height="10" rx="1.5" /><path d="M5 7h6M5 10h4" /></svg>
+                Schedule
+            </div>
+            <div class="detail-grid" style="margin-bottom:20px">
+                <div class="detail-cell">
+                    <div class="detail-key">Scheduled Start</div>
+                    <div class="detail-val">24-May-2025 08:00 AM</div>
+                </div>
+                <div class="detail-cell">
+                    <div class="detail-key">Scheduled Finish</div>
+                    <div class="detail-val">24-May-2025 08:00 AM</div>
+                </div>
+                <div class="detail-cell">
+                    <div class="detail-key">Estimated Duration</div>
+                    <div class="detail-val">9 Hrs</div>
+                </div>
+                <div class="detail-cell">
+                    <div class="detail-key">Time Zone</div>
+                    <div class="detail-val">IST</div>
+                </div>
+            </div>
+
+            <div class="section-title">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2L3 5v4c0 3 2.5 5 5 6 2.5-1 5-3 5-6V5z" /></svg>
+                Safety
+            </div>
+            <div class="safety-fields">
+                <div class="safety-cell">
+                    <div class="safety-key">Permit Required</div>
+                    <div class="safety-val">Yes</div>
+                </div>
+                <div class="safety-cell">
+                    <div class="safety-key">Permit Number</div>
+                    <div class="safety-val" style="font-family:var(--mono);font-size:11px">PTW-2025-000987</div>
+                </div>
+                <div class="safety-cell">
+                    <div class="safety-key">Permit Status</div>
+                    <div class="safety-val"><span class="badge badge-approved">Approved</span></div>
+                </div>
+                <div class="safety-cell">
+                    <div class="safety-key">JSA Required</div>
+                    <div class="safety-val">IST</div>
+                </div>
+                <div class="safety-cell">
+                    <div class="safety-key">JSA Status</div>
+                    <div class="safety-val"><span class="badge badge-approved">Approved</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB: TASKS -->
+        <div class="tab-content" id="tab-tasks">
+            <div class="section-title">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="12" height="10" rx="1.5" /><path d="M5 7h6M5 10h4" /></svg>
+                Task List
+            </div>
+            <div id="taskList">
+                <div class="task-item">
+                    <div class="task-check done" onclick="toggleTask(this)">
+                        <svg viewBox="0 0 12 12" fill="none" stroke-width="2"><path d="M2 6l3 3 5-5" /></svg>
+                    </div>
+                    <div class="task-body">
+                        <div class="task-name done">Isolate 11kV line PTK/11KV/01 at Pattom SS</div>
+                        <div class="task-meta">Assigned: Arjun Kumar · Est: 1 Hr</div>
+                    </div>
+                    <span class="task-status-badge" style="background:rgba(22,163,74,.1);color:var(--green)">Completed</span>
+                </div>
+                <div class="task-item">
+                    <div class="task-check" onclick="toggleTask(this)">
+                        <svg viewBox="0 0 12 12" fill="none" stroke-width="2"><path d="M2 6l3 3 5-5" /></svg>
+                    </div>
+                    <div class="task-body">
+                        <div class="task-name">Replace damaged pin insulator at pole no. 45</div>
+                        <div class="task-meta">Assigned: Rohan Patel · Est: 3 Hrs</div>
+                    </div>
+                    <span class="task-status-badge" style="background:rgba(37,99,235,.1);color:var(--blue)">In Progress</span>
+                </div>
+                <div class="task-item">
+                    <div class="task-check" onclick="toggleTask(this)">
+                        <svg viewBox="0 0 12 12" fill="none" stroke-width="2"><path d="M2 6l3 3 5-5" /></svg>
+                    </div>
+                    <div class="task-body">
+                        <div class="task-name">Check line condition and tighten all fittings</div>
+                        <div class="task-meta">Assigned: Arjun Kumar · Est: 2 Hrs</div>
+                    </div>
+                    <span class="task-status-badge" style="background:rgba(217,119,6,.1);color:var(--orange)">Pending</span>
+                </div>
+                <div class="task-item">
+                    <div class="task-check" onclick="toggleTask(this)">
+                        <svg viewBox="0 0 12 12" fill="none" stroke-width="2"><path d="M2 6l3 3 5-5" /></svg>
+                    </div>
+                    <div class="task-body">
+                        <div class="task-name">Re-energise line and verify normal operation</div>
+                        <div class="task-meta">Assigned: Rohan Patel · Est: 1 Hr</div>
+                    </div>
+                    <span class="task-status-badge" style="background:rgba(217,119,6,.1);color:var(--orange)">Pending</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB: LABOUR -->
+        <div class="tab-content" id="tab-labour">
+            <div class="section-title">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6" cy="5" r="2" /><path d="M2 13c0-2.2 1.8-4 4-4" /><path d="M10 9l2 2 4-4" /></svg>
+                Labour Assignments
+            </div>
+            <div class="table-wrap">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Labour ID</th>
+                            <th>Assign To</th>
+                            <th>Role</th>
+                            <th>Crew Type</th>
+                            <th>Check In</th>
+                            <th>Check Out</th>
+                            <th>Hours</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="td-link">TB - 001</span></td>
+                            <td>Arjun Kumar</td>
+                            <td>Electrician</td>
+                            <td>Internal</td>
+                            <td style="font-family:var(--mono);font-size:11px">17-Jun-2027 11:45PM</td>
+                            <td>-</td>
+                            <td style="font-weight:700;font-family:var(--mono)">05:36</td>
+                        </tr>
+                        <tr>
+                            <td><span class="td-link">TB - 002</span></td>
+                            <td>Rohan Patel</td>
+                            <td>Line Helper</td>
+                            <td>Internal</td>
+                            <td style="font-family:var(--mono);font-size:11px">03-Jan-2025 08:22AM</td>
+                            <td>-</td>
+                            <td style="font-weight:700;font-family:var(--mono)">08:23</td>
+                        </tr>
+                        <tr>
+                            <td><span class="td-link">TB - 003</span></td>
+                            <td>Rohan Patel</td>
+                            <td>Line Helper</td>
+                            <td>Internal</td>
+                            <td style="font-family:var(--mono);font-size:11px">03-Jan-2025 08:22AM</td>
+                            <td>-</td>
+                            <td style="font-weight:700;font-family:var(--mono)">08:23</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="section-title" style="margin-top:20px">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="12" height="10" rx="1.5" /></svg>
+                Labour Summary
+            </div>
+            <div class="summary-grid">
+                <div class="summary-card">
+                    <div class="summary-label">Total Labour</div>
+                    <div class="summary-val">2</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-label">Total Hours Logged</div>
+                    <div class="summary-val">11:10 Hrs</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-label">Average Hours / day</div>
+                    <div class="summary-val">5:35 Hrs</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-label">Labour Cost (Est)</div>
+                    <div class="summary-val" style="color:var(--green)">₹2,230</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB: MATERIALS -->
+        <div class="tab-content" id="tab-materials">
+            <div class="section-title">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 3h10l-1 8H4L3 3z" /><path d="M1 3h14" /></svg>
+                Materials Required
+            </div>
+            <div class="table-wrap">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Item Code</th>
+                            <th>Description</th>
+                            <th>Qty Required</th>
+                            <th>Qty Issued</th>
+                            <th>Unit</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="td-link">MAT-001</span></td>
+                            <td>11kV Pin Insulator</td>
+                            <td>2</td>
+                            <td>2</td>
+                            <td>Nos</td>
+                            <td><span class="material-badge mat-issued">Issued</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="td-link">MAT-002</span></td>
+                            <td>Binding Wire (GI)</td>
+                            <td>5</td>
+                            <td>5</td>
+                            <td>Mtrs</td>
+                            <td><span class="material-badge mat-issued">Issued</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="td-link">MAT-003</span></td>
+                            <td>Arcing Horn Set</td>
+                            <td>1</td>
+                            <td>0</td>
+                            <td>Set</td>
+                            <td><span class="material-badge mat-pending">Pending</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="td-link">MAT-004</span></td>
+                            <td>Safety Gloves (Class 2)</td>
+                            <td>2</td>
+                            <td>2</td>
+                            <td>Pair</td>
+                            <td><span class="material-badge mat-available">Available</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="summary-grid" style="grid-template-columns:repeat(3,1fr);margin-top:16px;padding-top:16px;border-top:1px solid var(--border)">
+                <div class="summary-card">
+                    <div class="summary-label">Total Items</div>
+                    <div class="summary-val">4</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-label">Items Issued</div>
+                    <div class="summary-val" style="color:var(--green)">3</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-label">Pending Items</div>
+                    <div class="summary-val" style="color:var(--orange)">1</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB: SAFETY -->
+        <div class="tab-content" id="tab-safety">
+            <div class="section-title">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2L3 5v4c0 3 2.5 5 5 6 2.5-1 5-3 5-6V5z" /></svg>
+                Permit to Work
+            </div>
+            <div class="permit-card">
+                <div class="permit-header">
+                    <span class="permit-id">PTW-2025-000987</span>
+                    <span class="badge badge-approved">Approved</span>
+                </div>
+                <div class="detail-grid" style="margin-bottom:0">
+                    <div class="detail-cell"><div class="detail-key">Permit Type</div><div class="detail-val">Electrical Work Permit</div></div>
+                    <div class="detail-cell"><div class="detail-key">Issued By</div><div class="detail-val">Safety Officer</div></div>
+                    <div class="detail-cell"><div class="detail-key">Valid Till</div><div class="detail-val">24-May-2026 06:00 PM</div></div>
+                </div>
+            </div>
+
+            <div class="section-title" style="margin-top:4px">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 5h12M2 8h8M2 11h6" /></svg>
+                JSA Checklist
+            </div>
+            <div>
+                <div class="checklist-item">
+                    <div class="check-icon check-yes"><svg viewBox="0 0 12 12" fill="none" stroke-width="2"><path d="M2 6l3 3 5-5" /></svg></div>
+                    Line isolated and earthed at both ends
+                </div>
+                <div class="checklist-item">
+                    <div class="check-icon check-yes"><svg viewBox="0 0 12 12" fill="none" stroke-width="2"><path d="M2 6l3 3 5-5" /></svg></div>
+                    Personal Protective Equipment (PPE) worn by all crew
+                </div>
+                <div class="checklist-item">
+                    <div class="check-icon check-yes"><svg viewBox="0 0 12 12" fill="none" stroke-width="2"><path d="M2 6l3 3 5-5" /></svg></div>
+                    Safety barricades erected around work zone
+                </div>
+                <div class="checklist-item">
+                    <div class="check-icon check-yes"><svg viewBox="0 0 12 12" fill="none" stroke-width="2"><path d="M2 6l3 3 5-5" /></svg></div>
+                    Adjacent live line clearance verified (&gt; 1.2 m)
+                </div>
+                <div class="checklist-item">
+                    <div class="check-icon check-no"><svg viewBox="0 0 12 12" fill="none" stroke-width="2"><path d="M3 3l6 6M9 3l-6 6" /></svg></div>
+                    Pole condition check (cracks / rot) — pending inspection
+                </div>
+                <div class="checklist-item">
+                    <div class="check-icon check-yes"><svg viewBox="0 0 12 12" fill="none" stroke-width="2"><path d="M2 6l3 3 5-5" /></svg></div>
+                    Emergency contact list posted at site
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB: HISTORY -->
+        <div class="tab-content" id="tab-history">
+            <div class="section-title">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6" /><path d="M8 5v3l2 2" /></svg>
+                Activity History
+            </div>
+            <div class="history-list">
+                <div class="history-item">
+                    <div class="h-dot" style="background:var(--green)"></div>
+                    <div class="h-content">
+                        <div class="h-event">Work Order Created</div>
+                        <div class="h-user">Line Inspector</div>
+                        <div class="h-time">23-May-2026 04:15 PM</div>
+                    </div>
+                </div>
+                <div class="history-item">
+                    <div class="h-dot" style="background:var(--blue)"></div>
+                    <div class="h-content">
+                        <div class="h-event">Assigned to Arun S</div>
+                        <div class="h-user">System</div>
+                        <div class="h-time">23-May-2026 04:20 PM</div>
+                    </div>
+                </div>
+                <div class="history-item">
+                    <div class="h-dot" style="background:var(--orange)"></div>
+                    <div class="h-content">
+                        <div class="h-event">Permit PTW-2025-000987 Raised</div>
+                        <div class="h-user">Arun S</div>
+                        <div class="h-time">24-May-2026 07:30 AM</div>
+                    </div>
+                </div>
+                <div class="history-item">
+                    <div class="h-dot" style="background:var(--green)"></div>
+                    <div class="h-content">
+                        <div class="h-event">Permit Approved</div>
+                        <div class="h-user">Safety Officer</div>
+                        <div class="h-time">24-May-2026 07:55 AM</div>
+                    </div>
+                </div>
+                <div class="history-item">
+                    <div class="h-dot" style="background:var(--blue)"></div>
+                    <div class="h-content">
+                        <div class="h-event">Work Started</div>
+                        <div class="h-user">Arun S</div>
+                        <div class="h-time">24-May-2026 08:10 AM</div>
+                    </div>
+                </div>
+                <div class="history-item">
+                    <div class="h-dot" style="background:var(--orange)"></div>
+                    <div class="h-content">
+                        <div class="h-event">Status changed to In Progress</div>
+                        <div class="h-user">Arun S</div>
+                        <div class="h-time">24-May-2026 08:45 AM</div>
+                    </div>
+                </div>
+                <div class="history-item">
+                    <div class="h-dot" style="background:var(--dim)"></div>
+                    <div class="h-content">
+                        <div class="h-event">Pending Action — Awaiting Escalation Decision</div>
+                        <div class="h-user">System</div>
+                        <div class="h-time">24-May-2026 11:00 AM</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB: ATTACHMENTS -->
+        <div class="tab-content" id="tab-attachments">
+            <div class="section-title">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13 9l-5 5a4 4 0 01-5.7-5.7l6-6a2.5 2.5 0 013.5 3.5l-6 6a1 1 0 01-1.4-1.4L10 5" /></svg>
+                Attached Files
+            </div>
+            <div class="attachments-grid">
+                <div class="attach-card">
+                    <div class="attach-preview">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="8.5" cy="8.5" r="1.5" /><path d="M21 15l-5-5L5 21" /></svg>
+                    </div>
+                    <div class="attach-info">
+                        <div class="attach-name">site-photo-01.jpg</div>
+                        <div class="attach-size">1.2 MB · Image</div>
+                    </div>
+                </div>
+                <div class="attach-card">
+                    <div class="attach-preview">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="8.5" cy="8.5" r="1.5" /><path d="M21 15l-5-5L5 21" /></svg>
+                    </div>
+                    <div class="attach-info">
+                        <div class="attach-name">damaged-insulator.jpg</div>
+                        <div class="attach-size">890 KB · Image</div>
+                    </div>
+                </div>
+                <div class="attach-card">
+                    <div class="attach-preview" style="background:#fef2f2">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="1.3"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="8" y1="13" x2="16" y2="13" /><line x1="8" y1="17" x2="16" y2="17" /></svg>
+                    </div>
+                    <div class="attach-info">
+                        <div class="attach-name">JSA-Form-PTW.pdf</div>
+                        <div class="attach-size">340 KB · PDF</div>
+                    </div>
+                </div>
+                <div class="attach-card">
+                    <div class="attach-preview" style="background:#eff6ff">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.3"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="8" y1="13" x2="16" y2="13" /><line x1="8" y1="17" x2="16" y2="17" /></svg>
+                    </div>
+                    <div class="attach-info">
+                        <div class="attach-name">Line-Diagram-PTK.pdf</div>
+                        <div class="attach-size">520 KB · PDF</div>
+                    </div>
+                </div>
+                <div class="attach-card">
+                    <div class="attach-preview">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="8.5" cy="8.5" r="1.5" /><path d="M21 15l-5-5L5 21" /></svg>
+                    </div>
+                    <div class="attach-info">
+                        <div class="attach-name">replaced-insulator.jpg</div>
+                        <div class="attach-size">1.1 MB · Image</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div><!-- end left-panel -->
+    <!-- RIGHT PANEL -->
+    <div class="right-panel">
+
+        <!-- Timeline -->
+        <div class="r-card">
+            <div class="r-card-header">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6" /><path d="M8 5v3l2 2" /></svg>
+                Timeline
+            </div>
+            <div class="r-card-body">
+                <div class="timeline-list">
+                    <div class="tl-item">
+                        <div class="tl-dot green"></div>
+                        <div class="tl-content">
+                            <div class="tl-time">23-May-2026 04:15 PM</div>
+                            <div class="tl-event">Work Order Created</div>
+                            <div class="tl-user">Line Inspector</div>
+                        </div>
+                    </div>
+                    <div class="tl-item">
+                        <div class="tl-dot orange"></div>
+                        <div class="tl-content">
+                            <div class="tl-time">23-May-2026 04:20 PM</div>
+                            <div class="tl-event">Assigned to Arun S</div>
+                            <div class="tl-user">System</div>
+                        </div>
+                    </div>
+                    <div class="tl-item">
+                        <div class="tl-dot orange"></div>
+                        <div class="tl-content">
+                            <div class="tl-time">24-May-2026 08:10 AM</div>
+                            <div class="tl-event">Work Started</div>
+                            <div class="tl-user">Arun S</div>
+                        </div>
+                    </div>
+                    <div class="tl-item">
+                        <div class="tl-dot orange"></div>
+                        <div class="tl-content">
+                            <div class="tl-time">24-May-2026 08:45 AM</div>
+                            <div class="tl-event">In Progress</div>
+                            <div class="tl-user">Arun S</div>
+                        </div>
+                    </div>
+                    <div class="tl-item">
+                        <div class="tl-dot grey"></div>
+                        <div class="tl-content">
+                            <div class="tl-event" style="color:var(--dim)">Pending Action</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLA Details -->
+        <div class="r-card">
+            <div class="r-card-header">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 8h3l2 5 4-10 2 5h3" /></svg>
+                SLA Details
+            </div>
+            <div class="r-card-body">
+                <div class="sla-donut-wrap">
+                    <svg viewBox="0 0 120 120">
+                        <circle cx="60" cy="60" r="48" fill="none" stroke="#f3f4f6" stroke-width="14" />
+                        <!-- 82% used = red arc -->
+                        <circle cx="60" cy="60" r="48" fill="none" stroke="#ef4444" stroke-width="14"
+                                stroke-dasharray="247 54" stroke-dashoffset="75.4" transform="rotate(-90 60 60)" opacity="0.85" />
+                        <!-- Remaining grey -->
+                        <circle cx="60" cy="60" r="48" fill="none" stroke="#e5e7eb" stroke-width="14"
+                                stroke-dasharray="54 247" stroke-dashoffset="-172" transform="rotate(-90 60 60)" />
+                        <text x="60" y="55" text-anchor="middle" fill="#111827" font-size="18" font-weight="700" font-family="IBM Plex Mono">82%</text>
+                        <text x="60" y="71" text-anchor="middle" fill="#6b7280" font-size="10">Time Used</text>
+                    </svg>
+                </div>
+                <div class="sla-rows">
+                    <div class="sla-row">
+                        <span class="sla-key">SLA Target</span>
+                        <span class="sla-val">09:00 Hrs</span>
+                    </div>
+                    <div class="sla-divider"></div>
+                    <div class="sla-row">
+                        <span class="sla-key">Elapsed Time</span>
+                        <span class="sla-val">05:36 Hrs</span>
+                    </div>
+                    <div class="sla-divider"></div>
+                    <div class="sla-row">
+                        <span class="sla-key">Remaining Time</span>
+                        <span class="sla-val green">05:36 Hrs</span>
+                    </div>
+                    <div class="sla-divider"></div>
+                    <div class="sla-row">
+                        <span class="sla-key">SLA Status</span>
+                        <span class="sla-status-badge sla-inprog">In Progress</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div><!-- end right-panel -->
+</div><!-- end main -->
+<!-- FOOTER ACTIONS -->
+<div class="footer-actions">
+    <button class="footer-btn footer-btn-primary">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M11 2H5L3 6h10L11 2z" /><rect x="2" y="6" width="12" height="8" rx="1.5" /><path d="M8 9v3M6.5 10.5h3" /></svg>
+        Edit Work Order
+    </button>
+    <button class="footer-btn footer-btn-outline">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6" cy="5" r="2" /><path d="M2 13c0-2.2 1.8-4 4-4" /><path d="M10 9l2 2 4-4" /></svg>
+        Assign / Reassign
+    </button>
+    <button class="footer-btn footer-btn-outline">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2v8M4 6l4-4 4 4M3 13h10" /></svg>
+        Run Escalation
+    </button>
+    <button class="footer-btn footer-btn-outline">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="12" height="10" rx="1.5" /><path d="M5 4V3a1 1 0 011-1h4a1 1 0 011 1v1" /></svg>
+        Hold Work Order
+    </button>
+    <div class="footer-spacer"></div>
+    <button class="footer-btn footer-btn-danger">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="8" cy="8" r="6" /><path d="M6 6l4 4M10 6l-4 4" /></svg>
+        Close Work Order
+    </button>
+</div>
+
+<script>
+    // Tab switching
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const tab = btn.dataset.tab;
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById('tab-' + tab).classList.add('active');
+        });
+    });
+
+    // Task toggle
+    function toggleTask(el) {
+        el.classList.toggle('done');
+        const nameEl = el.parentElement.querySelector('.task-name');
+        nameEl.classList.toggle('done');
+    }
+</script>
+

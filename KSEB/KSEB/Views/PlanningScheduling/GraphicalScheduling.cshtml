@@ -1,0 +1,573 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@{
+    ViewData["Title"] = "Graphical Scheduling";
+}
+@{
+    ViewData["ActiveMenu"] = "Planning & Scheduling";
+}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Graphical Scheduling</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #f0f2f7;
+  --surface: #fff;
+  --surface2: #f7f8fc;
+  --border: #e4e8f0;
+  --text: #1a1f36;
+  --text2: #5a6080;
+  --text3: #9ba3bf;
+  --accent: #3b5bdb;
+  --accent-light: #eef2ff;
+  --green: #2f9e44;
+  --green-light: #ebfbee;
+  --red: #e03131;
+  --red-light: #fff5f5;
+  --orange: #f76707;
+  --orange-light: #fff4e6;
+  --teal: #0c8599;
+  --teal-light: #e3fafc;
+  --purple: #7048e8;
+  --yellow: #e67700;
+  --font: 'DM Sans', sans-serif;
+  --mono: 'DM Mono', monospace;
+  --radius: 10px;
+  --radius-sm: 6px;
+  --shadow-sm: 0 1px 3px rgba(26,31,54,.07);
+  --shadow: 0 4px 16px rgba(26,31,54,.1);
+}
+body { font-family: var(--font); background: var(--bg); color: var(--text); font-size: 13px; min-height: 100vh; }
+
+/* TOPBAR */
+.topbar { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 20px; display: flex; align-items: center; gap: 10px; min-height: 50px; position: sticky; top: 0; z-index: 200; box-shadow: var(--shadow-sm); }
+.breadcrumb { font-size: 11.5px; color: var(--text3); flex: 1; display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+.breadcrumb .cur { color: var(--text); font-weight: 600; }
+.back-btn { background: none; border: none; cursor: pointer; color: var(--text2); padding: 4px; border-radius: 5px; display: flex; flex-shrink: 0; }
+.back-btn:hover { background: var(--surface2); }
+.btn { display: inline-flex; align-items: center; gap: 5px; padding: 7px 14px; border-radius: var(--radius-sm); font-size: 12.5px; font-weight: 600; font-family: var(--font); cursor: pointer; border: none; transition: all .15s; white-space: nowrap; }
+.btn-outline { background: var(--surface); color: var(--text2); border: 1px solid var(--border); }
+.btn-outline:hover { background: var(--surface2); }
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-primary:hover { background: #2f4ec0; }
+.topbar-actions { display: flex; gap: 8px; flex-shrink: 0; }
+
+/* PAGE HEADER */
+.page-header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 12px 20px; display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.page-title { font-size: 18px; font-weight: 700; letter-spacing: -.3px; }
+.page-sub { font-size: 12px; color: var(--text3); margin-top: 2px; }
+
+/* KPI BAR */
+.kpi-bar { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0; display: grid; grid-template-columns: repeat(5,1fr); }
+.kpi-item { padding: 14px 20px; border-right: 1px solid var(--border); display: flex; flex-direction: column; gap: 3px; }
+.kpi-item:last-child { border-right: none; }
+.kpi-top { display: flex; align-items: center; gap: 7px; }
+.kpi-icon { width: 28px; height: 28px; border-radius: 7px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.kpi-icon.teal   { background: var(--teal-light);   color: var(--teal); }
+.kpi-icon.orange { background: var(--orange-light);  color: var(--orange); }
+.kpi-icon.red    { background: var(--red-light);     color: var(--red); }
+.kpi-icon.redalt { background: #fef3c7; color: #b45309; }
+.kpi-icon.blue   { background: var(--accent-light);  color: var(--accent); }
+.kpi-label { font-size: 9.5px; font-weight: 700; letter-spacing: .6px; text-transform: uppercase; color: var(--text3); }
+.kpi-row { display: flex; align-items: baseline; gap: 8px; }
+.kpi-value { font-size: 28px; font-weight: 800; letter-spacing: -1.2px; line-height: 1.1; }
+.kpi-unit { font-size: 12.5px; color: var(--text3); font-weight: 500; }
+
+/* PAGE BODY */
+.page-body { padding: 8px; display: flex; flex-direction: column; gap: 14px; }
+
+/* GANTT PANEL */
+.panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow-sm); overflow: hidden; }
+.panel-header { padding: 12px 16px; border-bottom: 1px solid var(--border); }
+.panel-title { font-size: 14px; font-weight: 700; color: var(--text); }
+.panel-sub { font-size: 11.5px; color: var(--text3); margin-top: 2px; }
+
+/* GANTT TOOLBAR */
+.gantt-toolbar { display: flex; align-items: center; gap: 8px; padding: 10px 16px; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+.search-wrap { position: relative; flex: 1; min-width: 160px; max-width: 260px; }
+.search-wrap svg { position: absolute; left: 9px; top: 50%; transform: translateY(-50%); color: var(--text3); }
+.search-input { width: 100%; padding: 7px 10px 7px 28px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-family: var(--font); font-size: 12.5px; background: var(--surface2); outline: none; color: var(--text); }
+.search-input::placeholder { color: var(--text3); }
+.search-input:focus { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(59,91,219,.08); }
+.permit-select { padding: 7px 28px 7px 10px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-family: var(--font); font-size: 12.5px; background: var(--surface2); color: var(--text2); outline: none; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%239ba3bf' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 8px center; margin-left: auto; }
+.filter-btn { display: flex; align-items: center; gap: 5px; padding: 7px 12px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 12.5px; font-weight: 600; cursor: pointer; background: var(--surface2); color: var(--text2); transition: all .15s; }
+.filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+/* GANTT TABLE */
+.gantt-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.gantt-table { width: 100%; border-collapse: collapse; min-width: 900px; }
+.gantt-table th { padding: 8px 10px; text-align: left; font-size: 10px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; color: var(--text3); background: var(--surface2); border-bottom: 1px solid var(--border); white-space: nowrap; }
+.gantt-table th:first-child { width: 150px; min-width: 150px; }
+.gantt-table td { padding: 0; border-bottom: 1px solid var(--border); vertical-align: middle; }
+.gantt-table tr:last-child td { border-bottom: none; }
+.crew-cell { padding: 8px 10px; min-width: 150px; }
+.crew-name { font-size: 12.5px; font-weight: 700; color: var(--text); }
+.crew-person { font-size: 11px; color: var(--text3); margin-top: 1px; }
+.crew-cap { margin-top: 4px; }
+.cap-bar { width: 80px; height: 4px; background: var(--border); border-radius: 10px; overflow: hidden; margin-bottom: 2px; }
+.cap-fill { height: 100%; border-radius: 10px; }
+.cap-fill.green  { background: var(--green); }
+.cap-fill.orange { background: var(--orange); }
+.cap-fill.red    { background: var(--red); }
+.cap-text { font-size: 10.5px; color: var(--text3); }
+.day-cell { padding: 6px 5px; min-width: 120px; }
+.sat-cell { background: repeating-linear-gradient(135deg, #f9f9fb 0px, #f9f9fb 4px, #f3f4f8 4px, #f3f4f8 8px); min-width: 80px; }
+
+/* WO BARS */
+.wo-bar { display: inline-flex; flex-direction: column; padding: 5px 7px; border-radius: var(--radius-sm); font-size: 10.5px; cursor: grab; transition: box-shadow .15s, transform .15s; margin: 2px 0; width: 100%; }
+.wo-bar:hover { box-shadow: 0 3px 10px rgba(0,0,0,.15); transform: translateY(-1px); }
+.wo-bar.serv  { background: #dbeafe; border-left: 3px solid var(--accent); color: #1e40af; }
+.wo-bar.insp  { background: #dcfce7; border-left: 3px solid var(--green); color: #166534; }
+.wo-bar.emrg  { background: #fef3c7; border-left: 3px solid var(--orange); color: #92400e; }
+.wo-bar.corr  { background: #fee2e2; border-left: 3px solid var(--red); color: #991b1b; }
+.wo-tag { font-size: 9px; font-weight: 800; letter-spacing: .3px; margin-bottom: 1px; }
+.wo-id { font-family: var(--mono); font-size: 9.5px; font-weight: 600; }
+.wo-desc { font-size: 10px; opacity: .8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 110px; }
+
+/* GANTT LEGEND */
+.gantt-legend { display: flex; align-items: center; gap: 16px; padding: 10px 16px; border-top: 1px solid var(--border); background: var(--surface2); flex-wrap: wrap; font-size: 11.5px; color: var(--text2); }
+.legend-item { display: flex; align-items: center; gap: 5px; }
+.legend-dot { width: 9px; height: 9px; border-radius: 50%; }
+.legend-right { margin-left: auto; font-size: 11px; color: var(--text3); font-style: italic; }
+
+/* UNSCHEDULED */
+.unscheduled-panel { background: var(--surface); border: 1.5px dashed var(--border); border-radius: var(--radius); padding: 14px 16px; }
+.unscheduled-header { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; font-size: 13px; font-weight: 700; color: var(--text); }
+.unscheduled-header span { font-size: 12px; color: var(--text3); font-weight: 400; }
+.unscheduled-cards { display: flex; gap: 8px; flex-wrap: wrap; }
+.unsched-card { padding: 8px 11px; border-radius: var(--radius-sm); font-size: 11px; cursor: grab; transition: box-shadow .15s; border: 1px solid transparent; min-width: 100px; }
+.unsched-card:hover { box-shadow: 0 3px 10px rgba(0,0,0,.12); }
+.unsched-card.serv { background: #dbeafe; border-color: #bfdbfe; color: #1e40af; }
+.unsched-card.insp { background: #dcfce7; border-color: #bbf7d0; color: #166534; }
+.unsched-card.emrg { background: #fef3c7; border-color: #fde68a; color: #92400e; }
+.unsched-tag { font-size: 9px; font-weight: 800; letter-spacing: .3px; margin-bottom: 2px; display: flex; align-items: center; gap: 4px; }
+.unsched-id { font-family: var(--mono); font-size: 10px; font-weight: 600; }
+.unsched-desc { font-size: 10.5px; opacity: .8; margin-top: 1px; }
+.add-new-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; padding: 8px 14px; border-radius: var(--radius-sm); border: 1.5px dashed var(--border); color: var(--text3); font-size: 11px; font-weight: 600; cursor: pointer; background: var(--surface2); transition: all .15s; min-width: 90px; }
+.add-new-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
+
+/* CONFLICTS GRID */
+.conflicts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.conflict-panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow-sm); overflow: hidden; }
+.conflict-panel-header { padding: 12px 16px; border-bottom: 1px solid var(--border); }
+.conflict-panel-title { font-size: 13.5px; font-weight: 700; color: var(--text); display: flex; align-items: center; gap: 7px; }
+.conflict-panel-sub { font-size: 11.5px; color: var(--text3); margin-top: 2px; }
+.conflict-list { display: flex; flex-direction: column; }
+.conflict-item { padding: 11px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: flex-start; gap: 10px; transition: background .15s; cursor: pointer; }
+.conflict-item:last-child { border-bottom: none; }
+.conflict-item:hover { background: var(--surface2); }
+.conflict-warn { color: var(--orange); flex-shrink: 0; margin-top: 2px; }
+.conflict-body { flex: 1; min-width: 0; }
+.conflict-time { font-size: 11.5px; font-weight: 700; color: var(--orange); margin-bottom: 2px; }
+.conflict-desc { font-size: 12.5px; color: var(--text); }
+.conflict-right { display: flex; flex-direction: column; align-items: flex-end; gap: 5px; flex-shrink: 0; }
+.priority-badge { padding: 2px 8px; border-radius: 20px; font-size: 10px; font-weight: 700; white-space: nowrap; }
+.priority-high   { background: var(--red-light);    color: var(--red); }
+.priority-med    { background: var(--orange-light);  color: var(--orange); }
+.priority-low    { background: var(--green-light);   color: var(--green); }
+.resolve-link { font-size: 11.5px; color: var(--accent); font-weight: 600; cursor: pointer; white-space: nowrap; }
+.resolve-link:hover { text-decoration: underline; }
+
+/* RIGHT CONFLICT PANEL */
+.conflict-item2 { padding: 11px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: flex-start; gap: 10px; transition: background .15s; cursor: pointer; }
+.conflict-item2:last-child { border-bottom: none; }
+.conflict-item2:hover { background: var(--surface2); }
+.tag-circle { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 9.5px; font-weight: 800; flex-shrink: 0; letter-spacing: .2px; }
+.tag-pm   { background: #dbeafe; color: #1e40af; }
+.tag-cm   { background: #f3e8ff; color: #7c3aed; }
+.tag-insp { background: #dcfce7; color: #166534; }
+.ci-body { flex: 1; min-width: 0; }
+.ci-time { font-size: 11.5px; font-weight: 700; color: var(--orange); margin-bottom: 2px; }
+.ci-desc { font-size: 12.5px; color: var(--text); }
+.ci-duration { font-size: 12px; font-weight: 700; color: var(--text2); flex-shrink: 0; margin-top: 2px; }
+
+/* SCROLLBAR */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: #f0f2f5; }
+::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
+
+/* ═══ RESPONSIVE ═══ */
+@@media (max-width: 1050px) {
+  .conflicts-grid { grid-template-columns: 1fr; }
+  .kpi-bar { grid-template-columns: repeat(3,1fr); }
+  .kpi-item:nth-child(3) { border-right: none; }
+  .kpi-item:nth-child(4),
+  .kpi-item:nth-child(5) { border-top: 1px solid var(--border); }
+}
+@@media (max-width: 720px) {
+  .kpi-bar { grid-template-columns: repeat(2,1fr); }
+  .kpi-item:nth-child(2) { border-right: none; }
+  .kpi-item:nth-child(3) { border-right: 1px solid var(--border); }
+  .kpi-item:nth-child(3), .kpi-item:nth-child(4) { border-top: 1px solid var(--border); }
+  .kpi-item:nth-child(4) { border-right: none; }
+  .kpi-item:nth-child(5) { grid-column: 1 / -1; border-top: 1px solid var(--border); border-right: none; }
+  .page-body { padding: 10px; }
+  .topbar-actions .btn-outline { display: none; }
+}
+@@media (max-width: 520px) {
+  .kpi-bar { grid-template-columns: 1fr 1fr; }
+  .kpi-value { font-size: 22px; }
+  .page-header { flex-direction: column; }
+  .unscheduled-cards { flex-direction: column; }
+  .page-body { padding: 8px; gap: 10px; }
+}
+</style>
+
+
+<!-- TOPBAR -->
+<header class="topbar">
+
+  <div class="breadcrumb">
+ <span>Planning &amp; Scheduling</span>
+    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+    <span class="cur">Graphical Scheduling</span>
+  </div>
+</header>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div>
+    <div class="page-title">Graphical Scheduling</div>
+    <div class="page-sub">Drag and drop Gantt by crew · resource leveling · conflict detection · week of 05–11 May</div>
+  </div>
+  <div class="topbar-actions">
+    <button class="btn btn-outline">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Export
+    </button>
+    <button class="btn btn-primary">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Scheduling WO
+    </button>
+  </div>
+</div>
+
+<!-- KPI BAR -->
+<div class="kpi-bar">
+  <div class="kpi-item">
+    <div class="kpi-top">
+      <div class="kpi-icon teal">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      </div>
+      <div class="kpi-label">Scheduled This Week</div>
+    </div>
+    <div class="kpi-row"><span class="kpi-value">38</span><span class="kpi-unit">WOs</span></div>
+  </div>
+  <div class="kpi-item">
+    <div class="kpi-top">
+      <div class="kpi-icon orange">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      </div>
+      <div class="kpi-label">Crew Utilization</div>
+    </div>
+    <div class="kpi-row"><span class="kpi-value" style="color:var(--orange)">84%</span><span class="kpi-unit">weighted</span></div>
+  </div>
+  <div class="kpi-item">
+    <div class="kpi-top">
+      <div class="kpi-icon redalt">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      </div>
+      <div class="kpi-label">Overcapacity</div>
+    </div>
+    <div class="kpi-row"><span class="kpi-value" style="color:var(--red)">2</span><span class="kpi-unit">crews</span></div>
+  </div>
+  <div class="kpi-item">
+    <div class="kpi-top">
+      <div class="kpi-icon red">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
+      </div>
+      <div class="kpi-label">Conflicts</div>
+    </div>
+    <div class="kpi-row"><span class="kpi-value" style="color:var(--red)">3</span><span class="kpi-unit">Crews</span></div>
+  </div>
+  <div class="kpi-item">
+    <div class="kpi-top">
+      <div class="kpi-icon blue">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div class="kpi-label">On-Time Rate</div>
+    </div>
+    <div class="kpi-row"><span class="kpi-value" style="color:var(--green)">91%</span><span class="kpi-unit">last 30d</span></div>
+  </div>
+</div>
+
+<!-- PAGE BODY -->
+<div class="page-body">
+
+  <!-- WEEKLY SCHEDULE GANTT -->
+  <div class="panel">
+    <div class="panel-header">
+      <div class="panel-title">Weekly Schedule Gantt</div>
+      <div class="panel-sub">Drag bars to reschedule · click to edit assignment</div>
+    </div>
+    <div class="gantt-toolbar">
+      <div class="search-wrap">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input class="search-input" type="text" placeholder="Search by Safety Plans…">
+      </div>
+      <select class="permit-select"><option>All Permits</option><option>PTW</option><option>Hot Work</option><option>Excavation</option></select>
+      <button class="filter-btn">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+        Filter
+      </button>
+    </div>
+
+    <div class="gantt-wrap">
+      <table class="gantt-table">
+        <thead>
+          <tr>
+            <th>Team / Capacity</th>
+            <th>AUG 12</th>
+            <th>AUG 12</th>
+            <th>AUG 12</th>
+            <th>AUG 12</th>
+            <th>AUG 12</th>
+            <th style="background:#f3f4f8">AUG 12</th>
+            <th style="background:#f3f4f8">AUG 12</th>
+          </tr>
+        </thead>
+        <tbody id="ganttBody"></tbody>
+      </table>
+    </div>
+
+    <div class="gantt-legend">
+      <div class="legend-item"><div class="legend-dot" style="background:var(--accent)"></div>Preventive</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--orange)"></div>Corrective</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--red)"></div>Emergency</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div>Inspection</div>
+      <div class="legend-right">Sat/Sun shaded · drag bars to reschedule</div>
+    </div>
+  </div>
+
+  <!-- UNSCHEDULED WORK ORDERS -->
+  <div class="unscheduled-panel">
+    <div class="unscheduled-header">
+      Unscheduled Work Orders
+      <span>Drag cards to the schedule duty</span>
+    </div>
+    <div class="unscheduled-cards">
+      <div class="unsched-card serv" draggable="true">
+        <div class="unsched-tag">
+          <span style="width:5px;height:5px;border-radius:50%;background:var(--accent);display:inline-block"></span>
+          SERV · WO-1145
+        </div>
+        <div class="unsched-desc">Emergency – District…</div>
+      </div>
+      <div class="unsched-card serv" draggable="true">
+        <div class="unsched-tag">
+          <span style="width:5px;height:5px;border-radius:50%;background:var(--accent);display:inline-block"></span>
+          SERV · WO-1145
+        </div>
+        <div class="unsched-desc">Cap Bank Inspection…</div>
+      </div>
+      <div class="unsched-card serv" draggable="true">
+        <div class="unsched-tag">
+          <span style="width:5px;height:5px;border-radius:50%;background:var(--accent);display:inline-block"></span>
+          SERV · WO-1145
+        </div>
+        <div class="unsched-desc">11kV Patrol Route…</div>
+      </div>
+      <div class="unsched-card insp" draggable="true">
+        <div class="unsched-tag">
+          <span style="width:5px;height:5px;border-radius:50%;background:var(--green);display:inline-block"></span>
+          INSP · WO-0902
+        </div>
+        <div class="unsched-desc">DTR Oil Filtration…</div>
+      </div>
+      <button class="add-new-btn">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Add / Create New WO
+      </button>
+    </div>
+  </div>
+
+  <!-- CONFLICTS GRID -->
+  <div class="conflicts-grid">
+
+    <!-- LEFT: PRIORITY CONFLICTS -->
+    <div class="conflict-panel">
+      <div class="conflict-panel-header">
+        <div class="conflict-panel-title">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="2.2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          Schedule Conflicts
+        </div>
+        <div class="conflict-panel-sub">Resolve before publishing the week</div>
+      </div>
+      <div class="conflict-list" id="conflictLeft"></div>
+    </div>
+
+    <!-- RIGHT: TYPE CONFLICTS -->
+    <div class="conflict-panel">
+      <div class="conflict-panel-header">
+        <div class="conflict-panel-title">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="2.2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          Schedule Conflicts
+        </div>
+        <div class="conflict-panel-sub">Resolve before publishing the week</div>
+      </div>
+      <div class="conflict-list" id="conflictRight"></div>
+    </div>
+
+  </div>
+
+</div><!-- end page-body -->
+
+<script>
+// ── GANTT DATA ──
+const ganttRows = [
+  {
+    crew: 'Crew-B', person: 'J. Sterling', cap: '48h / 40h · 120%', capPct: 100, capColor: 'red',
+    days: [
+      { type: 'serv', wo: 'WO – 1145', desc: 'Emergency – District…' },
+      { type: 'serv', wo: 'WO – 1145', desc: '11kV Patrol Route R-04…' },
+      { type: 'serv', wo: 'WO – 1145', desc: '11kV Patrol Route R-04…' },
+      { type: 'serv', wo: 'WO – 1145', desc: 'Cap Bank Inspection…' },
+      { type: 'serv', wo: 'WO – 1145', desc: '11kV Patrol Route…' },
+      null, null
+    ]
+  },
+  {
+    crew: 'Crew-B', person: 'J. Sterling', cap: '48h / 40h · 120%', capPct: 100, capColor: 'red',
+    days: [
+      null,
+      { type: 'serv', wo: 'WO – 1145', desc: 'DTR Oil Filtration – Med College…' },
+      { type: 'serv', wo: 'WO – 1145', desc: '11kV Patrol Route…' },
+      { type: 'corr', wo: 'WO – 1145', desc: '11kV Patrol Route R-04…' },
+      null,
+      { type: 'serv', wo: 'WO – 1145', desc: '11kV Patrol Route…' },
+      null
+    ]
+  },
+  {
+    crew: 'Crew-B', person: 'J. Sterling', cap: '48h / 40h · 120%', capPct: 100, capColor: 'orange',
+    days: [
+      { type: 'emrg', wo: 'WO – 1145', desc: '11kV Patrol Route R-04…' },
+      null,
+      { type: 'serv', wo: 'WO – 1145', desc: '11kV Patrol Route R-04…' },
+      null,
+      { type: 'serv', wo: 'WO – 1145', desc: '11kV Patrol Route R-04…' },
+      null, null
+    ]
+  },
+  {
+    crew: 'Crew-B', person: 'J. Sterling', cap: '48h / 40h · 120%', capPct: 100, capColor: 'red',
+    days: [
+      { type: 'serv', wo: 'WO – 1145', desc: '11kV Patrol Route…' },
+      { type: 'serv', wo: 'WO – 1145', desc: '11kV Patrol Route…' },
+      { type: 'serv', wo: 'WO – 1145', desc: '11kV Patrol Route R-04…' },
+      { type: 'serv', wo: 'WO – 1145', desc: '11kV Patrol Route R-04…' },
+      null,
+      { type: 'serv', wo: 'WO – 1145', desc: '11kV Patrol Route R…' },
+      null
+    ]
+  },
+  {
+    crew: 'Crew-C', person: 'K. Daniels', cap: '36h / 40h · 90%', capPct: 90, capColor: 'green',
+    days: [
+      { type: 'insp', wo: 'WO – 0902', desc: 'Insulator Cleaning…' },
+      { type: 'emrg', wo: 'MAR 22', desc: '' },
+      null,
+      { type: 'insp', wo: 'WO – 0902', desc: 'Cap Bank Inspection…' },
+      { type: 'insp', wo: 'WO – 0902', desc: 'DTR Oil Filtration…' },
+      { type: 'insp', wo: 'WO – 0902', desc: 'Earthing Pit Resistance…' },
+      null
+    ]
+  }
+];
+
+const typeMap = {
+  serv: { tag: 'SERV', cls: 'serv' },
+  insp: { tag: 'INSP', cls: 'insp' },
+  emrg: { tag: 'EMRG', cls: 'emrg' },
+  corr: { tag: 'CORR', cls: 'corr' }
+};
+const isSat = [false,false,false,false,false,true,true];
+
+const tbody = document.getElementById('ganttBody');
+ganttRows.forEach(row => {
+  const tr = document.createElement('tr');
+  // crew cell
+  let crewHtml = `<td class="crew-cell">
+    <div class="crew-name">${row.crew}</div>
+    <div class="crew-person">${row.person}</div>
+    <div class="crew-cap">
+      <div class="cap-bar"><div class="cap-fill ${row.capColor}" style="width:${row.capPct}%"></div></div>
+      <div class="cap-text">${row.cap}</div>
+    </div>
+  </td>`;
+  tr.innerHTML = crewHtml;
+  // day cells
+  row.days.forEach((d, i) => {
+    const td = document.createElement('td');
+    td.className = isSat[i] ? 'day-cell sat-cell' : 'day-cell';
+    if (d) {
+      const m = typeMap[d.type] || typeMap.serv;
+      td.innerHTML = `<div class="wo-bar ${m.cls}" draggable="true">
+        <span class="wo-id"><span class="wo-tag">${m.tag}</span> ${d.wo}</span>
+        ${d.desc ? `<span class="wo-desc">${d.desc}</span>` : ''}
+      </div>`;
+    }
+    tr.appendChild(td);
+  });
+  tbody.appendChild(tr);
+});
+
+// ── CONFLICTS ──
+const conflictsLeft = [
+  { time: 'Wed 07 · 09:00 – 13:00', desc: 'Crew-C overlap: WO-0907 (DTR Replace) vs WO-0899 (Patrol)', priority: 'High' },
+  { time: 'Wed 07 · 09:00 – 13:00', desc: 'Crew-E overcapacity 100% – Standby + active EM', priority: 'Medium' },
+  { time: 'Wed 07 · 09:00 – 13:00', desc: 'karamana SS – 2 concurrent PTW requested', priority: 'High' },
+  { time: 'Wed 07 · 09:00 – 13:00', desc: 'Crew-C overlap: WO-0907 (DTR Replace) vs WO-0899 (Patrol)', priority: 'Low' },
+  { time: 'Wed 07 · 09:00 – 13:00', desc: 'Crew-C overlap: WO-0907 (DTR Replace) vs WO-0899 (Patrol)', priority: 'High' },
+];
+const pClass = { High: 'priority-high', Medium: 'priority-med', Low: 'priority-low' };
+const cLeft = document.getElementById('conflictLeft');
+conflictsLeft.forEach(c => {
+  cLeft.innerHTML += `<div class="conflict-item">
+    <svg class="conflict-warn" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    <div class="conflict-body">
+      <div class="conflict-time">${c.time}</div>
+      <div class="conflict-desc">${c.desc}</div>
+    </div>
+    <div class="conflict-right">
+      <span class="priority-badge ${pClass[c.priority]}">${c.priority}</span>
+      <span class="resolve-link">Resolve →</span>
+    </div>
+  </div>`;
+});
+
+const conflictsRight = [
+  { tag: 'PM',   tagCls: 'tag-pm',   time: 'Wed 07 · 09:00 – 13:00', desc: 'Crew-C overlap: WO-0907 (DTR Replace) vs WO-0899 (Patrol)', dur: '2h' },
+  { tag: 'CM',   tagCls: 'tag-cm',   time: 'Wed 07 · 09:00 – 13:00', desc: 'Crew-E overcapacity 100% – Standby + active EM', dur: '2h' },
+  { tag: 'INSP', tagCls: 'tag-insp', time: 'Wed 07 · 09:00 – 13:00', desc: 'karamana SS – 2 concurrent PTW requested', dur: '2h' },
+  { tag: 'PM',   tagCls: 'tag-pm',   time: 'Wed 07 · 09:00 – 13:00', desc: 'Crew-C overlap: WO-0907 (DTR Replace) vs WO-0899 (Patrol)', dur: '2h' },
+  { tag: 'CM',   tagCls: 'tag-cm',   time: 'Wed 07 · 09:00 – 13:00', desc: 'Crew-C overlap: WO-0907 (DTR Replace) vs WO-0899 (Patrol)', dur: '2h' },
+];
+const cRight = document.getElementById('conflictRight');
+conflictsRight.forEach(c => {
+  cRight.innerHTML += `<div class="conflict-item2">
+    <div class="tag-circle ${c.tagCls}">${c.tag}</div>
+    <div class="ci-body">
+      <div class="ci-time">${c.time}</div>
+      <div class="ci-desc">${c.desc}</div>
+    </div>
+    <div class="ci-duration">${c.dur}</div>
+  </div>`;
+});
+
+// Drag visual feedback
+document.querySelectorAll('[draggable=true]').forEach(el => {
+  el.addEventListener('dragstart', e => { el.style.opacity = '.5'; });
+  el.addEventListener('dragend',   e => { el.style.opacity = '1'; });
+});
+document.querySelectorAll('.day-cell').forEach(cell => {
+  cell.addEventListener('dragover',  e => { e.preventDefault(); cell.style.background = '#eef2ff'; });
+  cell.addEventListener('dragleave', e => { cell.style.background = ''; });
+  cell.addEventListener('drop',      e => { e.preventDefault(); cell.style.background = ''; });
+});
+</script>

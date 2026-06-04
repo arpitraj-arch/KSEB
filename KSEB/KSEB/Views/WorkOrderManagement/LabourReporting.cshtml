@@ -1,0 +1,590 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@{
+    ViewData["Title"] = "Labour Reporting";
+}
+@{
+    ViewData["ActiveMenu"] = "Work Order Management";
+}
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Labour Reporting</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #f0f2f7;
+  --surface: #ffffff;
+  --surface2: #f7f8fc;
+  --border: #e4e8f0;
+  --text: #1a1f36;
+  --text2: #5a6080;
+  --text3: #9ba3bf;
+  --accent: #3b5bdb;
+  --accent-light: #eef2ff;
+  --red: #e03131;
+  --red-light: #fff5f5;
+  --orange: #f76707;
+  --orange-light: #fff4e6;
+  --green: #2f9e44;
+  --green-light: #ebfbee;
+  --yellow: #e67700;
+  --yellow-light: #fff9db;
+  --purple: #7048e8;
+  --purple-light: #f3f0ff;
+  --teal: #0c8599;
+  --teal-light: #e3fafc;
+  --font: 'DM Sans', sans-serif;
+  --mono: 'DM Mono', monospace;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --radius-xs: 5px;
+  --shadow-sm: 0 1px 3px rgba(26,31,54,.06);
+  --shadow: 0 4px 16px rgba(26,31,54,.08);
+}
+
+body { font-family: var(--font); background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.5; min-height: 100vh; }
+
+/* ── TOPBAR ── */
+.topbar {
+  background: var(--surface); border-bottom: 1px solid var(--border);
+  padding: 0 20px; display: flex; align-items: center; gap: 12px;
+  min-height: 56px; position: sticky; top: 0; z-index: 100;
+  box-shadow: var(--shadow-sm);
+}
+.topbar-breadcrumb { font-size: 11.5px; color: var(--text3); flex: 1; display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+.topbar-breadcrumb .current { color: var(--text); font-weight: 600; }
+.back-btn { background: none; border: none; cursor: pointer; color: var(--text2); padding: 4px; border-radius: 6px; display: flex; }
+.back-btn:hover { background: var(--surface2); }
+.topbar-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.btn { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: var(--radius-xs); font-size: 13px; font-weight: 600; font-family: var(--font); cursor: pointer; border: none; transition: all .15s; white-space: nowrap; }
+.btn-outline { background: var(--surface); color: var(--text2); border: 1px solid var(--border); }
+.btn-outline:hover { background: var(--surface2); }
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-primary:hover { background: #2f4ec0; }
+
+/* ── PAGE HEADER ── */
+.page-header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 14px 20px; }
+.page-title { font-size: 18px; font-weight: 700; color: var(--text); letter-spacing: -.3px; }
+.page-sub { font-size: 12px; color: var(--text3); margin-top: 2px; }
+
+/* ── PAGE ── */
+.page { padding: 8px; display: flex; flex-direction: column; gap: 8px; max-width: 100vw; margin: 0 auto; }
+
+/* ── KPI ── */
+.kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.kpi-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; box-shadow: var(--shadow-sm); display: flex; flex-direction: column; gap: 5px; transition: box-shadow .2s; }
+.kpi-card:hover { box-shadow: var(--shadow); }
+.kpi-top { display: flex; align-items: center; gap: 8px; }
+.kpi-icon { width: 30px; height: 30px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.kpi-icon.blue   { background: var(--accent-light); color: var(--accent); }
+.kpi-icon.red    { background: var(--red-light);    color: var(--red); }
+.kpi-icon.green  { background: var(--green-light);  color: var(--green); }
+.kpi-icon.purple { background: var(--purple-light); color: var(--purple); }
+.kpi-label { font-size: 10px; font-weight: 700; letter-spacing: .6px; text-transform: uppercase; color: var(--text3); }
+.kpi-value { font-size: 26px; font-weight: 800; letter-spacing: -1px; line-height: 1; }
+.kpi-sub { font-size: 12px; color: var(--text3); display: flex; align-items: center; gap: 3px; }
+.kpi-sub .up   { color: var(--green); }
+.kpi-sub .down { color: var(--red); }
+
+/* ── SEARCH BAR ── */
+.search-bar { display: flex; align-items: center; gap: 8px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 10px 14px; box-shadow: var(--shadow-sm); flex-wrap: wrap; }
+.search-inner { display: flex; align-items: center; gap: 8px; flex: 1; min-width: 160px; }
+.search-input { border: none; outline: none; font-family: var(--font); font-size: 13px; color: var(--text); background: transparent; width: 100%; }
+.search-input::placeholder { color: var(--text3); }
+.search-actions { display: flex; gap: 6px; flex-shrink: 0; }
+
+/* ── INTAKE SECTION ── */
+.section-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow-sm); overflow: hidden; }
+.section-header { display: flex; align-items: center; justify-content: space-between; padding: 12px 18px; border-bottom: 1px solid var(--border); }
+.section-title { font-size: 13px; font-weight: 700; color: var(--text); display: flex; align-items: center; gap: 7px; }
+
+/* ── TIMER CARDS ── */
+.timer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+.timer-card { padding: 14px 18px; display: flex; align-items: center; gap: 14px; border-right: 1px solid var(--border); }
+.timer-card:last-child { border-right: none; }
+.timer-play { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; cursor: pointer; transition: opacity .15s; }
+.timer-play:hover { opacity: .8; }
+.timer-play.green { background: var(--green); }
+.timer-play.gray  { background: var(--border); }
+.timer-info { flex: 1; min-width: 0; }
+.timer-wo { font-size: 12px; color: var(--accent); font-weight: 600; font-family: var(--mono); }
+.timer-desc { font-size: 13px; font-weight: 600; color: var(--text); margin: 1px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.timer-meta { font-size: 11px; color: var(--text3); }
+.timer-right { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; flex-shrink: 0; }
+.timer-time { font-size: 20px; font-weight: 700; font-family: var(--mono); color: var(--text); letter-spacing: -.5px; }
+.timer-btns { display: flex; gap: 5px; }
+.t-btn { width: 28px; height: 28px; border: none; border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: opacity .15s; }
+.t-btn:hover { opacity: .8; }
+.t-btn.pause { background: #f59e0b; }
+.t-btn.stop  { background: var(--red); }
+.t-btn.go    { background: var(--green); }
+
+/* ── TABLE ── */
+.table-toolbar { display: flex; align-items: center; gap: 8px; padding: 10px 18px; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+.table-search-wrap { flex: 1; min-width: 160px; position: relative; }
+.table-search-wrap svg { position: absolute; left: 9px; top: 50%; transform: translateY(-50%); color: var(--text3); }
+.table-search { width: 100%; padding: 6px 10px 6px 30px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-family: var(--font); font-size: 12.5px; background: var(--surface2); outline: none; color: var(--text); }
+.table-search:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(59,91,219,.08); background: var(--surface); }
+.data-table { width: 100%; border-collapse: collapse; }
+.data-table th { padding: 9px 12px; text-align: left; font-size: 10.5px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; color: var(--text3); background: var(--surface2); border-bottom: 1px solid var(--border); white-space: nowrap; }
+.data-table th:first-child { width: 34px; padding-left: 18px; }
+.data-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); font-size: 13px; vertical-align: middle; }
+.data-table td:first-child { padding-left: 18px; }
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tr:hover td { background: var(--surface2); }
+.data-table input[type=checkbox] { accent-color: var(--accent); cursor: pointer; }
+.txn-id { font-family: var(--mono); font-size: 12px; color: var(--accent); font-weight: 500; white-space: nowrap; }
+.txn-id:hover { text-decoration: underline; cursor: pointer; }
+.wo-id { font-family: var(--mono); font-size: 12px; color: var(--accent); font-weight: 500; white-space: nowrap; }
+.cell-main { font-weight: 500; color: var(--text); }
+.cell-sub  { font-size: 11px; color: var(--text3); margin-top: 1px; }
+.hours-cell { font-family: var(--mono); font-size: 13px; font-weight: 600; color: var(--text); }
+.status-pill { display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; white-space: nowrap; }
+.status-pill.approved  { background: var(--green-light);  color: var(--green); }
+.status-pill.submitted { background: var(--accent-light); color: var(--accent); }
+.action-btn { background: none; border: none; cursor: pointer; color: var(--text3); padding: 4px; border-radius: 4px; font-size: 16px; transition: background .15s; }
+.action-btn:hover { background: var(--surface2); color: var(--text2); }
+.table-footer { display: flex; align-items: center; justify-content: space-between; padding: 10px 18px; background: var(--surface2); border-top: 1px solid var(--border); flex-wrap: wrap; gap: 8px; }
+.tf-left { display: flex; align-items: center; gap: 8px; }
+.tf-select { padding: 5px 8px; border: 1px solid var(--border); border-radius: var(--radius-xs); font-family: var(--font); font-size: 12.5px; background: var(--surface); color: var(--text); outline: none; cursor: pointer; }
+.tf-info { font-size: 12px; color: var(--text3); }
+.pagination { display: flex; align-items: center; gap: 3px; }
+.page-btn { min-width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--border); border-radius: var(--radius-xs); font-size: 12px; font-weight: 600; cursor: pointer; background: var(--surface); color: var(--text2); font-family: var(--font); transition: all .15s; }
+.page-btn:hover, .page-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+.page-btn.disabled { opacity: .4; pointer-events: none; }
+
+/* ── BOTTOM GRID ── */
+.bottom-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+/* ── HOURS BY CRAFT ── */
+.craft-list { padding: 14px 18px; display: flex; flex-direction: column; gap: 16px; }
+.craft-item-top { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+.craft-tier { width: 26px; height: 26px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; flex-shrink: 0; }
+.craft-tier.a { background: #fee2e2; color: var(--red); }
+.craft-tier.b { background: #fff7ed; color: var(--orange); }
+.craft-tier.c { background: var(--yellow-light); color: var(--yellow); }
+.craft-info { flex: 1; }
+.craft-label { font-size: 13px; font-weight: 600; color: var(--text); }
+.craft-pct-row { display: flex; align-items: center; justify-content: space-between; margin-top: 2px; }
+.craft-pct  { font-size: 18px; font-weight: 700; letter-spacing: -.5px; }
+.craft-hrs  { font-size: 12px; color: var(--text3); font-family: var(--mono); }
+.progress-bar { width: 100%; height: 7px; background: var(--border); border-radius: 10px; overflow: hidden; }
+.progress-fill { height: 100%; border-radius: 10px; }
+.progress-fill.green  { background: linear-gradient(90deg, #34d058, #2f9e44); }
+.progress-fill.orange { background: linear-gradient(90deg, #fb923c, #ea580c); }
+.progress-fill.red    { background: linear-gradient(90deg, #f87171, #dc2626); }
+
+/* ── CREW ROSTER ── */
+.crew-list { padding: 12px 18px; display: flex; flex-direction: column; gap: 10px; }
+.crew-item { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--surface2); transition: box-shadow .15s; }
+.crew-item:hover { box-shadow: var(--shadow-sm); background: var(--surface); }
+.crew-avatar { width: 34px; height: 34px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; flex-shrink: 0; }
+.crew-avatar.a { background: #fee2e2; color: var(--red); }
+.crew-avatar.b { background: #fff7ed; color: var(--orange); }
+.crew-avatar.c { background: var(--yellow-light); color: var(--yellow); }
+.crew-info { flex: 1; min-width: 0; }
+.crew-name { font-size: 13px; font-weight: 700; color: var(--text); }
+.crew-members { font-size: 11.5px; color: var(--text3); margin-top: 1px; }
+.crew-status { padding: 4px 12px; border-radius: 20px; font-size: 11.5px; font-weight: 700; white-space: nowrap; border: 1.5px solid; }
+.crew-status.onsite  { background: var(--green-light);  color: var(--green);  border-color: var(--green); }
+.crew-status.travel  { background: var(--accent-light); color: var(--accent); border-color: var(--accent); }
+.crew-status.standby { background: var(--surface2);     color: var(--text2);  border-color: var(--border); }
+.view-all-link { display: flex; align-items: center; gap: 5px; color: var(--accent); font-size: 13px; font-weight: 600; padding: 10px 18px 14px; text-decoration: none; cursor: pointer; }
+.view-all-link:hover { text-decoration: underline; }
+
+/* ── OVERFLOW TABLE ── */
+.table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: #f0f2f5; }
+::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
+
+/* ═════ RESPONSIVE ═════ */
+@@media (max-width: 1100px) {
+  .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@@media (max-width: 900px) {
+  .timer-grid { grid-template-columns: 1fr; }
+  .timer-card { border-right: none; border-bottom: 1px solid var(--border); }
+  .timer-card:last-child { border-bottom: none; }
+  .bottom-grid { grid-template-columns: 1fr; }
+  .page { padding: 14px; gap: 14px; }
+}
+@@media (max-width: 680px) {
+  .kpi-grid { grid-template-columns: 1fr 1fr; }
+  .topbar-actions .btn-outline { display: none; }
+  .data-table th:nth-child(6), .data-table td:nth-child(6),
+  .data-table th:nth-child(7), .data-table td:nth-child(7) { display: none; }
+  .page { padding: 10px; }
+}
+@@media (max-width: 480px) {
+  .kpi-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .kpi-value { font-size: 22px; }
+  .topbar { padding: 0 12px; }
+  .page { padding: 8px; gap: 8px; }
+  .data-table th:nth-child(3), .data-table td:nth-child(3) { display: none; }
+  .timer-time { font-size: 17px; }
+  .page-title { font-size: 16px; }
+}
+</style>
+
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <div class="topbar-breadcrumb">
+    <button class="back-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <span>Home</span>
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+    <span>Work Order Management</span>
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+    <span class="current">Labour Reporting</span>
+  </div>
+  <div class="topbar-actions">
+    <button class="btn btn-outline">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+      Saved Queries
+    </button>
+    <button class="btn btn-primary">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      New Escalations
+    </button>
+  </div>
+</header>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="page-title">Labour Reporting</div>
+  <div class="page-sub">Record actual hours, overtime and craft attribution against work orders</div>
+</div>
+
+<!-- PAGE -->
+<main class="page">
+
+  <!-- KPI CARDS -->
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-top">
+        <div class="kpi-icon blue">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/></svg>
+        </div>
+        <div class="kpi-label">Open Requests</div>
+      </div>
+      <div class="kpi-value">166</div>
+      <div class="kpi-sub"><span class="up">↑ 14 today</span></div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-top">
+        <div class="kpi-icon red">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </div>
+        <div class="kpi-label">Critical / SLA Risk</div>
+      </div>
+      <div class="kpi-value">9</div>
+      <div class="kpi-sub"><span class="down">2 breaching</span></div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-top">
+        <div class="kpi-icon green">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="kpi-label">Resolved Today</div>
+      </div>
+      <div class="kpi-value">58</div>
+      <div class="kpi-sub"><span class="up">91% SLA met</span></div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-top">
+        <div class="kpi-icon purple">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <div class="kpi-label">Avg. Response</div>
+      </div>
+      <div class="kpi-value">14m</div>
+      <div class="kpi-sub"><span class="down">↓ 3m vs LM</span></div>
+    </div>
+  </div>
+
+  <!-- SEARCH BAR -->
+  <div class="search-bar">
+    <div class="search-inner">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9ba3bf" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input class="search-input" type="text" placeholder="Search by Service Request, Status, Priority, category SLA Status…">
+    </div>
+    <div class="search-actions">
+      <button class="btn btn-outline" style="font-size:12.5px;padding:6px 12px;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+        Filter
+      </button>
+      <button class="btn btn-outline" style="font-size:12.5px;padding:6px 12px;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4.17"/></svg>
+        Reset
+      </button>
+    </div>
+  </div>
+
+  <!-- INTAKE CHANNELS / ACTIVE TIMERS -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-title">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        Intake Channels — Today
+      </div>
+    </div>
+    <div class="timer-grid">
+      <!-- Active timer -->
+      <div class="timer-card">
+        <div class="timer-play green">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        </div>
+        <div class="timer-info">
+          <div class="timer-wo">WO-2026-0893</div>
+          <div class="timer-desc">Cable Fault Repair – Palayam</div>
+          <div class="timer-meta">Lineman · Started 08:42 AM</div>
+        </div>
+        <div class="timer-right">
+          <div class="timer-time">03:21</div>
+          <div class="timer-btns">
+            <button class="t-btn pause">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="#fff"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+            </button>
+            <button class="t-btn stop">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="#fff"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- Paused timer -->
+      <div class="timer-card">
+        <div class="timer-play gray">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9ba3bf" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        </div>
+        <div class="timer-info">
+          <div class="timer-wo">WO-2026-0893</div>
+          <div class="timer-desc">Emergency Pole Repair – Pettah</div>
+          <div class="timer-meta">Lineman · Started 08:42 AM</div>
+        </div>
+        <div class="timer-right">
+          <div class="timer-time" style="color:var(--text3)">00:00</div>
+          <div class="timer-btns">
+            <button class="t-btn go">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="#fff"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WORK DESCRIPTION TABLE -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-title">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        Work Description
+      </div>
+      <button class="btn btn-outline" style="font-size:12px;padding:5px 10px;gap:4px;">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download
+      </button>
+    </div>
+    <div class="table-scroll">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th><input type="checkbox" id="selAll"></th>
+            <th>TXN ID</th>
+            <th>Date</th>
+            <th>Employee</th>
+            <th>WO#</th>
+            <th>Task / Activity</th>
+            <th>Reg (H)</th>
+            <th>OT (H)</th>
+            <th>Status</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+    </div>
+    <div class="table-footer">
+      <div class="tf-left">
+        <select class="tf-select"><option>5</option><option>10</option><option>25</option><option>50</option></select>
+        <span class="tf-info">Showing 1 to 5 of 53 entries</span>
+      </div>
+      <div class="pagination">
+        <button class="page-btn disabled">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <button class="page-btn active">1</button>
+        <button class="page-btn">2</button>
+        <button class="page-btn">6</button>
+        <span style="font-size:12px;color:var(--text3);padding:0 2px;">…</span>
+        <button class="page-btn">10</button>
+        <button class="page-btn">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTTOM: HOURS BY CRAFT + CREW ROSTER -->
+  <div class="bottom-grid">
+
+    <!-- HOURS BY CRAFT -->
+    <div class="section-card">
+      <div class="section-header">
+        <div class="section-title">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          Hours By Craft
+        </div>
+        <button class="btn btn-outline" style="font-size:11.5px;padding:4px 10px;">More</button>
+      </div>
+      <div class="craft-list">
+        <div>
+          <div class="craft-item-top">
+            <div class="craft-tier a">A</div>
+            <div class="craft-info">
+              <div class="craft-label">Lineman</div>
+              <div class="craft-pct-row">
+                <div class="craft-pct" style="color:var(--green)">85%</div>
+                <div class="craft-hrs">168 h</div>
+              </div>
+            </div>
+          </div>
+          <div class="progress-bar"><div class="progress-fill green" style="width:85%"></div></div>
+        </div>
+        <div>
+          <div class="craft-item-top">
+            <div class="craft-tier b">B</div>
+            <div class="craft-info">
+              <div class="craft-label">Helper</div>
+              <div class="craft-pct-row">
+                <div class="craft-pct" style="color:var(--green)">85%</div>
+                <div class="craft-hrs">168 h</div>
+              </div>
+            </div>
+          </div>
+          <div class="progress-bar"><div class="progress-fill green" style="width:85%"></div></div>
+        </div>
+        <div>
+          <div class="craft-item-top">
+            <div class="craft-tier c">C</div>
+            <div class="craft-info">
+              <div class="craft-label">Technician</div>
+              <div class="craft-pct-row">
+                <div class="craft-pct" style="color:var(--red)">28%</div>
+                <div class="craft-hrs">168 h</div>
+              </div>
+            </div>
+          </div>
+          <div class="progress-bar"><div class="progress-fill red" style="width:28%"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CREW ROSTER -->
+    <div class="section-card">
+      <div class="section-header">
+        <div class="section-title">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          Crew Roster — Today
+        </div>
+        <button class="btn btn-outline" style="font-size:11.5px;padding:4px 10px;">More</button>
+      </div>
+      <div class="crew-list">
+        <div class="crew-item">
+          <div class="crew-avatar a">A</div>
+          <div class="crew-info">
+            <div class="crew-name">Crew-A</div>
+            <div class="crew-members">S.Pillai (4)</div>
+          </div>
+          <span class="crew-status onsite">On-Site</span>
+        </div>
+        <div class="crew-item">
+          <div class="crew-avatar b">B</div>
+          <div class="crew-info">
+            <div class="crew-name">Crew-B</div>
+            <div class="crew-members">K.Menon (3)</div>
+          </div>
+          <span class="crew-status travel">Travel</span>
+        </div>
+        <div class="crew-item">
+          <div class="crew-avatar c">C</div>
+          <div class="crew-info">
+            <div class="crew-name">Crew-C</div>
+            <div class="crew-members">M.Joseph (4)</div>
+          </div>
+          <span class="crew-status standby">Standby</span>
+        </div>
+      </div>
+      <a class="view-all-link">
+        View all crews
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+    </div>
+
+  </div><!-- end bottom-grid -->
+
+</main>
+
+<script>
+  // TABLE DATA
+  const rows = [
+    { txn: 'TXN-2341', date: '29-Apr-2026', emp: 'S.Pillai', role: 'Sr. Lineman', wo: 'WO-2026-0891', task: 'VCB Maintenance',      reg: 6.0, ot: 6.0, status: 'Approved' },
+    { txn: 'TXN-0234', date: '29-Apr-2026', emp: 'S.Pillai', role: 'Sr. Lineman', wo: 'WO-2026-0891', task: 'Oil Filtration Setup',  reg: 8.0, ot: 8.0, status: 'Submitted' },
+    { txn: 'TXN-2389', date: '29-Apr-2026', emp: 'S.Pillai', role: 'Sr. Lineman', wo: 'WO-2026-0891', task: 'Cable Jointing',        reg: 4.0, ot: 4.0, status: 'Approved' },
+    { txn: 'TXN-0567', date: '29-Apr-2026', emp: 'S.Pillai', role: 'Sr. Lineman', wo: 'WO-2026-0891', task: 'Emergency Response',    reg: 1.5, ot: 1.5, status: 'Submitted' },
+    { txn: 'TXN-2456', date: '29-Apr-2026', emp: 'S.Pillai', role: 'Sr. Lineman', wo: 'WO-2026-0891', task: 'Site Survey',           reg: 5.0, ot: 5.0, status: 'Approved' },
+    { txn: 'TXN-2465', date: '29-Apr-2026', emp: 'S.Pillai', role: 'Sr. Lineman', wo: 'WO-2026-0891', task: 'Sick Leave',            reg: 7.0, ot: 7.0, status: 'Approved' },
+  ];
+
+  const tbody = document.getElementById('tableBody');
+  rows.forEach(r => {
+    const cls = r.status === 'Approved' ? 'approved' : 'submitted';
+    tbody.innerHTML += `<tr>
+      <td><input type="checkbox"></td>
+      <td><span class="txn-id">${r.txn}</span></td>
+      <td style="color:var(--text2);font-size:12.5px;">${r.date}</td>
+      <td><div class="cell-main">${r.emp}</div><div class="cell-sub">${r.role}</div></td>
+      <td><span class="wo-id">${r.wo}</span></td>
+      <td>${r.task}</td>
+      <td><span class="hours-cell">${r.reg.toFixed(1)}</span></td>
+      <td><span class="hours-cell">${r.ot.toFixed(1)}</span></td>
+      <td><span class="status-pill ${cls}">${r.status}</span></td>
+      <td><button class="action-btn">⋮</button></td>
+    </tr>`;
+  });
+
+  // SELECT ALL
+  document.getElementById('selAll').addEventListener('change', function() {
+    document.querySelectorAll('#tableBody input[type=checkbox]').forEach(c => c.checked = this.checked);
+  });
+
+  // PAGINATION
+  document.querySelectorAll('.page-btn:not(.disabled)').forEach(btn => {
+    btn.addEventListener('click', function() {
+      if (this.querySelector('svg')) return;
+      document.querySelectorAll('.page-btn').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+
+  // LIVE TIMER
+  let seconds = 3 * 60 + 21;
+  const timerEl = document.querySelector('.timer-time');
+  setInterval(() => {
+    seconds++;
+    const m = String(Math.floor(seconds / 60)).padStart(2, '0');
+    const s = String(seconds % 60).padStart(2, '0');
+    timerEl.textContent = `${m}:${s}`;
+  }, 1000);
+</script>

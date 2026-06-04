@@ -8,14 +8,6 @@
 
   <ItemGroup>
     <Folder Include="Views\Analytics\" />
-    <Folder Include="Views\PlanningScheduling\" />
-    <Folder Include="Views\WorkForceManagement\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Update="Views\WorkOrderManagemet\WorkOrderTracking.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
 
 </Project>

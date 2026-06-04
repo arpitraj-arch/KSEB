@@ -1,0 +1,785 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@{
+    ViewData["Title"] = "Jobs Plans";
+}
+@{
+    ViewData["ActiveMenu"] = "Planning & Scheduling";
+}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jobs Plans – Planning & Scheduling</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f0f2f5;
+    --surface: #ffffff;
+    --surface-2: #f7f8fa;
+    --border: #e2e6ec;
+    --border-strong: #c8cfd8;
+    --text-primary: #1a1f2e;
+    --text-secondary: #5a6478;
+    --text-muted: #8a95a8;
+    --accent-blue: #2563eb;
+    --accent-blue-light: #eff4ff;
+    --accent-green: #16a34a;
+    --accent-green-light: #f0fdf4;
+    --accent-amber: #d97706;
+    --accent-amber-light: #fffbeb;
+    --accent-red: #dc2626;
+    --accent-red-light: #fef2f2;
+    --accent-purple: #7c3aed;
+    --accent-purple-light: #f5f3ff;
+    --status-active: #16a34a;
+    --status-draft: #d97706;
+    --radius-sm: 4px;
+    --radius: 8px;
+    --radius-lg: 12px;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+    --shadow: 0 4px 12px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
+    --shadow-lg: 0 12px 32px rgba(0,0,0,0.12), 0 4px 8px rgba(0,0,0,0.06);
+    --font-main: 'DM Sans', sans-serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--font-main);
+    background: var(--bg);
+    color: var(--text-primary);
+    font-size: 13px;
+    min-height: 100vh;
+  }
+
+  /* ─── Breadcrumb ─────────────────────────────────────── */
+  .breadcrumb {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 8px 20px;
+    font-size: 14px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .breadcrumb a { color: var(--text-muted); text-decoration: none; }
+  .breadcrumb a:hover { color: var(--accent-blue); }
+  .breadcrumb .sep { font-size: 10px; }
+  .breadcrumb .current { color: var(--text-secondary); font-weight: 500; }
+
+  /* ─── Page Header ────────────────────────────────────── */
+  .page-header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 20px 16px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .page-header-left { display: flex; align-items: center; gap: 10px; }
+  .back-btn {
+    width: 28px; height: 28px;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text-secondary);
+    transition: all .15s;
+    flex-shrink: 0;
+  }
+  .back-btn:hover { background: var(--surface-2); border-color: var(--accent-blue); color: var(--accent-blue); }
+  .page-title-block h1 { font-size: 16px; font-weight: 600; letter-spacing: -.3px; }
+  .page-title-block p { font-size: 14px; color: var(--text-muted); margin-top: 2px; }
+  .btn-primary {
+    display: flex; align-items: center; gap: 6px;
+    background: var(--accent-blue);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 8px 14px;
+    font-size: 12.5px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background .15s, transform .1s;
+    white-space: nowrap;
+    font-family: var(--font-main);
+  }
+  .btn-primary:hover { background: #1d4ed8; }
+  .btn-primary:active { transform: scale(.98); }
+
+  /* ─── Stats Row ──────────────────────────────────────── */
+  .stats-bar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 20px;
+    display: flex;
+    align-items: stretch;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .stat-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 20px 12px 0;
+    border-right: 1px solid var(--border);
+    min-width: 140px;
+  }
+  .stat-item:last-child { border-right: none; padding-right: 0; }
+  .stat-item:first-child { padding-left: 0; }
+  .stat-icon {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px;
+    flex-shrink: 0;
+  }
+  .stat-icon.green { background: var(--accent-green-light); color: var(--accent-green); }
+  .stat-icon.amber { background: var(--accent-amber-light); color: var(--accent-amber); }
+  .stat-icon.red   { background: var(--accent-red-light); color: var(--accent-red); }
+  .stat-icon.blue  { background: var(--accent-blue-light); color: var(--accent-blue); }
+  .stat-icon.purple{ background: var(--accent-purple-light); color: var(--accent-purple); }
+  .stat-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: .5px; font-weight: 500; }
+  .stat-value { font-size: 22px; font-weight: 700; letter-spacing: -1px; line-height: 1.1; }
+  .stat-delta { font-size: 10px; color: var(--accent-green); font-weight: 500; }
+  .stat-suffix { font-size: 11px; color: var(--text-muted); font-weight: 400; }
+
+  /* ─── Main Layout ────────────────────────────────────── */
+  .main-layout {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 0;
+    padding: 16px;
+    gap: 14px;
+    align-items: start;
+  }
+
+  /* ─── Panel ──────────────────────────────────────────── */
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+  }
+  .panel-header {
+    padding: 12px 14px 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  .panel-title { font-size: 13px; font-weight: 600; }
+  .panel-subtitle { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
+
+  /* ─── Search & Filters ───────────────────────────────── */
+  .search-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+  .search-input-wrap {
+    flex: 1;
+    min-width: 160px;
+    position: relative;
+  }
+  .search-input-wrap svg {
+    position: absolute;
+    left: 8px; top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+  }
+  .search-input {
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 6px 8px 6px 28px;
+    font-size: 12px;
+    font-family: var(--font-main);
+    color: var(--text-primary);
+    background: var(--surface-2);
+    outline: none;
+    transition: border-color .15s;
+  }
+  .search-input:focus { border-color: var(--accent-blue); background: #fff; }
+  .filter-select {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 6px 10px;
+    font-size: 14px;
+    font-family: var(--font-main);
+    color: var(--text-secondary);
+    background: var(--surface-2);
+    outline: none;
+    cursor: pointer;
+  }
+  .filter-btn {
+    display: flex; align-items: center; gap: 5px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 6px 10px;
+    background: var(--surface-2);
+    font-size: 14px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-family: var(--font-main);
+    transition: all .15s;
+  }
+  .filter-btn:hover { border-color: var(--accent-blue); color: var(--accent-blue); }
+
+  /* ─── Table ──────────────────────────────────────────── */
+  .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+  thead th {
+    padding: 7px 10px;
+    text-align: left;
+    font-size: 10.5px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: .4px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface-2);
+    white-space: nowrap;
+  }
+  tbody tr {
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition: background .1s;
+  }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: #f5f7fb; }
+  tbody tr.selected { background: var(--accent-blue-light); }
+  tbody td {
+    padding: 8px 10px;
+    vertical-align: middle;
+    white-space: nowrap;
+  }
+  .plan-id {
+    color: var(--accent-blue);
+    font-weight: 600;
+    font-family: var(--font-mono);
+    font-size: 11px;
+  }
+  .rev-badge {
+    display: inline-flex;
+    align-items: center;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 1px 5px;
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    font-family: var(--font-mono);
+  }
+  .classification { color: var(--text-secondary); font-size: 14px; }
+  .num-cell { text-align: center; color: var(--text-secondary); font-family: var(--font-mono); font-size: 14px; }
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-size: 10.5px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .status-badge.active { background: var(--accent-green-light); color: var(--accent-green); }
+  .status-badge.draft  { background: var(--accent-amber-light); color: var(--accent-amber); }
+  .status-dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+
+  /* ─── Pagination ─────────────────────────────────────── */
+  .pagination {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 14px;
+    border-top: 1px solid var(--border);
+    background: var(--surface-2);
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .pagination-info { font-size: 11px; color: var(--text-muted); }
+  .pagination-pages { display: flex; align-items: center; gap: 4px; }
+  .page-btn {
+    width: 26px; height: 26px;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    font-size: 14px;
+    cursor: pointer;
+    color: var(--text-secondary);
+    transition: all .15s;
+    font-family: var(--font-main);
+  }
+  .page-btn:hover, .page-btn.active { background: var(--accent-blue); color: #fff; border-color: var(--accent-blue); }
+  .page-dots { font-size: 11px; color: var(--text-muted); padding: 0 2px; }
+
+  /* ─── Detail Panel ───────────────────────────────────── */
+  .detail-panel { position: sticky; top: 16px; }
+  .detail-header {
+    padding: 12px 14px 10px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  .detail-plan-id {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent-blue);
+  }
+  .detail-plan-name { font-size: 13.5px; font-weight: 600; margin-top: 1px; }
+  .detail-meta { font-size: 11px; color: var(--text-muted); margin-top: 3px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .detail-meta-sep { color: var(--border-strong); }
+  .close-btn {
+    width: 24px; height: 24px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: transparent;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text-muted);
+    transition: all .15s;
+    flex-shrink: 0;
+  }
+  .close-btn:hover { background: var(--accent-red-light); border-color: var(--accent-red); color: var(--accent-red); }
+
+  /* Info Cards */
+  .info-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .info-card {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 8px 10px;
+  }
+  .info-card-label { font-size: 9.5px; color: var(--text-muted); text-transform: uppercase; letter-spacing: .5px; font-weight: 600; }
+  .info-card-value { font-size: 12.5px; font-weight: 600; margin-top: 3px; color: var(--text-primary); }
+  .info-card-value.blue { color: var(--accent-blue); }
+
+  /* Section label */
+  .section-label {
+    padding: 8px 14px 6px;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: .8px;
+  }
+
+  /* Task Sequence */
+  .task-table { padding: 0 14px 10px; }
+  .task-table table { font-size: 14px; }
+  .task-table thead th { font-size: 9.5px; padding: 5px 8px; }
+  .task-table tbody td { padding: 6px 8px; }
+  .task-num { font-family: var(--font-mono); font-weight: 600; color: var(--text-muted); font-size: 10.5px; }
+  .task-desc { color: var(--text-primary); }
+  .task-lineman { color: var(--text-secondary); font-size: 11px; }
+  .task-dur { font-family: var(--font-mono); font-size: 11px; color: var(--text-secondary); text-align: right; }
+
+  /* Labor / Materials / Tools */
+  .resources-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0;
+    border-top: 1px solid var(--border);
+  }
+  .resource-col { padding: 10px 14px; }
+  .resource-col + .resource-col { border-left: 1px solid var(--border); }
+  .resource-col-title { font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .6px; color: var(--text-muted); margin-bottom: 6px; }
+  .resource-item { font-size: 11px; color: var(--text-secondary); padding: 2px 0; display: flex; align-items: center; justify-content: space-between; gap: 4px; }
+  .resource-item span.qty { font-family: var(--font-mono); font-size: 10.5px; color: var(--text-muted); }
+
+  /* Action buttons */
+  .detail-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 14px 12px;
+    border-top: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+  .btn-sm {
+    display: flex; align-items: center; gap: 5px;
+    padding: 6px 12px;
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: var(--font-main);
+    transition: all .15s;
+    border: 1px solid transparent;
+  }
+  .btn-sm.primary { background: var(--accent-blue); color: #fff; }
+  .btn-sm.primary:hover { background: #1d4ed8; }
+  .btn-sm.outline { background: var(--surface); border-color: var(--border-strong); color: var(--text-secondary); }
+  .btn-sm.outline:hover { border-color: var(--accent-blue); color: var(--accent-blue); }
+  .btn-sm.ghost { background: transparent; color: var(--text-secondary); border-color: transparent; }
+  .btn-sm.ghost:hover { background: var(--surface-2); }
+  .btn-more {
+    margin-left: auto;
+    display: flex; align-items: center; gap: 4px;
+    padding: 6px 10px;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    font-size: 14px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-family: var(--font-main);
+    transition: all .15s;
+  }
+  .btn-more:hover { border-color: var(--accent-blue); color: var(--accent-blue); }
+
+  /* ─── Responsive ─────────────────────────────────────── */
+  @@media (max-width: 1024px) {
+    .main-layout { grid-template-columns: 1fr; }
+    .detail-panel { position: static; }
+  }
+  @@media (max-width: 768px) {
+    .stats-bar { gap: 0; }
+    .stat-item { min-width: 110px; padding: 10px 14px 10px 0; }
+    .stat-value { font-size: 18px; }
+    .main-layout { padding: 10px; gap: 10px; }
+    .info-cards { grid-template-columns: 1fr 1fr; }
+    .resources-grid { grid-template-columns: 1fr; }
+    .resource-col + .resource-col { border-left: none; border-top: 1px solid var(--border); }
+    .page-header { flex-direction: column; align-items: flex-start; }
+    .btn-primary { align-self: flex-end; }
+    .detail-actions { gap: 4px; }
+    .btn-sm { padding: 5px 9px; font-size: 11px; }
+  }
+  @@media (max-width: 480px) {
+    .info-cards { grid-template-columns: 1fr; }
+    .breadcrumb { font-size: 10.5px; }
+    .stat-item { min-width: 90px; }
+    .stat-label { font-size: 9px; }
+    .stat-value { font-size: 16px; }
+    .stats-bar { flex-wrap: nowrap; }
+    thead th, tbody td { padding: 5px 6px; }
+    .task-desc { max-width: 130px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  }
+</style>
+
+
+<!-- Breadcrumb -->
+<nav class="breadcrumb">
+
+  <a href="#">Planning &amp; Scheduling</a>
+  <span class="sep">›</span>
+  <span class="current">Jobs Plans</span>
+</nav>
+
+<!-- Page Header -->
+<header class="page-header">
+  <div class="page-header-left">
+    <button class="back-btn" aria-label="Go back">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <div class="page-title-block">
+      <h1>Jobs Plans</h1>
+      <p>Standardized reusable work template – tasks, labor, materials, services and tools</p>
+    </div>
+  </div>
+  <button class="btn-primary">
+    <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+    New Job Plan
+  </button>
+</header>
+
+<!-- Stats Bar -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <div class="stat-icon green">✓</div>
+    <div>
+      <div class="stat-label">Active Plans</div>
+      <div class="stat-value">146</div>
+      <div class="stat-delta">+1 this mo.</div>
+    </div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-icon amber">✎</div>
+    <div>
+      <div class="stat-label">Draft / Review</div>
+      <div class="stat-value">12</div>
+    </div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-icon red">⚠</div>
+    <div>
+      <div class="stat-label">Used in PMS</div>
+      <div class="stat-value">5.4<span class="stat-suffix">h</span></div>
+      <div style="font-size:10px;color:var(--text-muted)">weighted</div>
+    </div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-icon blue">≡</div>
+    <div>
+      <div class="stat-label">Avg Task Count</div>
+      <div class="stat-value">9.2</div>
+    </div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-icon purple">🔔</div>
+    <div>
+      <div class="stat-label">Avg Plan Duration</div>
+      <div class="stat-value">5.4<span class="stat-suffix">h</span></div>
+      <div style="font-size:10px;color:var(--text-muted)">weighted</div>
+    </div>
+  </div>
+</div>
+
+<!-- Main Layout -->
+<div class="main-layout">
+
+  <!-- Left: Job Plan Library -->
+  <div class="panel">
+    <div class="panel-header">
+      <div class="panel-title">Job Plan Library</div>
+      <div class="panel-subtitle">Search and select a master plan to view details</div>
+    </div>
+    <div class="search-bar">
+      <div class="search-input-wrap">
+        <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input class="search-input" type="text" placeholder="Search by ID, Name, Classification…">
+      </div>
+      <select class="filter-select">
+        <option>All Classification</option>
+        <option>Substation</option>
+        <option>Distribution</option>
+        <option>Metering</option>
+      </select>
+      <button class="filter-btn">
+        <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z"/></svg>
+        Filter
+      </button>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Plan ID</th>
+            <th>Rev</th>
+            <th>Name</th>
+            <th>Classification</th>
+            <th class="num-cell">Task</th>
+            <th class="num-cell">Lbr</th>
+            <th class="num-cell">Mat</th>
+            <th class="num-cell">Dur</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="planTableBody">
+          <!-- Rows injected by JS -->
+        </tbody>
+      </table>
+    </div>
+    <div class="pagination">
+      <div class="pagination-info">Showing 1–10 of 53 entries</div>
+      <div class="pagination-pages">
+        <button class="page-btn">‹</button>
+        <button class="page-btn active">1</button>
+        <button class="page-btn">2</button>
+        <button class="page-btn">8</button>
+        <span class="page-dots">…</span>
+        <button class="page-btn">10</button>
+        <button class="page-btn">›</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right: Job Plan Details -->
+  <div class="panel detail-panel" id="detailPanel">
+    <div class="detail-header">
+      <div>
+        <div class="detail-plan-id">JP-1042</div>
+        <div class="detail-plan-name">Quaterly VCB Maintenance</div>
+        <div class="detail-meta">
+          <span>Revision 3</span>
+          <span class="detail-meta-sep">·</span>
+          <span class="status-badge active"><span class="status-dot"></span>Active</span>
+          <span class="detail-meta-sep">·</span>
+          <span>Classification: Substation</span>
+          <span class="detail-meta-sep">·</span>
+          <span>Switchgear</span>
+        </div>
+      </div>
+      <button class="close-btn" aria-label="Close details">
+        <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+
+    <!-- Info Cards -->
+    <div class="info-cards">
+      <div class="info-card">
+        <div class="info-card-label">Owner</div>
+        <div class="info-card-value">S.PILLAI</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-label">Equipment</div>
+        <div class="info-card-value">EE-TSR</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-label">Safety Plan</div>
+        <div class="info-card-value blue">SP-204</div>
+      </div>
+    </div>
+
+    <!-- Task Sequence -->
+    <div class="section-label">Task Sequence</div>
+    <div class="task-table">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Task Description</th>
+            <th>Assigned</th>
+            <th>Dur</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="task-num">10</td>
+            <td class="task-desc">Isolate feeder &amp; Confirm dead with tester</td>
+            <td class="task-lineman">Lineman v1.2</td>
+            <td class="task-dur">20m</td>
+          </tr>
+          <tr>
+            <td class="task-num">20</td>
+            <td class="task-desc">Apply LOTO and earthing</td>
+            <td class="task-lineman">Tech13</td>
+            <td class="task-dur">15m</td>
+          </tr>
+          <tr>
+            <td class="task-num">30</td>
+            <td class="task-desc">Open VCB compartment; visual inspection</td>
+            <td class="task-lineman">Lineman v1.2</td>
+            <td class="task-dur">30m</td>
+          </tr>
+          <tr>
+            <td class="task-num">40</td>
+            <td class="task-desc">Clean contacts; measure contact resistance</td>
+            <td class="task-lineman">Lineman v1.2</td>
+            <td class="task-dur">40m</td>
+          </tr>
+          <tr>
+            <td class="task-num">50</td>
+            <td class="task-desc">Lubricate operating mechanism</td>
+            <td class="task-lineman">Lineman v1.2</td>
+            <td class="task-dur">20m</td>
+          </tr>
+          <tr>
+            <td class="task-num">60</td>
+            <td class="task-desc">Insulation resistance test 5kV</td>
+            <td class="task-lineman">Tech13</td>
+            <td class="task-dur">15m</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Resources -->
+    <div class="resources-grid">
+      <div class="resource-col">
+        <div class="resource-col-title">Labor</div>
+        <div class="resource-item">Lineman x2 <span class="qty">6h</span></div>
+        <div class="resource-item">Technician x2 <span class="qty">6h</span></div>
+        <div class="resource-item">Supervisor x1 <span class="qty">6h</span></div>
+      </div>
+      <div class="resource-col">
+        <div class="resource-col-title">Materials</div>
+        <div class="resource-item">Contact grease <span class="qty">0.25kg</span></div>
+        <div class="resource-item">Cleaning solvent <span class="qty">1L</span></div>
+        <div class="resource-item">Custom wipes/ea. <span class="qty">100u</span></div>
+      </div>
+      <div class="resource-col">
+        <div class="resource-col-title">Tools</div>
+        <div class="resource-item">Contact resistance…</div>
+        <div class="resource-item">5kV insulation tester</div>
+        <div class="resource-item">Torque wrench set</div>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="detail-actions">
+      <button class="btn-sm primary">Apply to Work Order</button>
+      <button class="btn-sm outline">
+        <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        Edit Plan
+      </button>
+      <button class="btn-sm outline">
+        <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        Duplicate Plan
+      </button>
+      <button class="btn-more">
+        More
+        <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
+    </div>
+  </div>
+
+</div><!-- /main-layout -->
+
+<script>
+  const plans = [
+    { id:'JP-1042', rev:'V4', name:'Quaterly VCB Maintenance – 11kV', cls:'Substation · Switchgear', task:12, lbr:12, mat:12, dur:'8h', status:'Draft' },
+    { id:'JP-1062', rev:'V4', name:'Quaterly VCB Maintenance – 11kV', cls:'Substation · Switchgear', task:12, lbr:12, mat:12, dur:'8h', status:'Active' },
+    { id:'JP-1073', rev:'V1', name:'DTR Oil Filtration & DGA Sampling', cls:'Distribution · Transformer', task:9,  lbr:9,  mat:9,  dur:'4h', status:'Active' },
+    { id:'JP-1073', rev:'V4', name:'DTR Oil Filtration & DGA Sampling', cls:'Distribution · Transformer', task:9,  lbr:9,  mat:9,  dur:'4h', status:'Active' },
+    { id:'JP-1071', rev:'V1', name:'DTR Oil Filtration & DGA Sampling', cls:'Distribution · Transformer', task:9,  lbr:9,  mat:9,  dur:'4h', status:'Active' },
+    { id:'JP-1152', rev:'V3', name:'11kV Line Patrol & Tree Trimming', cls:'Distribution · LT',          task:3,  lbr:3,  mat:3,  dur:'8h', status:'Active' },
+    { id:'JP-1120', rev:'V2', name:'SF6 CB Annual Service',             cls:'Substation · Switchgear',  task:7,  lbr:7,  mat:7,  dur:'10h', status:'Active' },
+    { id:'JP-1420', rev:'V2', name:'SF6 CB Annual Service',             cls:'Substation · Switchgear',  task:7,  lbr:7,  mat:7,  dur:'10h', status:'Active' },
+  ];
+
+  function renderTable() {
+    const tbody = document.getElementById('planTableBody');
+    tbody.innerHTML = plans.map((p, i) => `
+      <tr class="${i===0?'selected':''}" onclick="selectRow(this)">
+        <td class="plan-id">${p.id}</td>
+        <td><span class="rev-badge">${p.rev}</span></td>
+        <td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px">${p.name}</td>
+        <td class="classification" style="max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${p.cls}</td>
+        <td class="num-cell">${p.task}</td>
+        <td class="num-cell">${p.lbr}</td>
+        <td class="num-cell">${p.mat}</td>
+        <td class="num-cell">${p.dur}</td>
+        <td><span class="status-badge ${p.status.toLowerCase()}"><span class="status-dot"></span>${p.status}</span></td>
+      </tr>
+    `).join('');
+  }
+
+  function selectRow(row) {
+    document.querySelectorAll('#planTableBody tr').forEach(r => r.classList.remove('selected'));
+    row.classList.add('selected');
+  }
+
+  // Page button interaction
+  document.querySelectorAll('.page-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.page-btn').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+
+  renderTable();
+</script>

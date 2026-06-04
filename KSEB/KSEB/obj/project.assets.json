@@ -14,11 +14,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Arpit WorkData\\KSEB\\KSEB\\KSEB.csproj",
+      "projectUniqueName": "C:\\Arpit WorkData\\Github\\KSEB\\KSEB\\KSEB\\KSEB.csproj",
       "projectName": "KSEB",
-      "projectPath": "C:\\Arpit WorkData\\KSEB\\KSEB\\KSEB.csproj",
+      "projectPath": "C:\\Arpit WorkData\\Github\\KSEB\\KSEB\\KSEB\\KSEB.csproj",
       "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
-      "outputPath": "C:\\Arpit WorkData\\KSEB\\KSEB\\obj\\",
+      "outputPath": "C:\\Arpit WorkData\\Github\\KSEB\\KSEB\\KSEB\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
